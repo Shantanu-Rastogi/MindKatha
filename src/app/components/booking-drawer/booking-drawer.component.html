@@ -1,0 +1,100 @@
+<div id="booking-drawer" class="booking-drawer" [class.open]="isOpen$ | async">
+    <div class="drawer-header">
+        <h3>Book Your Session</h3>
+        <button id="close-drawer" class="btn btn-outline btn-sm" (click)="closeDrawer()"><i class="ph ph-x"></i></button>
+    </div>
+
+    <div class="drawer-body">
+
+        <!-- Step 1: Mobile Input -->
+        <div id="step-mobile" class="step-view" [class.active]="currentStep === 'mobile'">
+            <h4>Let's Log You In</h4>
+            <p style="color: var(--text-secondary);">Enter your mobile number to receive a temporary OTP access.</p>
+            <div style="display: flex; gap: 0.5rem;">
+                <span
+                    style="padding: 1rem; border:1px solid #ddd; border-radius: var(--radius-sm); background: #eee;">+91</span>
+                <input type="tel" id="mobile-input" placeholder="9876543210" maxlength="10"
+                    style="flex-grow:1; padding: 1rem; border:1px solid #ddd; border-radius: var(--radius-sm);">
+            </div>
+            <button class="btn btn-primary" (click)="proceedToOTP()">Get OTP</button>
+        </div>
+
+        <!-- Step 2: OTP Verification -->
+        <div id="step-otp" class="step-view" [class.active]="currentStep === 'otp'">
+            <h4>Verify Phone Number</h4>
+            <p style="color: var(--text-secondary);">Enter the 4-digit code sent to your phone (simulate: 1234).</p>
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" class="otp-box">
+                <input type="text" maxlength="1" class="otp-box">
+                <input type="text" maxlength="1" class="otp-box">
+                <input type="text" maxlength="1" class="otp-box">
+            </div>
+            <button class="btn btn-primary" (click)="verifyOTP()">Verify and Continue</button>
+            <button class="btn btn-outline btn-sm" (click)="goBack('mobile')">Change Number</button>
+        </div>
+
+        <!-- Step 3: Calendar picker -->
+        <div id="step-calendar" class="step-view" [class.active]="currentStep === 'calendar'">
+            <h4>Pick a Time</h4>
+            <p style="color: var(--text-secondary);">Select the date for your session.</p>
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <button type="button" id="prev-month" class="btn btn-outline btn-sm">&lt;</button>
+                    <span id="month-title">March 2026</span>
+                    <button type="button" id="next-month" class="btn btn-outline btn-sm">&gt;</button>
+                </div>
+                <div class="calendar-weekdays">
+                    <div>Su</div>
+                    <div>Mo</div>
+                    <div>Tu</div>
+                    <div>We</div>
+                    <div>Th</div>
+                    <div>Fr</div>
+                    <div>Sa</div>
+                </div>
+                <div id="calendar-days" class="calendar-days grid grid-7"></div>
+            </div>
+
+            <h4>Slots</h4>
+            <div class="slots-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                <div class="slot" (click)="selectSlot('10:00 AM')">10:00 AM</div>
+                <div class="slot" (click)="selectSlot('11:30 AM')">11:30 AM</div>
+                <div class="slot" (click)="selectSlot('03:00 PM')">03:00 PM</div>
+                <div class="slot" (click)="selectSlot('04:30 PM')">04:30 PM</div>
+            </div>
+            <button class="btn btn-primary" (click)="proceedToPayment()">Proceed to Payment</button>
+        </div>
+
+        <!-- Step 4: Pay simulation -->
+        <div id="step-pay" class="step-view" [class.active]="currentStep === 'pay'">
+            <h4>Secure Checkout</h4>
+            <p style="color: var(--text-secondary);">Demo checkout. Total: $50 (INR 4000)</p>
+            <div class="checkout-card">
+                <div style="display:flex; justify-content:space-between;">
+                    <span>Therapy Session</span>
+                    <i class="ph ph-shield-check" style="font-size:1.5rem;"></i>
+                </div>
+                <div style="font-size: 1.5rem; font-weight:800; font-family: monospace;">**** **** **** 4242</div>
+                <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                    <span>John Doe</span>
+                    <span>12/29</span>
+                </div>
+            </div>
+            <input type="text" placeholder="CVV" maxlength="3"
+                style="padding: 1rem; border: 1px solid #ddd; border-radius: var(--radius-sm); width: 100px;">
+            <button class="btn btn-primary" (click)="completeCheckout()">Pay & Confirm Booking</button>
+        </div>
+
+        <!-- Step 5: Success -->
+        <div id="step-success" class="step-view" [class.active]="currentStep === 'success'">
+            <div style="text-align: center; display: flex; flex-direction: column; gap: 1.5rem; padding-top: 3rem;">
+                <i class="ph ph-check-circle" style="font-size: 5rem; color: #4CAF50;"></i>
+                <h2>Booking Confirmed!</h2>
+                <p style="color: var(--text-secondary);">We look forward to meeting you. A confirmation link and
+                    meet invite has been sent to your number.</p>
+                <button class="btn btn-primary" (click)="closeDrawer()">Close Drawer</button>
+            </div>
+        </div>
+
+    </div>
+</div>

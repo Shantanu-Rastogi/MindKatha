@@ -1,0 +1,53 @@
+<div class="page-wrapper animated-fade-in">
+  <div class="booking-glass-container">
+    <div class="booking-sidebar">
+      <h2>Begin Your Healing</h2>
+      <p class="sidebar-note">Select a convenient consultation slot. All intakes are completely confidential.</p>
+      <div class="step-indicator-list">
+        <div class="step-line-node" [class.active]="currentStep >= 1"><span>1</span> Authentication</div>
+        <div class="step-line-node" [class.active]="currentStep >= 2"><span>2</span> Slot Selection</div>
+        <div class="step-line-node" [class.active]="currentStep >= 3"><span>3</span> Confirmation</div>
+      </div>
+    </div>
+    
+    <div class="booking-form-area">
+      @if (currentStep === 1) {
+        <h3>Secure Patient Login</h3>
+        <div class="input-group">
+          <label>Mobile Number</label>
+          <input type="tel" placeholder="+91 XXXXX XXXXX" class="premium-input">
+        </div>
+        <button class="form-submit-btn" (click)="setStep(2)">Send Secure OTP <i class="ph ph-shield-check"></i></button>
+      }
+      
+      @if (currentStep === 2) {
+        <h3>Pick a Time</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select the date and time for your session.</p>
+        
+        <div class="input-group" style="margin-bottom: 1.5rem;">
+          <label>Date</label>
+          <input type="date" class="premium-input">
+        </div>
+        
+        <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Available Slots</h4>
+        <div class="slots-grid">
+          <div class="slot" [class.active]="selectedSlot === '10:00 AM'" (click)="selectSlot('10:00 AM')">10:00 AM</div>
+          <div class="slot" [class.active]="selectedSlot === '11:30 AM'" (click)="selectSlot('11:30 AM')">11:30 AM</div>
+          <div class="slot" [class.active]="selectedSlot === '03:00 PM'" (click)="selectSlot('03:00 PM')">03:00 PM</div>
+          <div class="slot" [class.active]="selectedSlot === '04:30 PM'" (click)="selectSlot('04:30 PM')">04:30 PM</div>
+        </div>
+        
+        <button class="form-submit-btn" [disabled]="!selectedSlot" (click)="setStep(3)">Request Appointment <i class="ph ph-arrow-up-right"></i></button>
+      }
+      
+      @if (currentStep === 3) {
+        <div style="text-align: center; padding: 2rem;">
+          <div style="font-size: 4rem; color: #0ea5e9; margin-bottom: 1rem;">✓</div>
+          <h3 style="margin-bottom: 1rem;">Slot Requested</h3>
+          <p style="color: var(--text-muted); margin-bottom: 2rem;">Your slot is requested. We will reach out to confirm your session details.</p>
+          <button class="form-submit-btn" routerLink="/">Back to Home</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

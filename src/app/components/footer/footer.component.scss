@@ -1,0 +1,85 @@
+.cinematic-glass-footer {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 80px 24px 32px;
+    position: relative;
+    z-index: 10;
+    margin-top: 120px;
+}
+
+.footer-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr auto 1.5fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto 48px;
+}
+
+.footer-brand-column p {
+    color: #475569;
+    font-size: 1rem;
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-logo-constrained {
+    width: 200px;
+    max-height: 60px;
+    object-fit: contain;
+    display: block;
+}
+
+.footer-links-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.footer-links-column h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #0f172a;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.footer-links-column a {
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links-column a:hover {
+    color: #0ea5e9;
+}
+
+.rci-verification-badge {
+    background: #e0f2fe;
+    color: #0284c7;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.emergency-disclaimer {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #64748b;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-base-copyright {
+    border-top: 1px solid rgba(15, 23, 42, 0.05);
+    padding-top: 24px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}

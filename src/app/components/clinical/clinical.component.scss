@@ -1,0 +1,12 @@
+.clinical-section {
+    background: var(--background-alt);
+}
+
+.clinical-card {
+    transition: var(--transition);
+}
+
+.clinical-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}

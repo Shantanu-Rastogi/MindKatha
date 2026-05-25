@@ -1,0 +1,32 @@
+<section class="services-grid" id="horizontal-tour" style="padding: 6rem 0;">
+    <div class="container">
+        <div class="section-title text-center" style="margin-bottom: 3.5rem;">
+            <span class="badge" style="background: rgba(255, 255, 255, 0.3); border-radius: 50px; border: 1px solid rgba(255,255,255,0.5);">Premium Product Mapping</span>
+            <h2 style="font-size: 3.5rem; font-weight: 800; text-shadow: 0 4px 12px rgba(255,255,255,0.5);">Our Therapy Journeys</h2>
+        </div>
+
+        <!-- Vertical Responsive Stack -->
+        <div class="services-grid">
+            @for (service of services; track service.title) {
+              <div class="premium-matrix-card">
+                <div class="card-glow-overlay"></div>
+                <div class="card-header-block">
+                  <div class="icon-glass-housing">
+                    <i class="ph" [ngClass]="service.iconClass || 'ph-brain'"></i>
+                  </div>
+                  <span class="pill-badge-premium">{{ service.tag }}</span>
+                </div>
+                <h3 class="card-title-premium">{{ service.title }}</h3>
+                <p class="card-text-premium">{{ service.description }}</p>
+                <div class="card-meta-row">
+                  <span class="meta-capsule"><i class="ph ph-clock"></i> {{ service.duration }}</span>
+                </div>
+                <button class="cta-glass-capsule" routerLink="/services-page">
+                  <span>Map Your Journey</span>
+                  <i class="ph ph-arrow-up-right"></i>
+                </button>
+              </div>
+            }
+        </div>
+    </div>
+</section>

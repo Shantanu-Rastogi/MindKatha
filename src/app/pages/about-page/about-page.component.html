@@ -1,0 +1,58 @@
+<div class="page-wrapper animated-fade-in">
+  <div class="about-hero-cinematic">
+    <span class="about-eyebrow">OUR CORE PHILOSOPHY</span>
+    <h1 class="about-main-title">Therapy that understands <span class="script-accent">your script.</span></h1>
+    <p class="about-paragraph-lead">MindKatha stands at the intersection of modern psychological evidence and clinical narrative therapy. We believe healing isn't about sterile vacuums—it's about re-authoring the vital scripts of your life stories.</p>
+
+  </div>
+
+  <section class="owner-profile-section">
+    <div class="profile-layout-container">
+      <div class="profile-image-block">
+        <div class="portrait-frame">
+          <img [src]="leonaPortraitUrl" alt="Leona - RCI Registered Clinical Psychologist" class="portrait-photo">
+          <div class="glow-edge-effect"></div>
+        </div>
+      </div>
+
+      <div class="profile-narrative-block">
+        <div class="narrative-content">
+          <span class="eyebrow-accent">MEET YOUR PSYCHOLOGIST</span>
+          <h2 class="narrative-title">{{ profile.name }}</h2>
+          <div class="credential-capsules">
+            @for (cred of profile.credentials; track cred) {
+              <span class="cred-tag">{{ cred }}</span>
+            }
+          </div>
+          
+          <p class="experience-lead">{{ profile.experienceLead }}</p>
+          
+          <div class="specialization-details">
+            @for (para of profile.specialization; track para) {
+              <p>{{ para }}</p>
+            }
+          </div>
+          
+          <div class="affirmation-bar">
+            @for (aff of profile.affirmations; track aff.text) {
+              <span class="aff-item"><i class="ph" [ngClass]="aff.icon"></i> {{ aff.text }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modalities-interactive-grid">
+    @for (modality of modalities; track modality.name) {
+      <div class="modality-glass-block">
+        <div class="modality-lens-effect"></div>
+        <div class="modality-header">
+          <i class="ph" [ngClass]="modality.iconClass || 'ph-chats-teardrop'"></i>
+          <h3>{{ modality.name }}</h3>
+        </div>
+        <p class="modality-desc">{{ modality.description }}</p>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="page-wrapper animated-fade-in">
+  <h1 class="section-title">Therapeutic Scope of Care</h1>
+  <p class="section-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Tailored, evidence-based psychotherapy designed to help you understand your script.</p>
+  
+  <div class="services-grid">
+    @for (service of services; track service.title) {
+      <div class="premium-matrix-card">
+        <div class="card-glow-overlay"></div>
+        <div class="card-header-block">
+          <div class="icon-glass-housing">
+            <i class="ph" [ngClass]="service.iconClass || 'ph-brain'"></i>
+          </div>
+          <span class="pill-badge-premium">{{ service.tag }}</span>
+        </div>
+        <h3 class="card-title-premium">{{ service.title }}</h3>
+        <p class="card-text-premium">{{ service.description }}</p>
+        <div class="card-meta-row">
+          <span class="meta-capsule"><i class="ph ph-clock"></i> {{ service.duration }}</span>
+        </div>
+        <button class="cta-glass-capsule" routerLink="/services-page">
+          <span>Map Your Journey</span>
+          <i class="ph ph-arrow-up-right"></i>
+        </button>
+      </div>
+    }
+  </div>
+</div>
