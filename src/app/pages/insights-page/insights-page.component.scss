@@ -1,0 +1,108 @@
+.insights-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+}
+
+.main-section-title {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 2.75rem;
+    font-weight: 700 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.15 !important;
+    color: #1e293b !important;
+    margin-bottom: 64px;
+    text-align: center;
+}
+
+.articles-immersive-flex {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.fluid-article-card {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.fluid-article-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(14, 165, 233, 0.35);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+}
+
+.article-visual-shimmer {
+    height: 200px;
+    background: linear-gradient(90deg, #f0f9ff 25%, #e0f2fe 50%, #f0f9ff 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.article-content-box {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.article-read-time {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.article-title {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 1.5rem;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    color: #1e293b !important;
+    margin-bottom: 16px;
+    line-height: 1.3 !important;
+}
+
+.article-excerpt {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1rem;
+    line-height: 1.65 !important;
+    color: #475569 !important;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.action-link {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: #0284c7;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.action-link:hover {
+    color: #0369a1;
+    gap: 12px;
+}

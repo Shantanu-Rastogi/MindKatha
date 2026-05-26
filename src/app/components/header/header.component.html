@@ -4,13 +4,13 @@
             <img src="/assets/logo.png" alt="MindKatha Logo" style="width: 220px; max-height: 60px; object-fit: contain;" />
         </div>
         <nav class="nav-links">
-            <a routerLink="/" class="nav-link">Home</a>
-            <a routerLink="/about" class="nav-link">About Us</a>
-            <a routerLink="/services-page" class="nav-link">Therapy</a>
-            <a routerLink="/book" class="nav-link">Booking</a>
+            <a routerLink="/" class="header-nav-link" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/about" class="header-nav-link" routerLinkActive="active-link">About Us</a>
+            <a routerLink="/specializations" class="header-nav-link" routerLinkActive="active-link">Specializations</a>
+            <a routerLink="/insights" class="header-nav-link" routerLinkActive="active-link">Insights</a>
         </nav>
         <div class="nav-actions">
-            <a routerLink="/book" class="btn-header-booking" id="open-booking-btn">Book Online <i class="ph ph-calendar"></i></a>
+            <a routerLink="/book" class="btn-header-booking" id="open-booking-btn">Book a Session <i class="ph ph-arrow-right"></i></a>
         </div>
     </div>
 </header>

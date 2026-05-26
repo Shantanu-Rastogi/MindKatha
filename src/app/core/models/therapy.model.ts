@@ -17,3 +17,15 @@ export interface FAQItem {
   answer: string;
   category: string;
 }
+
+export interface Specialization {
+  title: string;
+  detailedDescription: string;
+  icon?: string;
+}
+
+export interface Article {
+  title: string;
+  excerpt: string;
+  readTime: string;
+}

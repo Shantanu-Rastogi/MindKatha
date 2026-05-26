@@ -25,7 +25,7 @@ header.scrolled {
 
 .logo {
     font-size: 1.75rem;
-    font-weight: 800;
+    font-weight: 700;
     background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -39,32 +39,42 @@ header.scrolled {
     align-items: center;
 }
 
-.nav-link {
-    font-weight: 500;
-    color: var(--text-secondary);
-    font-size: 1rem;
-    position: relative;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--primary-dark);
-}
-
-.nav-link::after {
+.header-nav-link {
+  position: relative;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.4s ease;
+  padding-bottom: 4px;
+  font-size: 1rem;
+  
+  &::after {
     content: '';
     position: absolute;
-    bottom: -6px;
-    left: 0;
+    bottom: -4px;
+    left: 50%;
     width: 0;
-    height: 2px;
-    background: var(--primary-dark);
-    transition: var(--transition);
+    height: 3px;
+    background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+    border-radius: 10px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-50%);
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
+  }
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
-    width: 100%;
+.header-nav-link:hover {
+  color: #0284c7;
+}
+
+.active-link {
+  color: #0284c7 !important;
+  font-weight: 600;
+  
+  &::after {
+    width: 24px; /* Expands smoothly from center on active */
+  }
 }
 
 @media (max-width: 968px) {
@@ -74,7 +84,7 @@ header.scrolled {
 }
 
 .btn-header-booking {
-    background: #0f172a;
+    background: #1e293b;
     color: #ffffff !important;
     padding: 12px 24px;
     border-radius: 100px;

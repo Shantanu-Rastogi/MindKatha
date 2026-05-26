@@ -1,0 +1,16 @@
+<div class="page-wrapper animated-fade-in">
+  <section class="specializations-section">
+    <h2 class="main-section-title">Demographic Specializations</h2>
+    
+    <div class="specializations-grid">
+      @for (spec of specializations; track spec.title) {
+        <div class="premium-matrix-card">
+          <div class="specialization-icon-badge"><i class="ph" [ngClass]="spec.icon || 'ph-user-focus'"></i></div>
+          <h3 class="spec-title">{{ spec.title }}</h3>
+          <p class="spec-narrative">{{ spec.detailedDescription }}</p>
+          <button class="cta-glass-capsule" routerLink="/book">Request Initial Evaluation</button>
+        </div>
+      }
+    </div>
+  </section>
+</div>

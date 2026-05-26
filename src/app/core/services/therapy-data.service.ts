@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TherapyService, Modality, FAQItem } from '../models/therapy.model';
+import { TherapyService, Modality, FAQItem, Specialization, Article } from '../models/therapy.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,29 @@ export class TherapyDataService {
       description: 'Affirming therapy to build personalized systems for executive functioning and navigate a world not built for your brain.',
       duration: '60 mins',
       iconClass: 'ph-sparkles'
+    }
+  ];
+
+  private specializations: Specialization[] = [
+    {
+      title: 'Adult Psychotherapy & Burnout',
+      detailedDescription: 'Addressing chronic workplace stress, emotional tracking, and anxiety scripts.',
+      icon: 'ph-user-focus'
+    },
+    {
+      title: 'Child & Adolescent Support',
+      detailedDescription: 'Specializing in psychometric testing, behavioral modification, and developmental safe spaces.',
+      icon: 'ph-baby'
+    },
+    {
+      title: 'Trauma-Informed Frameworks',
+      detailedDescription: 'Evidence-based approaches including EMDR, DBT, and somatic grounding.',
+      icon: 'ph-shield'
+    },
+    {
+      title: 'Queer-Affirmative Therapy',
+      detailedDescription: 'Dedicated safe-harbor spaces for identity validation and relational healing.',
+      icon: 'ph-rainbow'
     }
   ];
 
@@ -83,8 +106,30 @@ export class TherapyDataService {
     }
   ];
 
+  private articles: Article[] = [
+    {
+      title: 'Navigating Burnout in High-Velocity Environments',
+      excerpt: 'Strategies for recognizing chronic workplace stress, setting boundary scripts, and recovering cognitive energy.',
+      readTime: '5 min read'
+    },
+    {
+      title: 'The Neurobiology of Anxiety',
+      excerpt: 'Understanding the brain\'s response to stress and how to rewire anxious patterns.',
+      readTime: '7 min read'
+    },
+    {
+      title: 'Re-authoring Your Identity Narrative',
+      excerpt: 'Exploring how Narrative Therapy helps externalize problems and reclaim your personal story.',
+      readTime: '6 min read'
+    }
+  ];
+
   getServices(): TherapyService[] {
     return this.services;
+  }
+
+  getSpecializations(): Specialization[] {
+    return this.specializations;
   }
 
   getModalities(): Modality[] {
@@ -93,5 +138,9 @@ export class TherapyDataService {
 
   getFAQs(): FAQItem[] {
     return this.faqs;
+  }
+
+  getArticles(): Article[] {
+    return this.articles;
   }
 }
