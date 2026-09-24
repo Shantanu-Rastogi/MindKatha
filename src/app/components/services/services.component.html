@@ -1,32 +1,157 @@
-<section class="services-grid" id="horizontal-tour" style="padding: 6rem 0;">
-    <div class="container">
-        <div class="section-title text-center" style="margin-bottom: 3.5rem;">
-            <span class="badge" style="background: rgba(255, 255, 255, 0.3); border-radius: 50px; border: 1px solid rgba(255,255,255,0.5);">Premium Product Mapping</span>
-            <h2 style="font-size: 3.5rem; font-weight: 700; text-shadow: 0 4px 12px rgba(255,255,255,0.5);">Our Therapy Journeys</h2>
-        </div>
+<section class="py-14 md:py-24 px-4 sm:px-6 max-w-7xl mx-auto relative font-sans" id="services">
+  
+  <!-- Header -->
+  <div class="text-center max-w-3xl mx-auto mb-10 space-y-3" appScrollReveal revealAnimation="fade-up">
+    <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold uppercase tracking-wider shadow-sm">
+      <i class="ph ph-stethoscope text-sky-600"></i> Clinical Care &amp; Diagnostics
+    </span>
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug">
+      Structured care for your <span class="font-serif italic font-normal text-sky-700">emotional wellbeing.</span>
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+      Evidence-based psychotherapy, somatic trauma stabilization, and standardized diagnostic test batteries paced at your comfort.
+    </p>
 
-        <!-- Vertical Responsive Stack -->
-        <div class="services-grid">
-            @for (service of services; track service.title) {
-              <div class="premium-matrix-card">
-                <div class="card-glow-overlay"></div>
-                <div class="card-header-block">
-                  <div class="icon-glass-housing">
-                    <i class="ph" [ngClass]="service.iconClass || 'ph-brain'"></i>
-                  </div>
-                  <span class="pill-badge-premium">{{ service.tag }}</span>
-                </div>
-                <h3 class="card-title-premium">{{ service.title }}</h3>
-                <p class="card-text-premium">{{ service.description }}</p>
-                <div class="card-meta-row">
-                  <span class="meta-capsule"><i class="ph ph-clock"></i> {{ service.duration }}</span>
-                </div>
-                <button class="cta-glass-capsule" routerLink="/services-page">
-                  <span>Map Your Journey</span>
-                  <i class="ph ph-arrow-up-right"></i>
-                </button>
+    <!-- Interactive Filter Pills -->
+    <div class="flex flex-wrap items-center justify-center gap-2 pt-4">
+      <button 
+        type="button" 
+        (click)="setTab('all')" 
+        class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+        [class.bg-slate-900]="selectedTab === 'all'"
+        [class.text-white]="selectedTab === 'all'"
+        [class.bg-white]="selectedTab !== 'all'"
+        [class.text-slate-600]="selectedTab !== 'all'"
+        [class.border]="selectedTab !== 'all'"
+        [class.border-slate-200]="selectedTab !== 'all'">
+        All Modalities
+      </button>
+      <button 
+        type="button" 
+        (click)="setTab('individual')" 
+        class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+        [class.bg-slate-900]="selectedTab === 'individual'"
+        [class.text-white]="selectedTab === 'individual'"
+        [class.bg-white]="selectedTab !== 'individual'"
+        [class.text-slate-600]="selectedTab !== 'individual'"
+        [class.border]="selectedTab !== 'individual'"
+        [class.border-slate-200]="selectedTab !== 'individual'">
+        1-on-1 Psychotherapy
+      </button>
+      <button 
+        type="button" 
+        (click)="setTab('diagnostics')" 
+        class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+        [class.bg-slate-900]="selectedTab === 'diagnostics'"
+        [class.text-white]="selectedTab === 'diagnostics'"
+        [class.bg-white]="selectedTab !== 'diagnostics'"
+        [class.text-slate-600]="selectedTab !== 'diagnostics'"
+        [class.border]="selectedTab !== 'diagnostics'"
+        [class.border-slate-200]="selectedTab !== 'diagnostics'">
+        ADHD &amp; Psychometrics
+      </button>
+      <button 
+        type="button" 
+        (click)="setTab('couples')" 
+        class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+        [class.bg-slate-900]="selectedTab === 'couples'"
+        [class.text-white]="selectedTab === 'couples'"
+        [class.bg-white]="selectedTab !== 'couples'"
+        [class.text-slate-600]="selectedTab !== 'couples'"
+        [class.border]="selectedTab !== 'couples'"
+        [class.border-slate-200]="selectedTab !== 'couples'">
+        Couples &amp; Relational
+      </button>
+    </div>
+  </div>
+
+  <!-- Rich Visual Services Grid (Staggered Animation + Google Labs Bento Spotlight) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+    @for (service of filteredServices; track service.id; let idx = $index) {
+      <div 
+        appScrollReveal 
+        revealAnimation="fade-up" 
+        [revealDelay]="(idx % 2) * 150"
+        appCardSpotlight
+        class="group rounded-3xl bg-white border border-slate-200/90 overflow-hidden shadow-sm lively-card spotlight-card flex flex-col justify-between">
+        
+        <div class="relative z-10">
+          <div class="relative aspect-[16/9] overflow-hidden bg-slate-100">
+            <img 
+              [src]="service.image" 
+              [alt]="service.title" 
+              class="w-full h-full object-cover lively-img">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/35 via-transparent to-transparent pointer-events-none"></div>
+            <div class="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-slate-800 text-xs font-bold shadow-sm flex items-center gap-1.5">
+              <i class="ph ph-clock text-sky-600"></i>
+              <span>{{ service.duration }}</span>
+            </div>
+            <div class="absolute top-3 right-3 px-2.5 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>{{ service.cadence }}</span>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="text-sky-700 text-[11px] font-bold uppercase tracking-wider">
+                {{ service.modalityTag }}
+              </div>
+            </div>
+
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug">
+              {{ service.title }}
+            </h3>
+            
+            <!-- Compact preview -->
+            <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed" [class.line-clamp-2]="!isExpanded(service.id)">
+              {{ service.description }}
+            </p>
+
+            <!-- Inline toggle -->
+            <button 
+              type="button" 
+              (click)="toggleExpand(service.id)" 
+              class="inline-flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-sky-800 transition-colors cursor-pointer py-0.5">
+              <span>{{ isExpanded(service.id) ? 'Show Less' : 'Read Modality Focus' }}</span>
+              <i class="ph" [ngClass]="isExpanded(service.id) ? 'ph-caret-up' : 'ph-caret-down'"></i>
+            </button>
+
+            @if (isExpanded(service.id)) {
+              <div class="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100 animate-fadeIn">
+                @for (tag of service.tags; track tag) {
+                  <span class="px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200/60 text-[10px] font-semibold">
+                    {{ tag }}
+                  </span>
+                }
               </div>
             }
+          </div>
         </div>
-    </div>
+
+        <div class="p-6 pt-0 flex items-center justify-between border-t border-slate-100 mt-2 pt-4 relative z-10">
+          <span class="text-xs font-medium text-slate-400">Viman Nagar &amp; Telehealth</span>
+          <a [routerLink]="['/book']" [queryParams]="{ service: service.title }" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-sky-600 text-white text-xs font-semibold transition-colors text-decoration-none shadow-sm shimmer-sweep">
+            <span>Book Intake</span>
+            <i class="ph ph-arrow-right text-xs"></i>
+          </a>
+        </div>
+
+      </div>
+    }
+  </div>
+
+  <!-- Route Link to full services page -->
+  <div 
+    appScrollReveal 
+    revealAnimation="fade-up"
+    class="mt-12 pt-6 border-t border-slate-200/90 flex items-center justify-between flex-wrap gap-4">
+    <span class="text-xs text-slate-500 font-medium">Standardized psychometric test reports delivered within 3-5 business days.</span>
+    <a routerLink="/services" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors text-decoration-none group">
+      <span>Explore all clinical service details &amp; psychometric batteries</span>
+      <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+    </a>
+  </div>
+
 </section>
+

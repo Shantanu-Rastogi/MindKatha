@@ -1,0 +1,328 @@
+.contact-hero-section {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+@media (min-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+/* LOGISTICS BLOCK */
+.logistics-housing {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 600px) {
+  .logistics-housing {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.logistics-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.01);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media (min-width: 768px) {
+    padding: 32px;
+    gap: 20px;
+  }
+}
+
+.logistics-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(14, 165, 233, 0.25);
+  box-shadow: 0 16px 32px rgba(14, 165, 233, 0.04);
+}
+
+.logistics-icon {
+  width: 48px;
+  height: 48px;
+  background: #e0f2fe;
+  color: #0284c7;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.logistics-content h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 1.25rem;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em !important;
+}
+
+.logistics-content p {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem;
+  line-height: 1.65 !important;
+  color: #475569 !important;
+  margin-bottom: 12px;
+}
+
+.logistics-accent {
+  display: inline-block;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #0ea5e9 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* INTAKE FORM CARD */
+.intake-form-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    border-radius: 28px;
+    padding: 40px;
+  }
+}
+
+.intake-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 1.5rem;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  margin-bottom: 12px;
+  letter-spacing: -0.03em !important;
+
+  @media (min-width: 768px) {
+    font-size: 1.75rem;
+  }
+}
+
+.intake-desc {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem;
+  line-height: 1.6 !important;
+  color: #64748b !important;
+  margin-bottom: 28px;
+}
+
+.secure-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: #334155 !important;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(203, 213, 225, 0.7);
+  border-radius: 14px;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem;
+  color: #334155 !important;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0ea5e9;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+textarea.form-input {
+  resize: none;
+}
+
+.btn-submit-intake {
+  width: 100%;
+  padding: 14px 28px;
+  background: #334155;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.btn-submit-intake:hover {
+  background: #0ea5e9;
+  box-shadow: 0 6px 24px rgba(14, 165, 233, 0.45);
+  transform: translateY(-2px);
+}
+
+.btn-submit-intake:active {
+  transform: translateY(0);
+}
+
+.hipaa-disclaimer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.78rem;
+  color: #64748b !important;
+  margin-top: 12px;
+}
+
+.hipaa-disclaimer i {
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+/* FAQ ACCORDION */
+.faq-standalone-section {
+  padding-top: 40px;
+  border-top: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.faq-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 1.85rem;
+  font-weight: 800 !important;
+  color: #334155 !important;
+  letter-spacing: -0.03em !important;
+  margin-top: 8px;
+
+  @media (min-width: 768px) {
+    font-size: 2.25rem;
+  }
+}
+
+.faq-accordion-container {
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.01);
+  transition: all 0.3s ease;
+}
+
+.faq-item-card[open] {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(14, 165, 233, 0.2);
+  box-shadow: 0 12px 32px rgba(14, 165, 233, 0.05);
+}
+
+.faq-question-trigger {
+  padding: 16px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 1.05rem;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: -0.01em !important;
+
+  @media (min-width: 768px) {
+    padding: 24px 32px;
+    font-size: 1.15rem;
+  }
+}
+
+.faq-question-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question-trigger::after {
+  content: '+';
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #0ea5e9;
+  transition: transform 0.3s ease;
+}
+
+.faq-item-card[open] .faq-question-trigger::after {
+  content: '−';
+  transform: rotate(180deg);
+}
+
+.faq-answer-box {
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid rgba(226, 232, 240, 0.5);
+  padding-top: 16px;
+
+  @media (min-width: 768px) {
+    padding: 0 32px 28px 32px;
+    padding-top: 20px;
+  }
+}
+
+.faq-answer-box p {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem;
+  line-height: 1.7 !important;
+  color: #475569 !important;
+  margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 0.98rem;
+  }
+}

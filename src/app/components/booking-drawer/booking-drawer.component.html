@@ -1,98 +1,297 @@
 <div id="booking-drawer" class="booking-drawer" [class.open]="isOpen$ | async">
     <div class="drawer-header">
-        <h3>Book Your Session</h3>
-        <button id="close-drawer" class="btn btn-outline btn-sm" (click)="closeDrawer()"><i class="ph ph-x"></i></button>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h3 class="font-bold text-slate-800 text-lg">Request Consultation</h3>
+        </div>
+        <button id="close-drawer" class="btn btn-outline btn-sm" (click)="closeDrawer()"><i class="ph ph-x text-lg"></i></button>
     </div>
 
-    <div class="drawer-body">
+    <div class="drawer-body font-sans">
 
-        <!-- Step 1: Mobile Input -->
+        <!-- Step 1: Client Contact Details -->
         <div id="step-mobile" class="step-view" [class.active]="currentStep === 'mobile'">
-            <h4>Let's Log You In</h4>
-            <p style="color: var(--text-secondary);">Enter your mobile number to receive a temporary OTP access.</p>
-            <div style="display: flex; gap: 0.5rem;">
-                <span
-                    style="padding: 1rem; border:1px solid #ddd; border-radius: var(--radius-sm); background: #eee;">+91</span>
-                <input type="tel" id="mobile-input" placeholder="9876543210" maxlength="10"
-                    style="flex-grow:1; padding: 1rem; border:1px solid #ddd; border-radius: var(--radius-sm);">
+            <h4 class="font-bold text-slate-800 text-base">Your Contact Details</h4>
+            <p class="text-slate-500 text-xs mt-0.5">Enter your name and WhatsApp number to choose your consultation time slot.</p>
+            
+            <div class="flex flex-col gap-3 mt-4">
+                <div>
+                  <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Your Full Name</label>
+                  <input type="text" [(ngModel)]="clientName" placeholder="e.g. Aarav Sharma" class="w-full p-3 rounded-xl border border-slate-300 text-sm focus:border-sky-500 focus:outline-none">
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">WhatsApp Phone Number</label>
+                  <div class="flex gap-2">
+                      <span class="p-3 border border-slate-300 rounded-xl bg-slate-100 text-slate-700 font-semibold text-sm">+91</span>
+                      <input type="tel" [(ngModel)]="phoneNumber" placeholder="98765 43210" maxlength="10"
+                          class="flex-1 p-3 border border-slate-300 rounded-xl text-sm focus:border-sky-500 focus:outline-none">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Session Mode</label>
+                  <select [(ngModel)]="sessionMode" class="w-full p-3 border border-slate-300 rounded-xl bg-white text-slate-700 text-sm focus:border-sky-500 focus:outline-none">
+                      <option value="telehealth">Online Telehealth (Video Session)</option>
+                      <option value="studio">In-Person (Viman Nagar Studio, Pune)</option>
+                  </select>
+                </div>
+
+                @if (otpError) {
+                  <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium flex items-center gap-1.5">
+                    <i class="ph ph-warning-circle text-base"></i> {{ otpError }}
+                  </div>
+                }
             </div>
-            <button class="btn btn-primary" (click)="proceedToOTP()">Get OTP</button>
+
+            <button 
+              type="button"
+              class="w-full py-3.5 px-4 mt-4 rounded-full bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs sm:text-sm shadow-md shadow-sky-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" 
+              [disabled]="phoneNumber.length < 10"
+              (click)="sendDrawerOtp()">
+              <span>Continue to Select Slot</span>
+              <i class="ph ph-arrow-right text-sm"></i>
+            </button>
+            <p class="text-center text-[11px] text-slate-400 mt-2">Confidential clinical intake protected by DPDP Act 2023.</p>
         </div>
 
         <!-- Step 2: OTP Verification -->
         <div id="step-otp" class="step-view" [class.active]="currentStep === 'otp'">
-            <h4>Verify Phone Number</h4>
-            <p style="color: var(--text-secondary);">Enter the 4-digit code sent to your phone (simulate: 1234).</p>
-            <div class="otp-inputs">
-                <input type="text" maxlength="1" class="otp-box">
-                <input type="text" maxlength="1" class="otp-box">
-                <input type="text" maxlength="1" class="otp-box">
-                <input type="text" maxlength="1" class="otp-box">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-slate-800 text-base">Enter WhatsApp Code</h4>
+              <button type="button" (click)="goBack('mobile')" class="text-xs text-slate-500 hover:text-slate-800 underline">Edit Number</button>
             </div>
-            <button class="btn btn-primary" (click)="verifyOTP()">Verify and Continue</button>
-            <button class="btn btn-outline btn-sm" (click)="goBack('mobile')">Change Number</button>
+            <p class="text-slate-500 text-xs mt-0.5">Sent via WhatsApp to <strong>+91 {{ phoneNumber }}</strong></p>
+
+            <!-- Desktop QR Scanner Card -->
+            @if (isDesktop && qrCodeUrl) {
+              <div class="my-3 p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50 to-slate-50 border border-emerald-200/90 flex items-center gap-3 shadow-sm">
+                <div class="p-1.5 bg-white rounded-xl border border-emerald-200 shrink-0">
+                  <img [src]="qrCodeUrl" alt="Scan QR Code" class="w-20 h-20 object-contain rounded-lg" />
+                </div>
+                <div class="space-y-1">
+                  <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                    <i class="ph ph-qr-code"></i> Scan with Phone
+                  </div>
+                  <h5 class="font-bold text-slate-800 text-xs leading-tight">Using Desktop?</h5>
+                  <p class="text-[11px] text-slate-600 leading-snug">
+                    Scan with your phone camera to open WhatsApp instantly, or open WhatsApp Web.
+                  </p>
+                  <button 
+                    type="button" 
+                    (click)="openWhatsAppWeb()" 
+                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold transition-all shadow-xs mt-1">
+                    <i class="ph ph-laptop"></i>
+                    <span>Open WhatsApp Web</span>
+                  </button>
+                </div>
+              </div>
+            }
+
+            <!-- Verification Status Card -->
+            @if (simulatedIncomingOtp) {
+              <div class="my-3 p-3 rounded-xl bg-emerald-50/90 border border-emerald-200/90 flex items-center justify-between gap-2 shadow-xs">
+                <div class="text-xs text-emerald-950 font-medium">
+                  Passcode: <strong class="font-mono tracking-widest text-emerald-950 font-bold text-sm">{{ simulatedIncomingOtp }}</strong>
+                </div>
+                <button type="button" (click)="autoFillDemoOtp()" class="px-2.5 py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-semibold transition-all">Auto-Fill OTP</button>
+              </div>
+            }
+
+            <div class="my-4">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-2 text-center">6-Digit WhatsApp Code</label>
+              <div class="flex justify-center gap-1.5 sm:gap-2">
+                @for (digit of otpDigits; track i; let i = $index) {
+                  <input 
+                    type="text" 
+                    [id]="'drawer-otp-' + i" 
+                    maxlength="1" 
+                    [value]="otpDigits[i]"
+                    (input)="onOtpInput($event, i)"
+                    (keydown)="onOtpKeyDown($event, i)"
+                    class="w-10 h-12 text-center text-lg font-bold text-slate-800 bg-white border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all shadow-sm" />
+                }
+              </div>
+            </div>
+
+            @if (otpError) {
+              <div class="p-2.5 mb-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium text-center">
+                {{ otpError }}
+              </div>
+            }
+
+            <button 
+              type="button"
+              class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2" 
+              [disabled]="isVerifyingOtp"
+              (click)="verifyDrawerOtp()">
+              @if (isVerifyingOtp) {
+                <span>Verifying...</span>
+              } @else {
+                <span>Verify &amp; Continue</span> <i class="ph ph-arrow-right"></i>
+              }
+            </button>
+
+            <div class="text-center text-xs text-slate-500 mt-3">
+              @if (resendCountdown > 0) {
+                <span>Resend in <strong>{{ resendCountdown }}s</strong></span>
+              } @else {
+                <span>Didn't get code? </span>
+                <button type="button" (click)="resendOtp()" class="text-emerald-700 font-bold hover:underline">Resend via WhatsApp</button>
+              }
+            </div>
         </div>
 
-        <!-- Step 3: Calendar picker -->
+        <!-- Step 3: Slot Selection -->
         <div id="step-calendar" class="step-view" [class.active]="currentStep === 'calendar'">
-            <h4>Pick a Time</h4>
-            <p style="color: var(--text-secondary);">Select the date for your session.</p>
-            <div class="calendar-wrapper">
-                <div class="calendar-header">
-                    <button type="button" id="prev-month" class="btn btn-outline btn-sm">&lt;</button>
-                    <span id="month-title">March 2026</span>
-                    <button type="button" id="next-month" class="btn btn-outline btn-sm">&gt;</button>
-                </div>
-                <div class="calendar-weekdays">
-                    <div>Su</div>
-                    <div>Mo</div>
-                    <div>Tu</div>
-                    <div>We</div>
-                    <div>Th</div>
-                    <div>Fr</div>
-                    <div>Sa</div>
-                </div>
-                <div id="calendar-days" class="calendar-days grid grid-7"></div>
+            <div class="flex items-center gap-1 text-emerald-600 text-xs font-bold uppercase mb-1">
+              <i class="ph ph-check-circle"></i> Verified (+91 {{ phoneNumber }})
+            </div>
+            <h4 class="font-bold text-slate-800 text-base">Select Consultation Timing</h4>
+            
+            <div class="my-2.5">
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1 flex items-center gap-1">
+                  <i class="ph ph-calendar text-sky-600"></i> Select Date (Rolling 7 Days)
+                </label>
+                <input 
+                  type="date" 
+                  [(ngModel)]="selectedDate" 
+                  [min]="minBookingDate" 
+                  [max]="maxBookingDate" 
+                  class="w-full p-2.5 border border-slate-300 rounded-xl text-xs focus:border-sky-500 focus:outline-none">
             </div>
 
-            <h4>Slots</h4>
-            <div class="slots-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
-                <div class="slot" (click)="selectSlot('10:00 AM')">10:00 AM</div>
-                <div class="slot" (click)="selectSlot('11:30 AM')">11:30 AM</div>
-                <div class="slot" (click)="selectSlot('03:00 PM')">03:00 PM</div>
-                <div class="slot" (click)="selectSlot('04:30 PM')">04:30 PM</div>
+            <div class="mb-1.5">
+              <label class="text-[11px] font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1">
+                <i class="ph ph-clock text-sky-600"></i> Available Time Slots (IST)
+              </label>
             </div>
-            <button class="btn btn-primary" (click)="proceedToPayment()">Proceed to Payment</button>
+            <div class="slots-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                @for (slot of availableSlots; track slot) {
+                  <button 
+                    type="button" 
+                    class="slot text-[11px] p-2" 
+                    [class.active]="selectedSlot === slot"
+                    (click)="selectSlot(slot)">
+                    {{ slot }}
+                  </button>
+                }
+            </div>
+
+            <!-- Service Dropdown (Zero Native OS Popup) -->
+            <div class="my-3 pt-2.5 border-t border-slate-200 drawer-service-dropdown-container relative">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-800 mb-1.5 flex items-center justify-between">
+                <span class="flex items-center gap-1">
+                  <i class="ph ph-sparkle text-sky-600"></i> Service / Care Needed
+                </span>
+                <span class="text-[10px] font-semibold text-sky-600 normal-case">Change</span>
+              </label>
+              
+              <!-- Trigger Button -->
+              <button 
+                type="button" 
+                (click)="toggleServiceDropdown($event)" 
+                class="w-full px-3 py-2 border-2 rounded-xl text-left bg-white shadow-sm flex items-center justify-between text-xs transition-all cursor-pointer group"
+                [class.border-sky-500]="isServiceDropdownOpen"
+                [class.ring-2]="isServiceDropdownOpen"
+                [class.ring-sky-100]="isServiceDropdownOpen"
+                [class.border-slate-300]="!isServiceDropdownOpen">
+                <div class="truncate mr-2 font-semibold text-slate-800">{{ selectedService }}</div>
+                <div class="flex items-center gap-1 text-slate-400 group-hover:text-sky-600 text-xs">
+                  <i class="ph ph-caret-down transition-transform duration-200" [class.rotate-180]="isServiceDropdownOpen"></i>
+                </div>
+              </button>
+
+              <!-- Custom Light Dropdown Menu -->
+              @if (isServiceDropdownOpen) {
+                <div class="absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-[0_16px_40px_rgba(0,70,95,0.18)] p-1.5 z-50 animate-fadeIn max-h-52 overflow-y-auto custom-dropdown-scroll space-y-1">
+                  @for (svc of serviceOptions; track svc.name) {
+                    <button 
+                      type="button" 
+                      (click)="selectServiceOption(svc.name, $event)" 
+                      class="w-full text-left px-2.5 py-1.5 rounded-lg flex items-center justify-between text-xs transition-colors cursor-pointer"
+                      [class.bg-sky-50]="selectedService === svc.name"
+                      [class.text-sky-900]="selectedService === svc.name"
+                      [class.font-semibold]="selectedService === svc.name"
+                      [class.hover:bg-slate-50]="selectedService !== svc.name"
+                      [class.text-slate-700]="selectedService !== svc.name">
+                      <div class="flex items-center gap-2 truncate">
+                        <i [class]="'ph ' + svc.icon + ' text-sky-600 text-sm'"></i>
+                        <span class="truncate">{{ svc.name }}</span>
+                      </div>
+                      @if (selectedService === svc.name) {
+                        <i class="ph ph-check text-sky-600 font-bold ml-1"></i>
+                      }
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Other Custom Care Textarea -->
+            @if (selectedService === 'Other / Custom Care') {
+              <div class="mb-2.5 p-2.5 rounded-xl bg-sky-50 border border-sky-300 text-xs animate-fadeIn">
+                <label class="block font-bold text-sky-950 text-[10px] uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <i class="ph ph-note-pencil text-sky-600"></i> Describe your requirement
+                </label>
+                <textarea [(ngModel)]="customServiceDetails" rows="2" placeholder="e.g. Specific psychometric diagnostic battery..." class="w-full p-2 border border-sky-300 rounded-lg text-xs bg-white resize-none focus:outline-none focus:border-sky-600"></textarea>
+              </div>
+            }
+            
+            <div class="flex gap-2 pt-1">
+                <button class="btn btn-outline btn-sm" (click)="goBack('mobile')">Back</button>
+                <button class="btn btn-primary flex-1" (click)="proceedToConfirm()">Review &amp; Confirm</button>
+            </div>
         </div>
 
-        <!-- Step 4: Pay simulation -->
+        <!-- Step 4: Summary Confirmation -->
         <div id="step-pay" class="step-view" [class.active]="currentStep === 'pay'">
-            <h4>Secure Checkout</h4>
-            <p style="color: var(--text-secondary);">Demo checkout. Total: $50 (INR 4000)</p>
-            <div class="checkout-card">
-                <div style="display:flex; justify-content:space-between;">
-                    <span>Therapy Session</span>
-                    <i class="ph ph-shield-check" style="font-size:1.5rem;"></i>
+            <h4 class="font-bold text-slate-800 text-base">Session Summary</h4>
+            <p class="text-slate-500 text-xs">Review your intake details below.</p>
+            
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 my-3 space-y-2 text-xs text-slate-700">
+                <div class="flex justify-between pb-1.5 border-b border-slate-200">
+                    <span class="text-slate-500">Service</span>
+                    <span class="font-bold text-slate-800">{{ selectedService === 'Other / Custom Care' && customServiceDetails ? customServiceDetails : selectedService }}</span>
                 </div>
-                <div style="font-size: 1.5rem; font-weight:700; font-family: monospace;">**** **** **** 4242</div>
-                <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
-                    <span>John Doe</span>
-                    <span>12/29</span>
+                <div class="flex justify-between pb-1.5 border-b border-slate-200">
+                    <span class="text-slate-500">Patient</span>
+                    <span class="font-bold text-slate-800">{{ clientName || 'Patient' }}</span>
+                </div>
+                <div class="flex justify-between pb-1.5 border-b border-slate-200">
+                    <span class="text-slate-500">Verified Mobile</span>
+                    <span class="font-bold text-slate-800">+91 {{ phoneNumber }}</span>
+                </div>
+                <div class="flex justify-between pb-1.5 border-b border-slate-200">
+                    <span class="text-slate-500">Date &amp; Time</span>
+                    <span class="font-bold text-sky-700">{{ selectedDate }} at {{ selectedSlot }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Mode</span>
+                    <span class="font-bold text-slate-800">{{ sessionMode === 'telehealth' ? 'Online Telehealth' : 'Viman Nagar Studio, Pune' }}</span>
                 </div>
             </div>
-            <input type="text" placeholder="CVV" maxlength="3"
-                style="padding: 1rem; border: 1px solid #ddd; border-radius: var(--radius-sm); width: 100px;">
-            <button class="btn btn-primary" (click)="completeCheckout()">Pay & Confirm Booking</button>
+
+            <button class="btn btn-primary w-full" (click)="completeCheckout()">Confirm Intake Request</button>
+            <button class="btn btn-outline btn-sm w-full mt-2" (click)="goBack('calendar')">Change Details</button>
         </div>
 
         <!-- Step 5: Success -->
         <div id="step-success" class="step-view" [class.active]="currentStep === 'success'">
-            <div style="text-align: center; display: flex; flex-direction: column; gap: 1.5rem; padding-top: 3rem;">
-                <i class="ph ph-check-circle" style="font-size: 5rem; color: #4CAF50;"></i>
-                <h2>Booking Confirmed!</h2>
-                <p style="color: var(--text-secondary);">We look forward to meeting you. A confirmation link and
-                    meet invite has been sent to your number.</p>
-                <button class="btn btn-primary" (click)="closeDrawer()">Close Drawer</button>
+            <div class="text-center flex flex-col items-center gap-3 pt-4">
+                <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl">
+                  <i class="ph ph-check-circle"></i>
+                </div>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">Ref: {{ bookingRef }}</span>
+                  <h3 class="font-bold text-slate-800 text-lg mt-2">Intake Request Received!</h3>
+                </div>
+                <p class="text-slate-600 text-xs leading-relaxed max-w-xs">
+                    Thank you, {{ clientName || 'Patient' }}. We will connect via WhatsApp/Email (psychotherapy.leona&#64;gmail.com) within 24 business hours.
+                </p>
+                <div class="flex flex-col w-full gap-2 mt-2">
+                  <button class="btn btn-primary w-full" (click)="closeDrawer()">Done</button>
+                </div>
             </div>
         </div>
 

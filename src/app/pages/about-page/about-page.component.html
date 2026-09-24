@@ -1,58 +1,102 @@
-<div class="page-wrapper animated-fade-in">
-  <div class="about-hero-cinematic">
-    <span class="about-eyebrow">OUR CORE PHILOSOPHY</span>
-    <h1 class="about-main-title">Therapy that understands <span class="script-accent">your script.</span></h1>
-    <p class="about-paragraph-lead">MindKatha stands at the intersection of modern psychological evidence and clinical narrative therapy. We believe healing isn't about sterile vacuums—it's about re-authoring the vital scripts of your life stories.</p>
-
-  </div>
-
-  <section class="owner-profile-section">
-    <div class="profile-layout-container">
-      <div class="profile-image-block">
+<div class="about-page-wrapper">
+  
+  <!-- MAIN EDITORIAL BIO CARD -->
+  <section class="leona-bio-card" appScrollReveal revealAnimation="fade-up" [revealDelay]="50">
+    <div class="leona-bio-grid">
+      
+      <!-- Left Column: Portrait -->
+      <div class="leona-portrait-col">
         <div class="portrait-frame">
-          <img [src]="leonaPortraitUrl" alt="Leona - RCI Registered Clinical Psychologist" class="portrait-photo">
-          <div class="glow-edge-effect"></div>
+          <img
+            [src]="leonaPortraitUrl"
+            alt="Leona Lahkar — RCI Licensed Clinical Psychologist"
+            class="portrait-img" />
+          <div class="portrait-gradient"></div>
+          <div class="portrait-caption-card">
+            <div>
+              <div class="portrait-name">Leona Lahkar</div>
+              <div class="portrait-role">RCI Licensed Clinical Psychologist</div>
+            </div>
+            <span class="portrait-badge">
+              <span class="badge-dot"></span>
+              5+ Yrs Exp
+            </span>
+          </div>
         </div>
       </div>
 
-      <div class="profile-narrative-block">
-        <div class="narrative-content">
-          <span class="eyebrow-accent">MEET YOUR PSYCHOLOGIST</span>
-          <h2 class="narrative-title">{{ profile.name }}</h2>
-          <div class="credential-capsules">
-            @for (cred of profile.credentials; track cred) {
-              <span class="cred-tag">{{ cred }}</span>
-            }
-          </div>
-          
-          <p class="experience-lead">{{ profile.experienceLead }}</p>
-          
-          <div class="specialization-details">
-            @for (para of profile.specialization; track para) {
-              <p>{{ para }}</p>
-            }
-          </div>
-          
-          <div class="affirmation-bar">
-            @for (aff of profile.affirmations; track aff.text) {
-              <span class="aff-item"><i class="ph" [ngClass]="aff.icon"></i> {{ aff.text }}</span>
-            }
-          </div>
+      <!-- Right Column: Warm, Concise Narrative -->
+      <div class="leona-content-col">
+        <div>
+          <span class="gh-pill gh-pill--clinical mb-3">
+            <span class="gh-pill__dot"></span>
+            About &amp; Clinical Approach
+          </span>
+          <h1 class="leona-headline">
+            Leona Lahkar. <span class="highlight-script">Clinical Psychologist.</span>
+          </h1>
+        </div>
+
+        <p class="leona-lead-text">
+          With over five years of clinical practice across Pune and Mumbai, I work with adults, couples, and neurodivergent minds navigating burnout, anxiety, relational patterns, and life transitions.
+        </p>
+
+        <blockquote class="leona-quote">
+          “Therapy isn’t about fixing a broken version of you—it’s a calm, structured space to understand your patterns and author your own story.”
+        </blockquote>
+
+        <!-- Clean 3-Row Snapshot (Replaces the cluttered pill wall) -->
+        <div class="quick-facts-grid">
+          @for (item of quickFacts; track item.label) {
+            <div class="quick-fact-item">
+              <div class="quick-fact-icon">
+                <i class="ph {{ item.icon }}"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="quick-fact-label">{{ item.label }}</div>
+                <div class="quick-fact-value">{{ item.value }}</div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="leona-cta-row">
+          <a routerLink="/book" class="gh-btn gh-btn--primary whitespace-nowrap">
+            <span>Book a Session</span>
+            <i class="ph ph-arrow-right text-sm"></i>
+          </a>
+          <a
+            [routerLink]="['/book']"
+            [queryParams]="{ service: 'Free 15-Minute Discovery Audio Call (Complimentary)' }"
+            class="gh-btn gh-btn--secondary whitespace-nowrap">
+            <i class="ph ph-phone-call text-base"></i>
+            <span>Free 15-Min Discovery Call</span>
+          </a>
         </div>
       </div>
+
     </div>
   </section>
 
-  <div class="modalities-interactive-grid">
-    @for (modality of modalities; track modality.name) {
-      <div class="modality-glass-block">
-        <div class="modality-lens-effect"></div>
-        <div class="modality-header">
-          <i class="ph" [ngClass]="modality.iconClass || 'ph-chats-teardrop'"></i>
-          <h3>{{ modality.name }}</h3>
+  <!-- 3 LIGHT, AIRY APPROACH CARDS -->
+  <section class="approach-section" appScrollReveal revealAnimation="fade-up" [revealDelay]="120">
+    <div class="approach-header">
+      <span class="approach-eyebrow">How We Work Together</span>
+      <h2 class="approach-title">What Sessions <span class="highlight-script">Feel Like.</span></h2>
+    </div>
+
+    <div class="approach-grid">
+      @for (pillar of approachPillars; track pillar.title) {
+        <div class="approach-card">
+          <div class="approach-icon">
+            <i class="ph {{ pillar.icon }}"></i>
+          </div>
+          <h3 class="approach-card-title">{{ pillar.title }}</h3>
+          <p class="approach-card-desc">{{ pillar.description }}</p>
         </div>
-        <p class="modality-desc">{{ modality.description }}</p>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  </section>
+
 </div>

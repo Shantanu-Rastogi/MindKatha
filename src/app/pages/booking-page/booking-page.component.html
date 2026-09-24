@@ -1,53 +1,474 @@
-<div class="page-wrapper animated-fade-in">
-  <div class="booking-glass-container">
+<div class="booking-page-wrapper">
+  
+  <div class="booking-glass-container" appScrollReveal revealAnimation="fade-up" [revealDelay]="50">
+    
+    <!-- LEFT SIDEBAR: CALM CLINICAL PROGRESS & LIVE SUMMARY -->
     <div class="booking-sidebar">
-      <h2>Begin Your Healing</h2>
-      <p class="sidebar-note">Select a convenient consultation slot. All intakes are completely confidential.</p>
-      <div class="step-indicator-list">
-        <div class="step-line-node" [class.active]="currentStep >= 1"><span>1</span> Authentication</div>
-        <div class="step-line-node" [class.active]="currentStep >= 2"><span>2</span> Slot Selection</div>
-        <div class="step-line-node" [class.active]="currentStep >= 3"><span>3</span> Confirmation</div>
+      <div class="sidebar-top">
+        <!-- Brand Pill & Heading -->
+        <div class="sidebar-intro">
+          <span class="gh-pill gh-pill--clinical mb-3 whitespace-nowrap">
+            <span class="gh-pill__dot"></span>
+            Clinical Scheduling
+          </span>
+          <h1 class="sidebar-title">
+            Book Your <span class="highlight-script">Session.</span>
+          </h1>
+          <p class="sidebar-subtitle">
+            Select a preferred date and time for your consultation. Once submitted, our practice will reach out shortly to finalize your appointment.
+          </p>
+        </div>
+
+        <!-- 3-Step Progress Tracker -->
+        <div class="step-tracker">
+          <div class="step-item" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+            <div class="step-badge">
+              @if (currentStep > 1) {
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              } @else {
+                1
+              }
+            </div>
+            <div class="min-w-0">
+              <div class="step-item-title">Pathway &amp; Preferred Time</div>
+              <div class="step-item-desc">Format, date &amp; IST time slot</div>
+            </div>
+          </div>
+
+          <div class="step-item" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+            <div class="step-badge">
+              @if (currentStep > 2) {
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              } @else {
+                2
+              }
+            </div>
+            <div class="min-w-0">
+              <div class="step-item-title">Contact Information</div>
+              <div class="step-item-desc">Your name &amp; WhatsApp number</div>
+            </div>
+          </div>
+
+          <div class="step-item" [class.active]="currentStep === 3">
+            <div class="step-badge">3</div>
+            <div class="min-w-0">
+              <div class="step-item-title">Request Submitted</div>
+              <div class="step-item-desc">Personal confirmation from our team</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact Live Selection Summary Card -->
+      <div class="sidebar-summary-card">
+        <div class="sidebar-summary-header">
+          <span class="sidebar-summary-label">Current Selection</span>
+          <span class="sidebar-mode-pill">
+            {{ consultationMode === 'telehealth' ? 'Online Video' : 'Pune Studio' }}
+          </span>
+        </div>
+        <div class="sidebar-service-name">
+          {{ selectedService }}
+        </div>
+        @if (selectedDate && selectedSlot) {
+          <div class="sidebar-datetime-row">
+            <span class="flex items-center gap-1.5 font-medium whitespace-nowrap">
+              <i class="ph ph-calendar-blank text-[#0284c7] text-xs"></i> {{ selectedDayLabel }}
+            </span>
+            <span class="font-bold text-slate-900 whitespace-nowrap">{{ selectedSlot }} IST</span>
+          </div>
+        }
+        @if (clientName.trim()) {
+          <div class="sidebar-client-row">
+            <span>Client</span>
+            <span class="font-semibold text-slate-800 truncate ml-2">{{ clientName }}</span>
+          </div>
+        }
       </div>
     </div>
     
+    <!-- RIGHT FORM AREA -->
     <div class="booking-form-area">
+      
+      <!-- STEP 1: CHOOSE CARE PATHWAY, FORMAT, DAY & PREFERRED TIME -->
       @if (currentStep === 1) {
-        <h3>Secure Patient Login</h3>
-        <div class="input-group">
-          <label>Mobile Number</label>
-          <input type="tel" placeholder="+91 XXXXX XXXXX" class="premium-input">
+        <div class="step-panel animate-fadeIn">
+          <!-- Step 1 Header -->
+          <div class="step-header">
+            <div>
+              <span class="step-eyebrow">Step 1 of 3</span>
+              <h3 class="step-heading">Select Pathway &amp; Time</h3>
+            </div>
+
+            <!-- Inline Mode Toggle Pills -->
+            <div class="mode-switcher">
+              <button 
+                type="button"
+                (click)="consultationMode = 'telehealth'"
+                class="mode-pill"
+                [class.active]="consultationMode === 'telehealth'">
+                <i class="ph ph-video-camera"></i>
+                <span>Online Video</span>
+              </button>
+              <button 
+                type="button"
+                (click)="consultationMode = 'studio'"
+                class="mode-pill"
+                [class.active]="consultationMode === 'studio'">
+                <i class="ph ph-buildings"></i>
+                <span>Pune Studio</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. Care Pathway Selector -->
+          <div class="form-section relative custom-service-dropdown-container">
+            <div class="section-header-row">
+              <label class="form-label !mb-0">Clinical Care Pathway</label>
+            </div>
+            
+            <button 
+              type="button" 
+              (click)="toggleServiceDropdown($event)"
+              class="pathway-trigger-btn">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="pathway-icon-box">
+                  <i class="ph ph-sparkle"></i>
+                </div>
+                <span class="font-semibold text-slate-900 text-xs sm:text-sm truncate">{{ selectedService }}</span>
+              </div>
+              <i class="ph ph-caret-down text-slate-500 text-sm transition-transform duration-200 shrink-0" [class.rotate-180]="isServiceDropdownOpen"></i>
+            </button>
+
+            @if (isServiceDropdownOpen) {
+              <div class="pathway-dropdown-menu animate-fadeIn">
+                @for (opt of serviceOptions; track opt.name) {
+                  <button 
+                    type="button"
+                    (click)="selectServiceOption(opt.name, $event)"
+                    class="pathway-option-btn"
+                    [class.active]="selectedService === opt.name">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                      <i class="ph {{ opt.icon }} text-sm text-[#0284c7] shrink-0"></i>
+                      <div class="font-semibold text-xs text-slate-800 truncate">{{ opt.name }}</div>
+                    </div>
+                    <span class="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full shrink-0">{{ opt.duration }}</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          @if (selectedService === 'Other / Custom Clinical Inquiry') {
+            <div class="animate-fadeIn">
+              <input 
+                type="text"
+                [(ngModel)]="customServiceDetails" 
+                placeholder="Briefly describe what you'd like to focus on..." 
+                class="form-field-input" />
+            </div>
+          }
+
+          <!-- 2. Clean 2-Week Date Selector (Full-Width 7-Column Grid + Balanced Header) -->
+          <div class="form-section">
+            <div class="section-header-row">
+              <label class="form-label !mb-0">Select Date</label>
+
+              <!-- Sleek 2-Week Switcher -->
+              <div class="week-switcher">
+                <button
+                  type="button"
+                  (click)="setWeek(0)"
+                  class="week-tab"
+                  [class.active]="selectedWeek === 0">
+                  This Week ({{ weekOneRangeLabel }})
+                </button>
+                <button
+                  type="button"
+                  (click)="setWeek(1)"
+                  class="week-tab"
+                  [class.active]="selectedWeek === 1">
+                  Next Week ({{ weekTwoRangeLabel }})
+                </button>
+              </div>
+            </div>
+
+            <div class="date-strip-grid">
+              @for (day of visibleWeekDays; track day.dateString) {
+                <button 
+                  type="button"
+                  (click)="selectDate(day.dateString)"
+                  class="date-chip-btn"
+                  [class.active]="selectedDate === day.dateString">
+                  <span class="date-chip-day">{{ day.dayName }}</span>
+                  <span class="date-chip-num">{{ day.label }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- 3. Preferred Time (IST) — Full-Width 3-Column Grid with Live Calendar Blocking -->
+          <div class="form-section">
+            <div class="section-header-row">
+              <label class="form-label !mb-0">Preferred Time (IST)</label>
+              <span class="text-[11px] font-medium text-slate-400">
+                @if (isLoadingSlots) {
+                  Checking Leona's calendar...
+                } @else {
+                  Indian Standard Time
+                }
+              </span>
+            </div>
+            <div class="time-slots-grid">
+              @for (slot of availableSlots; track slot) {
+                <button 
+                  type="button"
+                  class="time-slot-btn"
+                  [class.active]="selectedSlot === slot && !isSlotBooked(selectedDate, slot)"
+                  [class.booked]="isSlotBooked(selectedDate, slot)"
+                  [disabled]="isSlotBooked(selectedDate, slot)"
+                  (click)="selectSlot(slot)">
+                  @if (isSlotBooked(selectedDate, slot)) {
+                    <span class="line-through opacity-60">{{ slot }}</span>
+                    <span class="booked-pill">Booked</span>
+                  } @else {
+                    <i class="ph ph-clock time-slot-icon"></i>
+                    <span>{{ slot }}</span>
+                  }
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="button" class="form-submit-btn" [disabled]="!selectedSlot" (click)="proceedToPatientDetails()">
+              @if (selectedSlot) {
+                <span>Continue with {{ selectedDayLabel }} at {{ selectedSlot }}</span>
+                <i class="ph ph-arrow-right text-sm"></i>
+              } @else {
+                <span>All slots booked for {{ selectedDayLabel }} — Select another date</span>
+              }
+            </button>
+          </div>
         </div>
-        <button class="form-submit-btn" (click)="setStep(2)">Send Secure OTP <i class="ph ph-shield-check"></i></button>
       }
-      
+
+      <!-- STEP 2: PATIENT CONTACT INFORMATION (CLEAN, PROFESSIONAL FORM) -->
       @if (currentStep === 2) {
-        <h3>Pick a Time</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select the date and time for your session.</p>
-        
-        <div class="input-group" style="margin-bottom: 1.5rem;">
-          <label>Date</label>
-          <input type="date" class="premium-input">
+        <div class="step-panel animate-fadeIn">
+          <!-- Step 2 Header -->
+          <div class="step-header">
+            <div>
+              <span class="step-eyebrow">Step 2 of 3</span>
+              <h3 class="step-heading">Your Contact Details</h3>
+            </div>
+            <button
+              type="button"
+              (click)="setStep(1)"
+              class="back-pill-btn">
+              <i class="ph ph-arrow-left text-xs"></i>
+              <span>Change Date / Time</span>
+            </button>
+          </div>
+
+          <!-- Selected Appointment Summary Card -->
+          <div class="selected-slot-banner">
+            <div class="selected-slot-main">
+              <div class="selected-slot-icon">
+                <i class="ph ph-calendar-check"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="selected-slot-title">{{ selectedDayLabel }} • {{ selectedSlot }} IST</div>
+                <div class="selected-slot-subtitle truncate">{{ selectedService }}</div>
+              </div>
+            </div>
+            <span class="selected-slot-badge">
+              {{ consultationMode === 'telehealth' ? 'Online Video' : 'Pune Studio' }}
+            </span>
+          </div>
+
+          <!-- Clean Clinical Form Fields (Aligned 2-Column Row + Email) -->
+          <div class="contact-fields-stack">
+            <div class="form-two-col-grid">
+              <!-- Full Name -->
+              <div class="form-field-group">
+                <div class="field-label-row">
+                  <label class="form-label !mb-0">
+                    Full Name <span class="text-[#0284c7]">*</span>
+                  </label>
+                </div>
+                <input 
+                  type="text" 
+                  [ngModel]="clientName"
+                  (input)="onNameInput($event)"
+                  (blur)="onNameBlur()"
+                  placeholder="Enter your full name" 
+                  class="form-field-input"
+                  [class.field-error]="showNameError" />
+                @if (showNameError) {
+                  <p class="field-error-text">
+                    <i class="ph ph-warning-circle text-xs shrink-0"></i>
+                    <span>Please enter your full name (at least 2 characters).</span>
+                  </p>
+                }
+              </div>
+
+              <!-- WhatsApp / Mobile Number (Unified Input Group) -->
+              <div class="form-field-group">
+                <div class="field-label-row">
+                  <label class="form-label !mb-0">
+                    WhatsApp / Mobile Number <span class="text-[#0284c7]">*</span>
+                  </label>
+                  <span class="digit-counter"
+                    [class.valid]="isPhoneValid"
+                    [class.invalid]="showPhoneError">
+                    {{ cleanPhoneDigits.length }}/10
+                  </span>
+                </div>
+                <div class="form-phone-group" [class.field-error]="showPhoneError">
+                  <span class="form-phone-prefix">+91</span>
+                  <input 
+                    type="tel" 
+                    [ngModel]="phoneNumber"
+                    (input)="onPhoneInput($event)"
+                    (blur)="onPhoneBlur()"
+                    maxlength="10" 
+                    placeholder="10-digit mobile number" 
+                    class="form-phone-input" />
+                </div>
+                @if (showPhoneError) {
+                  <p class="field-error-text">
+                    <i class="ph ph-warning-circle text-xs shrink-0"></i>
+                    <span>Please enter a valid 10-digit mobile number.</span>
+                  </p>
+                }
+              </div>
+            </div>
+
+            <!-- Email Address -->
+            <div class="form-field-group">
+              <div class="field-label-row">
+                <label class="form-label !mb-0">
+                  Email Address <span class="text-slate-400 font-normal normal-case tracking-normal">(Optional — for calendar invite)</span>
+                </label>
+              </div>
+              <input 
+                type="email" 
+                [ngModel]="clientEmail"
+                (input)="onEmailInput($event)"
+                (blur)="onEmailBlur()"
+                placeholder="name@example.com" 
+                class="form-field-input"
+                [class.field-error]="showEmailError" />
+              @if (showEmailError) {
+                <p class="field-error-text">
+                  <i class="ph ph-warning-circle text-xs shrink-0"></i>
+                  <span>Please enter a valid email address.</span>
+                </p>
+              }
+            </div>
+          </div>
+
+          <!-- Submit CTA & Red Validation on Submit Click -->
+          <div class="submit-action-area">
+            <button 
+              type="button"
+              class="form-submit-btn"
+              [class.is-incomplete]="!isStep2Valid || isSubmittingBooking"
+              (click)="confirmBooking()">
+              @if (isSubmittingBooking) {
+                <span>Reserving Calendar Slot &amp; Notifying Leona...</span>
+              } @else {
+                <span>Request Slot for {{ selectedDayLabel }} • {{ selectedSlot }}</span>
+                <i class="ph ph-arrow-right text-sm"></i>
+              }
+            </button>
+
+            @if (submitErrorMessage) {
+              <div class="submit-error-banner animate-fadeIn">
+                <i class="ph ph-warning-circle text-base shrink-0"></i>
+                <span>{{ submitErrorMessage }}</span>
+              </div>
+            }
+          </div>
         </div>
-        
-        <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Available Slots</h4>
-        <div class="slots-grid">
-          <div class="slot" [class.active]="selectedSlot === '10:00 AM'" (click)="selectSlot('10:00 AM')">10:00 AM</div>
-          <div class="slot" [class.active]="selectedSlot === '11:30 AM'" (click)="selectSlot('11:30 AM')">11:30 AM</div>
-          <div class="slot" [class.active]="selectedSlot === '03:00 PM'" (click)="selectSlot('03:00 PM')">03:00 PM</div>
-          <div class="slot" [class.active]="selectedSlot === '04:30 PM'" (click)="selectSlot('04:30 PM')">04:30 PM</div>
-        </div>
-        
-        <button class="form-submit-btn" [disabled]="!selectedSlot" (click)="setStep(3)">Request Appointment <i class="ph ph-arrow-up-right"></i></button>
       }
-      
+
+      <!-- STEP 3: REQUEST RECEIVED — WE WILL GET BACK TO YOU (NO REFERENCE NUMBER) -->
       @if (currentStep === 3) {
-        <div style="text-align: center; padding: 2rem;">
-          <div style="font-size: 4rem; color: #0ea5e9; margin-bottom: 1rem;">✓</div>
-          <h3 style="margin-bottom: 1rem;">Slot Requested</h3>
-          <p style="color: var(--text-muted); margin-bottom: 2rem;">Your slot is requested. We will reach out to confirm your session details.</p>
-          <button class="form-submit-btn" routerLink="/">Back to Home</button>
+        <div class="step-panel animate-fadeIn">
+          <!-- Top Confirmation Header -->
+          <div class="text-center space-y-2.5">
+            <div class="w-14 h-14 rounded-2xl bg-[#0284c7] text-white flex items-center justify-center mx-auto shadow-md shadow-sky-500/20">
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+
+            <div class="pt-1">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Slot Request Received
+              </span>
+              <h3 class="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight mt-2">
+                We'll Get Back to You Shortly
+              </h3>
+              <p class="text-slate-600 text-xs sm:text-sm mt-1.5 leading-relaxed max-w-md mx-auto">
+                Thank you, <strong class="text-slate-900">{{ clientName }}</strong>. We have received your request for <strong class="text-slate-900">{{ selectedDayLabel }} at {{ selectedSlot }} IST</strong> and will contact you on WhatsApp (<strong class="text-slate-900">+91 {{ cleanPhoneDigits }}</strong>) to confirm your appointment.
+              </p>
+            </div>
+          </div>
+
+          <!-- Clean, Structured Appointment Summary Card -->
+          <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 space-y-4 text-xs">
+            <div class="form-two-col-grid pb-4 border-b border-slate-200/80">
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Preferred Date &amp; Time</div>
+                <div class="font-bold text-slate-900 text-sm">{{ selectedDayLabel }} • {{ selectedSlot }} IST</div>
+              </div>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Consultation Format</div>
+                <div class="font-bold text-slate-900 text-sm">{{ consultationMode === 'telehealth' ? 'Encrypted Online Video' : 'Viman Nagar Studio, Pune' }}</div>
+              </div>
+            </div>
+
+            <div class="pb-4 border-b border-slate-200/80">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Clinical Care Pathway</div>
+              <div class="font-bold text-slate-900 text-xs sm:text-sm leading-snug">
+                {{ selectedService === 'Other / Custom Clinical Inquiry' && customServiceDetails ? customServiceDetails : selectedService }}
+              </div>
+            </div>
+
+            <div class="form-two-col-grid">
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Client Name</div>
+                <div class="font-semibold text-slate-800 text-xs sm:text-sm">{{ clientName }}</div>
+              </div>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">WhatsApp Number</div>
+                <div class="font-semibold text-slate-800 text-xs sm:text-sm">+91 {{ cleanPhoneDigits }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Single-Line Non-Wrapping Action Buttons -->
+          <div class="form-two-col-grid pt-1">
+            <button
+              type="button"
+              (click)="sendBookingViaWhatsApp()"
+              class="gh-btn gh-btn--primary w-full justify-center whitespace-nowrap !py-3.5 !px-5 !text-xs sm:!text-[13px] cursor-pointer">
+              <i class="ph ph-whatsapp-logo text-base shrink-0"></i>
+              <span>Share Details on WhatsApp</span>
+            </button>
+            <a
+              routerLink="/"
+              class="gh-btn gh-btn--secondary w-full justify-center whitespace-nowrap !py-3.5 !px-5 !text-xs sm:!text-[13px]">
+              <span>Return to Home</span>
+            </a>
+          </div>
         </div>
       }
     </div>
+
   </div>
 </div>

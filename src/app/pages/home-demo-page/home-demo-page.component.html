@@ -1,0 +1,610 @@
+<div class="home-demo-page">
+
+  <!-- ========================================================================= -->
+  <!-- 1. GOOGLE HEALTH-STYLE HERO: Image Smooth-In First, Then Text, Minimal Parallax -->
+  <!-- ========================================================================= -->
+  <section id="hero" class="gh-hero js-hero-container">
+
+    <!-- White Overlay for Smooth Intro Reveal -->
+    <div class="gh-hero__intro-overlay js-hero-intro-overlay" aria-hidden="true"></div>
+
+    <!-- Background: Fixed & Clipped with Scale-Down Animation & Minimal Scroll Parallax -->
+    <div class="gh-hero__bg js-hero-bg">
+      <div class="gh-hero__bg-scale">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.webp" type="image/webp" />
+          <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.jpg" type="image/jpeg" />
+          <source srcset="assets/images/hero_therapy_sanctuary_4k.webp" type="image/webp" />
+          <img
+            src="assets/images/hero_therapy_sanctuary_4k.jpg"
+            alt="MindKatha Clinical Psychotherapy & Diagnostic Sanctuary"
+            class="gh-hero__bg-image"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+      </div>
+    </div>
+
+    <!-- Background Overlay: Soft desktop radial text scrim; crystal-clear upper sanctuary & lower text gradient on mobile -->
+    <div class="gh-hero__overlay js-hero-overlay" aria-hidden="true"></div>
+
+    <!-- Sticky Presentation Stage for Text 1 and Text 2 (Google Health Layout) -->
+    <div class="gh-hero__stage">
+
+      <!-- Text Block 1: Initial Headline (Starts hidden so background image smoothly transitions in FIRST) -->
+      <div class="gh-hero__text-block gh-hero__text-block--primary js-hero-text-1 is-hidden">
+        <div class="gh-hero__badge">
+          <span class="gh-pill gh-pill--clinical">
+            <span class="gh-pill__dot"></span>
+            <span>RCI Registered Clinical Practice • Pune &amp; Telehealth</span>
+          </span>
+        </div>
+
+        <h1 class="gh-hero__headline">
+          <span class="gh-hero__line js-line">
+            Your healing journey
+          </span>
+          <span class="gh-hero__line js-line">
+            begins in a <span class="highlight-script">safe space.</span>
+          </span>
+        </h1>
+
+        <p class="gh-hero__subheadline js-line">
+          Connect with an RCI-licensed clinical psychologist. Untangle persistent overwhelm, navigate life transitions, and author a grounded chapter of emotional clarity.
+        </p>
+
+        <div class="gh-hero__ctas js-line">
+          <button (click)="openBooking('Individual Psychotherapy & Emotional Regulation (50 mins)')" class="gh-btn gh-btn--primary">
+            <span>Begin Your Clinical Intake</span>
+            <i class="ph ph-arrow-right"></i>
+          </button>
+          <button (click)="scrollToSection('care-journey')" class="gh-btn gh-btn--ghost">
+            <span>How Therapy Unfolds</span>
+            <i class="ph ph-arrow-down"></i>
+          </button>
+        </div>
+
+        <!-- Minimalist Scroll Hint -->
+        <div class="gh-hero__scroll-hint js-hero-scroll-hint" (click)="scrollToSection('clinical-dialogue')">
+          <span class="gh-hero__scroll-hint-text">Scroll to explore what brings you here</span>
+          <div class="gh-hero__scroll-indicator">
+            <div class="gh-hero__scroll-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text Block 2: Secondary Content (Flows smoothly in on the same sanctuary image on scroll) -->
+      <div class="gh-hero__text-block gh-hero__text-block--secondary js-hero-text-2 is-hidden">
+        <div class="gh-hero__badge">
+          <span class="gh-pill gh-pill--clinical">
+            <span class="gh-pill__dot"></span>
+            <span>What Brings You Here Today</span>
+          </span>
+        </div>
+
+        <h2 class="gh-hero__body-headline">
+          <span class="gh-hero__line js-line">Every emotion carries a story.</span>
+          <span class="gh-hero__line js-line">We help you untangle it</span>
+          <span class="gh-hero__line js-line">with warmth and <span class="highlight-script">clinical rigor.</span></span>
+        </h2>
+
+        <!-- Lived Experience Focus Pills (Distinct from Hero 2's diagnostic methodologies) -->
+        <div class="gh-hero__pills js-hero-pills">
+          <div class="gh-hero__pill">
+            <span class="gh-hero__pill-icon">
+              <i class="ph ph-wind"></i>
+            </span>
+            <span class="gh-hero__pill-text">Anxiety &amp; Overthinking Loops</span>
+          </div>
+
+          <div class="gh-hero__pill">
+            <span class="gh-hero__pill-icon">
+              <i class="ph ph-heart-half"></i>
+            </span>
+            <span class="gh-hero__pill-text">Attachment &amp; Relational Wounds</span>
+          </div>
+
+          <div class="gh-hero__pill">
+            <span class="gh-hero__pill-icon">
+              <i class="ph ph-battery-low"></i>
+            </span>
+            <span class="gh-hero__pill-text">High-Functioning Burnout</span>
+          </div>
+
+          <div class="gh-hero__pill gh-hero__pill--accredited">
+            <span class="gh-hero__pill-icon">
+              <i class="ph ph-rainbow"></i>
+            </span>
+            <span class="gh-hero__pill-text">Queer &amp; Neuro-Affirming Space</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons (Distinct Primary & Secondary CTAs) -->
+        <div class="gh-hero__ctas js-hero-ctas">
+          <button (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--primary">
+            <span>Start 15-Min Discovery Call</span>
+            <i class="ph ph-phone-call"></i>
+          </button>
+          <button (click)="scrollToSection('clinical-dialogue')" class="gh-btn gh-btn--ghost">
+            <span>Explore Clinical Methodology</span>
+            <i class="ph ph-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 2. SECOND HERO STAGE: Therapeutic Dialogue & Clinical Frameworks          -->
+  <!-- ========================================================================= -->
+  <section id="clinical-dialogue" class="gh-hero gh-hero--secondary-sanctuary js-hero-2-container">
+
+    <!-- Background: Fixed & Clipped with Scale-Down Animation & Minimal Scroll Parallax -->
+    <div class="gh-hero__bg js-hero-2-bg">
+      <div class="gh-hero__bg-scale">
+        <picture>
+          <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.webp" type="image/webp" />
+          <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.jpg" type="image/jpeg" />
+          <source srcset="assets/images/hero_clinical_studio_4k.webp" type="image/webp" />
+          <img
+            src="assets/images/hero_clinical_studio_4k.jpg"
+            alt="MindKatha Clinical Consultation Studio & Diagnostic Library"
+            class="gh-hero__bg-image"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </div>
+    </div>
+
+    <!-- Background Overlay: Soft desktop radial text scrim & lower text scrim on mobile -->
+    <div class="gh-hero__overlay js-hero-2-overlay" aria-hidden="true"></div>
+
+    <!-- Sticky Presentation Stage for Story Slide 1 and Story Slide 2 -->
+    <div class="gh-hero__stage">
+
+      <!-- Text Block 1: The Narrative Premise (MindKatha Dialogue) - Starts hidden for Image-First reveal -->
+      <div class="gh-hero__text-block gh-hero__text-block--primary gh-hero-2__text-block js-hero-2-text-1 is-hidden">
+        <!-- Distinct Editorial Numbered Tag -->
+        <div class="gh-hero-2__eyebrow js-line">
+          <span class="gh-hero-2__eyebrow-num">02</span>
+          <span class="gh-hero-2__eyebrow-line"></span>
+          <span class="gh-hero-2__eyebrow-text">CLINICAL METHODOLOGY &amp; DIAGNOSTIC RIGOR</span>
+        </div>
+
+        <!-- Distinct Headline Typography -->
+        <h2 class="gh-hero-2__headline">
+          <span class="gh-hero__line js-line">Where your lived narrative</span>
+          <span class="gh-hero__line js-line">meets <span class="highlight-script">clinical neuroscience.</span></span>
+        </h2>
+
+        <!-- Differentiated 2-Column Methodology Cards -->
+        <div class="gh-hero-2__pillars-grid js-line">
+          <div class="gh-hero-2__pillar-item">
+            <div class="gh-hero-2__pillar-icon-box">
+              <i class="ph ph-book-open-text"></i>
+            </div>
+            <div class="gh-hero-2__pillar-content">
+              <h4 class="gh-hero-2__pillar-title">Narrative &amp; Somatic Inquiry</h4>
+              <p class="gh-hero-2__pillar-desc">Separating your core identity from problem-saturated scripts while calming fight-or-flight states.</p>
+            </div>
+          </div>
+
+          <div class="gh-hero-2__pillar-item">
+            <div class="gh-hero-2__pillar-icon-box">
+              <i class="ph ph-fingerprint"></i>
+            </div>
+            <div class="gh-hero-2__pillar-content">
+              <h4 class="gh-hero-2__pillar-title">Gold-Standard Psychometrics</h4>
+              <p class="gh-hero-2__pillar-desc">Standardized DSM-5 &amp; RCI batteries (DIVA-5, WAIS-IV, MCMI-IV) for diagnostic precision.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distinct Horizontal Scroll Prompt (Scrolls forward to #care-journey) -->
+        <div class="gh-hero-2__scroll-cue js-hero-2-scroll-hint" (click)="scrollToSection('care-journey')">
+          <span class="gh-hero-2__scroll-cue-dot"></span>
+          <span class="gh-hero-2__scroll-cue-text">Scroll to see how your therapy journey unfolds</span>
+          <i class="ph ph-arrow-down gh-hero-2__scroll-cue-arrow"></i>
+        </div>
+      </div>
+
+      <!-- Text Block 2: Core Therapeutic Modalities (Reveals on scroll) - Differentiated Bento Grid -->
+      <div class="gh-hero__text-block gh-hero__text-block--secondary gh-hero-2__text-block js-hero-2-text-2 is-hidden">
+        <div class="gh-hero-2__eyebrow js-line">
+          <span class="gh-hero-2__eyebrow-num">02.B</span>
+          <span class="gh-hero-2__eyebrow-line"></span>
+          <span class="gh-hero-2__eyebrow-text">EVIDENCE-BASED MODALITIES</span>
+        </div>
+
+        <h2 class="gh-hero-2__body-headline">
+          <span class="gh-hero__line js-line">Integrative therapeutic frameworks</span>
+          <span class="gh-hero__line js-line">paced at your <span class="highlight-script">nervous system's comfort.</span></span>
+        </h2>
+
+        <!-- Differentiated Bento Matrix (4 Distinct Modalities from MindKatha Practice) -->
+        <div class="gh-hero-2__bento js-hero-2-pills">
+          <div class="gh-hero-2__bento-card">
+            <div class="gh-hero-2__bento-header">
+              <div class="gh-hero-2__bento-icon"><i class="ph ph-feather"></i></div>
+              <span class="gh-hero-2__bento-tag">Identity</span>
+            </div>
+            <div class="gh-hero-2__bento-title">Narrative Therapy</div>
+            <div class="gh-hero-2__bento-sub">Externalizing shame &amp; re-authoring life scripts</div>
+          </div>
+
+          <div class="gh-hero-2__bento-card">
+            <div class="gh-hero-2__bento-header">
+              <div class="gh-hero-2__bento-icon"><i class="ph ph-heartbeat"></i></div>
+              <span class="gh-hero-2__bento-tag">Autonomic</span>
+            </div>
+            <div class="gh-hero-2__bento-title">Polyvagal &amp; Somatics</div>
+            <div class="gh-hero-2__bento-sub">Bottom-up vagal regulation for panic &amp; freeze</div>
+          </div>
+
+          <div class="gh-hero-2__bento-card">
+            <div class="gh-hero-2__bento-header">
+              <div class="gh-hero-2__bento-icon"><i class="ph ph-compass"></i></div>
+              <span class="gh-hero-2__bento-tag">Cognitive</span>
+            </div>
+            <div class="gh-hero-2__bento-title">ACT &amp; CBT Protocols</div>
+            <div class="gh-hero-2__bento-sub">Psychological flexibility &amp; cognitive defusion</div>
+          </div>
+
+          <div class="gh-hero-2__bento-card">
+            <div class="gh-hero-2__bento-header">
+              <div class="gh-hero-2__bento-icon"><i class="ph ph-users-three"></i></div>
+              <span class="gh-hero-2__bento-tag">Systemic</span>
+            </div>
+            <div class="gh-hero-2__bento-title">Gottman &amp; EFT Couples</div>
+            <div class="gh-hero-2__bento-sub">De-escalating conflict &amp; attachment repair</div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="gh-hero__ctas js-hero-2-ctas">
+          <button (click)="scrollToSection('three-up')" class="gh-btn gh-btn--primary">
+            <span>Explore Session Formats</span>
+            <i class="ph ph-arrow-down"></i>
+          </button>
+          <button (click)="scrollToSection('care-journey')" class="gh-btn gh-btn--ghost">
+            <span>See 3-Step Care Process</span>
+            <i class="ph ph-footprints"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 3. HOW YOUR CARE JOURNEY UNFOLDS (Connected 3-Stage Architectural Track)  -->
+  <!-- ========================================================================= -->
+  <section id="care-journey" class="gh-clinical-lead-section">
+    <div class="container">
+
+      <div class="gh-section-header text-center js-reveal-on-scroll gh-process-header">
+        <span class="gh-eyebrow">CHAPTER 03 • HOW THERAPY UNFOLDS</span>
+        <h2 class="gh-h1">A transparent, unhurried <span class="highlight-script">clinical process.</span></h2>
+        <p class="gh-p-lead">
+          Knowing what to expect removes the hesitation of starting therapy. Every stage is collaborative, confidential, and paced around your readiness.
+        </p>
+      </div>
+
+      <div class="gh-timeline-wrapper">
+        <div class="gh-timeline-connector" aria-hidden="true"></div>
+        <div class="gh-philosophy-grid">
+          <div *ngFor="let step of careSteps; let sIdx = index" class="gh-philo-card js-reveal-on-scroll">
+            <span class="gh-step-watermark" aria-hidden="true">{{ step.stepNum }}</span>
+            <div class="gh-step-card-header">
+              <div class="gh-philo-card__icon-wrap">
+                <i class="ph gh-philo-card__icon" [ngClass]="step.icon"></i>
+              </div>
+              <div class="gh-step-meta">
+                <span class="gh-step-number">STAGE {{ step.stepNum }}</span>
+                <span class="gh-step-duration"><i class="ph ph-clock"></i> {{ step.duration }}</span>
+              </div>
+            </div>
+            <h3 class="gh-philo-card__title">{{ step.title }}</h3>
+            <p class="gh-philo-card__desc">{{ step.description }}</p>
+
+            <div class="gh-philo-card__footer">
+              <span class="gh-philo-card__tag">
+                <i class="ph ph-check-circle"></i> {{ step.outcomeTag }}
+              </span>
+              <button
+                *ngIf="sIdx === 0"
+                type="button"
+                class="gh-step-inline-btn"
+                (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')"
+              >
+                <span>Book Free Audio Check-In</span>
+                <i class="ph ph-arrow-right"></i>
+              </button>
+              <button
+                *ngIf="sIdx === 1"
+                type="button"
+                class="gh-step-inline-btn"
+                (click)="openBooking('Individual Psychotherapy & Emotional Regulation (50 mins)')"
+              >
+                <span>Schedule 60-Min Intake</span>
+                <i class="ph ph-arrow-right"></i>
+              </button>
+              <button
+                *ngIf="sIdx === 2"
+                type="button"
+                class="gh-step-inline-btn"
+                (click)="scrollToSection('three-up')"
+              >
+                <span>Compare Session Formats</span>
+                <i class="ph ph-arrow-down"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reassuring Clinical Care Assurance Strip -->
+      <div class="gh-care-assurance-bar js-reveal-on-scroll">
+        <div class="gh-care-assurance-item">
+          <i class="ph ph-calendar-blank"></i>
+          <span><strong>Zero Lock-In Packages:</strong> Book single sessions or adjust weekly/bi-weekly cadence anytime.</span>
+        </div>
+        <div class="gh-care-assurance-sep" aria-hidden="true"></div>
+        <div class="gh-care-assurance-item">
+          <i class="ph ph-arrows-left-right"></i>
+          <span><strong>Hybrid Continuity:</strong> Alternate freely between our Viman Nagar studio and encrypted video care.</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. TRANSPARENT SESSION FORMATS & CARE TRACKS (#three-up)                  -->
+  <!-- ========================================================================= -->
+  <section id="three-up" class="gh-three-up-section">
+    <div class="container">
+      <div class="gh-section-header text-center js-reveal-on-scroll">
+        <span class="gh-eyebrow">CHAPTER 04 • SESSION FORMATS &amp; CADENCE</span>
+        <h2 class="gh-h1">Clear structure for <span class="highlight-script">every stage of care.</span></h2>
+        <p class="gh-p-lead">
+          Whether you are seeking weekly individual therapy, a formal 2-phase diagnostic battery, or structured partner mediation, choose the format that fits your life.
+        </p>
+      </div>
+
+      <div class="gh-three-up-grid">
+        <div
+          *ngFor="let card of featureCards; let cIdx = index"
+          class="gh-card js-reveal-on-scroll"
+          [class.gh-card--featured]="cIdx === 0"
+        >
+          <!-- Featured Ribbon on Primary Track -->
+          <div *ngIf="cIdx === 0" class="gh-card__featured-ribbon">
+            <i class="ph ph-star-four"></i> Most Chosen Starting Point
+          </div>
+
+          <!-- Media Thumbnail with Duration & Cadence Badges -->
+          <div class="gh-card__media-wrap">
+            <img [src]="card.image" [alt]="card.title" class="gh-card__img" />
+            <span class="gh-card__category-tag">{{ card.category }}</span>
+            <span class="gh-card__duration-pill">
+              <i class="ph ph-clock"></i> {{ card.durationBadge }}
+            </span>
+          </div>
+
+          <!-- Card Content -->
+          <div class="gh-card__body">
+            <div class="gh-card__cadence-row">
+              <span class="gh-card__cadence-dot"></span>
+              <span class="gh-card__cadence-text">{{ card.cadenceBadge }}</span>
+            </div>
+            <h3 class="gh-card__title">{{ card.title }}</h3>
+            <p class="gh-card__desc">{{ card.description }}</p>
+
+            <ul class="gh-card__bullets">
+              <li *ngFor="let b of card.bullets">
+                <i class="ph ph-check-circle text-sky-600"></i>
+                <span>{{ b }}</span>
+              </li>
+            </ul>
+
+            <div class="gh-card__footer">
+              <button (click)="openBooking(card.serviceBookingName)" class="gh-card__action-btn">
+                <span>{{ card.ctaLabel }}</span>
+                <span class="gh-card__action-arrow">
+                  <i class="ph ph-arrow-right"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Modality Strip Bar -->
+      <div class="gh-modality-strip-bar js-reveal-on-scroll">
+        <div class="gh-modality-strip-bar__left">
+          <span class="gh-modality-strip-bar__label">SPECIALIZED PROTOCOLS AVAILABLE</span>
+          <div class="gh-modality-strip-bar__chips">
+            <span class="gh-modality-chip">DIVA-5 Adult ADHD</span>
+            <span class="gh-modality-chip">WAIS-IV &amp; MCMI-IV</span>
+            <span class="gh-modality-chip">Somatic Trauma Release</span>
+            <span class="gh-modality-chip">Occupational Burnout</span>
+            <span class="gh-modality-chip">Pre-Marital Alignment</span>
+          </div>
+        </div>
+        <a routerLink="/services" class="gh-btn gh-btn--secondary gh-modality-strip-bar__cta">
+          <span>View All 12 Modalities</span>
+          <i class="ph ph-arrow-up-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5. CLINICAL ECOSYSTEM & SANCTUARY (Authentic Studio Visual)               -->
+  <!-- ========================================================================= -->
+  <section id="ecosystem" class="gh-ecosystem-section js-ecosystem-section">
+    <div class="container">
+      <div class="gh-ecosystem-card js-reveal-on-scroll">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+
+          <div class="lg:col-span-7">
+            <span class="gh-eyebrow text-sky-300">CHAPTER 05 • CLINICAL INFRASTRUCTURE</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight mt-2 mb-4 leading-tight">
+              A sanctuary for healing <span class="highlight-script">in-person and online.</span>
+            </h2>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6 max-w-xl">
+              Visit our quiet consultation suite at Disha Eternia in Viman Nagar, Pune, or connect from anywhere in India and abroad through encrypted video telehealth.
+            </p>
+
+            <!-- Streamlined Dual Modalities -->
+            <div class="gh-sanctuary-modalities">
+              <div class="gh-sanctuary-modality">
+                <div class="gh-sanctuary-modality__icon-wrap">
+                  <i class="ph ph-map-pin"></i>
+                </div>
+                <div>
+                  <div class="gh-sanctuary-modality__title">In-Person Pune Studio</div>
+                  <div class="gh-sanctuary-modality__desc">Disha Eternia • Sakore Nagar, Viman Nagar</div>
+                </div>
+              </div>
+
+              <div class="gh-sanctuary-modality-sep" aria-hidden="true"></div>
+
+              <div class="gh-sanctuary-modality">
+                <div class="gh-sanctuary-modality__icon-wrap">
+                  <i class="ph ph-video-camera"></i>
+                </div>
+                <div>
+                  <div class="gh-sanctuary-modality__title">Global Telehealth</div>
+                  <div class="gh-sanctuary-modality__desc">Encrypted video care across IST &amp; global zones</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lightweight Clinical Trust Chips -->
+            <div class="gh-sanctuary-badges">
+              <span class="gh-sanctuary-badge"><i class="ph ph-shield-check"></i> RCI Registered (#A84920)</span>
+              <span class="gh-sanctuary-badge"><i class="ph ph-lock-key"></i> Zero Third-Party Data Sharing</span>
+              <span class="gh-sanctuary-badge"><i class="ph ph-receipt"></i> Superbills for Reimbursement</span>
+            </div>
+
+            <div class="mt-7 flex flex-wrap items-center gap-4">
+              <button (click)="openBooking('Individual Psychotherapy & Emotional Regulation (50 mins)')" class="gh-btn gh-btn--primary">
+                <span>Book Viman Nagar Studio Slot</span>
+                <i class="ph ph-calendar-plus"></i>
+              </button>
+              <a routerLink="/contact" class="gh-btn gh-btn--dark-glass">
+                <span>Studio Directions &amp; FAQs</span>
+                <i class="ph ph-map-trifold"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Authentic MindKatha Clinical Sanctuary Card (Streamlined & Serene) -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="gh-sanctuary-showcase">
+              <div class="gh-sanctuary-frame">
+                <img
+                  src="assets/images/therapy_room.jpg"
+                  alt="MindKatha Clinical Therapy Sanctuary in Viman Nagar Pune"
+                  class="gh-sanctuary-img"
+                />
+                <div class="gh-sanctuary-vignette"></div>
+
+                <!-- Top Studio Pill -->
+                <div class="gh-sanctuary-badge-top">
+                  <span class="gh-sanctuary-top-pill">
+                    <span class="gh-sanctuary-top-pill__dot"></span>
+                    <span>Viman Nagar Studio • Pune</span>
+                  </span>
+                </div>
+
+                <!-- Bottom Clean Caption Strip -->
+                <div class="gh-sanctuary-caption-bar">
+                  <div class="flex items-center justify-between w-full">
+                    <div>
+                      <div class="text-white font-semibold text-sm">Disha Eternia Suite</div>
+                      <div class="text-xs text-sky-200">Acoustic privacy &amp; natural daylight</div>
+                    </div>
+                    <span class="gh-sanctuary-tag">By Appointment</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. ARCHITECTURAL CLOSING CONVERSION BANNER (#cta)                         -->
+  <!-- ========================================================================= -->
+  <section id="cta" class="gh-cta-banner-section">
+    <div class="container">
+      <div class="gh-cta-banner js-reveal-on-scroll">
+        <div class="gh-cta-banner__status">
+          <span class="gh-cta-banner__status-dot"></span>
+          <span>Accepting New In-Person &amp; Telehealth Clients</span>
+        </div>
+
+        <h2 class="gh-cta-banner__headline">
+          Ready to author your next chapter with <span class="highlight-script">clinical clarity?</span>
+        </h2>
+
+        <p class="gh-cta-banner__sub">
+          Start with a complimentary 15-minute discovery audio call to ask questions and feel comfortable, or schedule your first 60-minute clinical intake in Viman Nagar or online.
+        </p>
+
+        <div class="gh-cta-banner__actions">
+          <button (click)="openBooking()" class="gh-btn gh-btn--primary">
+            <span>Book Your First Session</span>
+            <i class="ph ph-calendar-check"></i>
+          </button>
+          <button (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--secondary">
+            <span>Request 15-Min Discovery Call</span>
+            <i class="ph ph-phone-call"></i>
+          </button>
+        </div>
+
+        <div class="gh-cta-banner__steps-strip">
+          <div class="gh-cta-banner__step-item">
+            <span class="gh-cta-banner__step-badge">1</span>
+            <div class="gh-cta-banner__step-text">
+              <strong>Choose Modality &amp; Slot</strong>
+              <span>Viman Nagar studio or encrypted video</span>
+            </div>
+          </div>
+
+          <div class="gh-cta-banner__step-item">
+            <span class="gh-cta-banner__step-badge">2</span>
+            <div class="gh-cta-banner__step-text">
+              <strong>Patient Intake Details</strong>
+              <span>Name, contact &amp; brief clinical context</span>
+            </div>
+          </div>
+
+          <div class="gh-cta-banner__step-item">
+            <span class="gh-cta-banner__step-badge">3</span>
+            <div class="gh-cta-banner__step-text">
+              <strong>Immediate Confirmation</strong>
+              <span>Calendar invite, studio map &amp; video link</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrated Booking Drawer Component -->
+  <app-booking-drawer></app-booking-drawer>
+
+</div>

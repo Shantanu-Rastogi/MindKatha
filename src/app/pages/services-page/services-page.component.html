@@ -1,27 +1,405 @@
-<div class="page-wrapper animated-fade-in">
-  <h1 class="section-title">Therapeutic Scope of Care</h1>
-  <p class="section-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Tailored, evidence-based psychotherapy designed to help you understand your script.</p>
+
+<div class="gh-page-shell px-4 sm:px-6 max-w-7xl mx-auto relative z-10 font-sans">
   
-  <div class="services-grid">
-    @for (service of services; track service.title) {
-      <div class="premium-matrix-card">
-        <div class="card-glow-overlay"></div>
-        <div class="card-header-block">
-          <div class="icon-glass-housing">
-            <i class="ph" [ngClass]="service.iconClass || 'ph-brain'"></i>
-          </div>
-          <span class="pill-badge-premium">{{ service.tag }}</span>
+  <!-- Subtle Ambient Glow -->
+  <div class="absolute top-16 left-1/4 w-96 h-96 bg-sky-200/35 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+  <!-- Page Hero Header -->
+  <div class="text-center max-w-3xl mx-auto mb-10 md:mb-12 space-y-3" appScrollReveal revealAnimation="fade-up">
+    <div>
+      <span class="gh-pill gh-pill--clinical">
+        <span class="gh-pill__dot"></span>
+        Evidence-Based Clinical Modalities &amp; Scope
+      </span>
+    </div>
+    <h1 class="gh-h1">
+      Therapy Services &amp; <span class="highlight-script">Specializations.</span>
+    </h1>
+    <p class="gh-p-lead">
+      From personalized psychotherapy and occupational burnout restoration to adult ADHD evaluations, couples mediation, and specialized demographic care. Grounded in clinical rigor and empathy.
+    </p>
+
+    <!-- Low-Barrier Discovery Call Banner -->
+    <div class="pt-3">
+      <div class="inline-flex flex-wrap items-center justify-center gap-2.5 py-2.5 px-5 rounded-full bg-sky-50/90 border border-sky-200/90 text-xs sm:text-[13px] text-slate-700 shadow-2xs">
+        <span class="font-bold text-slate-900 flex items-center gap-1.5">
+          <i class="ph ph-phone-call text-[#0284c7] text-sm"></i> Unsure where to start?
+        </span>
+        <span>Schedule a complimentary 15-min audio consultation.</span>
+        <a [routerLink]="['/book']" [queryParams]="{ service: 'Free 15-Minute Discovery Audio Call (Complimentary)' }" class="font-bold text-[#0284c7] hover:text-[#0369a1] underline decoration-sky-300 underline-offset-2 ml-1">
+          Book Free Discovery Call &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURE 1: 60-SECOND INTERACTIVE CLINICAL SCREENER WIDGET -->
+  <div 
+    appScrollReveal 
+    revealAnimation="fade-up"
+    class="mb-14 p-6 sm:p-9 rounded-[28px] bg-gradient-to-br from-white via-sky-50/40 to-slate-50/70 border border-slate-200/90 shadow-[0_12px_36px_rgba(15,23,42,0.04)] relative overflow-hidden">
+    
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2.5">
+          <span class="px-3 py-0.5 rounded-full bg-[#0284c7] text-white text-[11px] font-bold tracking-wider uppercase">
+            Interactive Screener
+          </span>
+          <span class="text-xs font-semibold text-slate-500">Step {{ screenerStep }} of 3</span>
         </div>
-        <h3 class="card-title-premium">{{ service.title }}</h3>
-        <p class="card-text-premium">{{ service.description }}</p>
-        <div class="card-meta-row">
-          <span class="meta-capsule"><i class="ph ph-clock"></i> {{ service.duration }}</span>
-        </div>
-        <button class="cta-glass-capsule" routerLink="/services-page">
-          <span>Map Your Journey</span>
-          <i class="ph ph-arrow-up-right"></i>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight pt-1">
+          Find Your Clinical Modality &amp; <span class="highlight-script">Care Pathway.</span>
+        </h2>
+      </div>
+
+      @if (screenerStep > 1) {
+        <button 
+          type="button" 
+          (click)="resetScreener()" 
+          class="text-xs font-bold text-[#0284c7] hover:text-[#0369a1] transition-colors flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200/80 cursor-pointer">
+          <i class="ph ph-arrow-counter-clockwise"></i> Reset Screener
         </button>
+      }
+    </div>
+
+    <!-- Screener Step 1: Select Concern -->
+    @if (screenerStep === 1) {
+      <div class="pt-6 space-y-4 animate-fadeIn">
+        <p class="text-xs sm:text-sm font-medium text-slate-700">
+          What feels most pressing or overwhelming for you right now?
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          @for (option of screenerConcerns; track option.id) {
+            <button 
+              type="button" 
+              (click)="selectScreenerConcern(option)"
+              class="p-4 rounded-2xl bg-white border border-slate-200/90 hover:border-[#0284c7] hover:shadow-md transition-all text-left group cursor-pointer flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-100 text-[#0284c7] group-hover:bg-[#0284c7] group-hover:text-white flex items-center justify-center flex-shrink-0 transition-colors">
+                <i class="ph {{ option.icon }} text-lg"></i>
+              </div>
+              <div class="space-y-1">
+                <h3 class="text-xs sm:text-[13px] font-bold text-slate-900 group-hover:text-[#0284c7] transition-colors">
+                  {{ option.title }}
+                </h3>
+                <p class="text-[11px] text-slate-500 leading-snug">
+                  {{ option.subtitle }}
+                </p>
+              </div>
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Screener Step 2: Select Format -->
+    @if (screenerStep === 2) {
+      <div class="pt-6 space-y-4 animate-fadeIn">
+        <p class="text-xs sm:text-sm font-medium text-slate-700">
+          Select your preferred consultation environment:
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          @for (fmt of screenerFormats; track fmt.id) {
+            <button 
+              type="button" 
+              (click)="selectScreenerFormat(fmt.id)"
+              class="p-4 rounded-2xl bg-white border border-slate-200/90 hover:border-[#0284c7] hover:shadow-md transition-all text-left group cursor-pointer flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-100 text-[#0284c7] group-hover:bg-[#0284c7] group-hover:text-white flex items-center justify-center flex-shrink-0 transition-colors">
+                <i class="ph {{ fmt.icon }} text-lg"></i>
+              </div>
+              <span class="text-xs sm:text-[13px] font-bold text-slate-800 group-hover:text-[#0284c7]">
+                {{ fmt.label }}
+              </span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Screener Step 3: Recommended Match Result -->
+    @if (screenerStep === 3 && matchedService) {
+      <div class="pt-6 space-y-5 animate-fadeIn">
+        <div class="p-6 rounded-2xl bg-white border border-sky-200 shadow-xs flex flex-col md:flex-row gap-5 items-start md:items-center justify-between">
+          <div class="space-y-2 max-w-2xl">
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#0284c7] uppercase tracking-wider">
+              <i class="ph ph-sparkle"></i> Recommended Clinical Match
+            </span>
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900">
+              {{ matchedService.title }}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              {{ matchedService.description }}
+            </p>
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[11px] font-semibold">
+                {{ matchedService.duration }}
+              </span>
+              <span class="px-3 py-1 rounded-full bg-sky-50 text-[#0284c7] text-[11px] font-semibold border border-sky-200/80">
+                {{ matchedService.modality }}
+              </span>
+            </div>
+          </div>
+
+          <div class="w-full md:w-auto flex-shrink-0">
+            <a [routerLink]="['/book']" [queryParams]="{ service: matchedService.title }" class="gh-btn gh-btn--primary w-full md:w-auto">
+              <span>Book This Care Pathway</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
     }
   </div>
+
+  <!-- SINGLE CLEAN CATEGORY FILTER BAR -->
+  <div class="mb-10 flex flex-wrap items-center justify-center gap-2.5">
+    @for (cat of categories; track cat.id) {
+      <button 
+        type="button" 
+        (click)="setCategory(cat.id)"
+        class="px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-95"
+        [class.bg-[#0284c7]]="selectedCategory === cat.id"
+        [class.text-white]="selectedCategory === cat.id"
+        [class.shadow-[0_6px_18px_rgba(2,132,199,0.25)]]="selectedCategory === cat.id"
+        [class.bg-white]="selectedCategory !== cat.id"
+        [class.text-slate-700]="selectedCategory !== cat.id"
+        [class.border]="selectedCategory !== cat.id"
+        [class.border-slate-200]="selectedCategory !== cat.id"
+        [class.hover:border-[#0284c7]]="selectedCategory !== cat.id">
+        {{ cat.label }}
+      </button>
+    }
+  </div>
+
+  <!-- 12 SERVICES GRID (Unified with Homepage .gh-card & .gh-card__action-btn) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 items-start">
+    @for (service of filteredServices; track service.id; let idx = $index) {
+      <div 
+        appScrollReveal 
+        revealAnimation="fade-up" 
+        [revealDelay]="(idx % 3) * 100"
+        appCardSpotlight
+        class="group rounded-[26px] bg-white border border-slate-200/90 overflow-hidden shadow-[0_8px_24px_rgba(15,23,42,0.04)] lively-card spotlight-card flex flex-col justify-between hover:border-sky-300 transition-all duration-300">
+        
+        <div class="relative z-10">
+          <!-- Image with Sky Wash Overlay -->
+          <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
+            <img 
+              [src]="service.image" 
+              [alt]="service.title" 
+              class="w-full h-full object-cover lively-img">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/45 via-transparent to-transparent pointer-events-none"></div>
+            
+            <div class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-slate-800 text-xs font-bold shadow-xs flex items-center gap-1.5">
+              <i class="ph ph-clock text-[#0284c7]"></i>
+              <span>{{ service.duration }}</span>
+            </div>
+            <div class="absolute top-3.5 right-3.5 px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white text-[11px] font-semibold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>{{ service.delivery }}</span>
+            </div>
+          </div>
+
+          <!-- Content Block -->
+          <div class="p-6 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[#0284c7] text-[11px] font-bold uppercase tracking-wider block">
+                {{ service.modality }}
+              </span>
+            </div>
+
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#0284c7] transition-colors leading-snug">
+              {{ service.title }}
+            </h2>
+
+            <!-- Short preview description -->
+            <p class="text-xs sm:text-[13.5px] text-slate-600 leading-relaxed" [class.line-clamp-2]="!isExpanded(service.id)">
+              {{ service.description }}
+            </p>
+
+            <!-- Inline Read More / Less Toggle Button -->
+            <button 
+              type="button" 
+              (click)="toggleExpand(service.id)" 
+              class="inline-flex items-center gap-1 text-xs font-bold text-[#0284c7] hover:text-[#0369a1] transition-colors cursor-pointer py-1">
+              <span>{{ isExpanded(service.id) ? 'Show Less' : 'Read Inclusions & Clinical Scope' }}</span>
+              <i class="ph" [ngClass]="isExpanded(service.id) ? 'ph-caret-up' : 'ph-caret-down'"></i>
+            </button>
+
+            <!-- Expanded Details (Extended Brief, Deliverables & Tags) -->
+            @if (isExpanded(service.id)) {
+              <div class="pt-3 border-t border-slate-100 space-y-3 animate-fadeIn">
+                @if (service.extendedBrief) {
+                  <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-100 text-xs sm:text-[13px] text-slate-700 leading-relaxed">
+                    <div class="font-bold text-sky-900 text-[11px] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                      <i class="ph ph-sparkle text-[#0284c7]"></i> Clinical Approach &amp; Focus:
+                    </div>
+                    {{ service.extendedBrief }}
+                  </div>
+                }
+
+                <div class="space-y-1.5">
+                  <span class="text-[11px] font-bold text-slate-800 uppercase tracking-wider block">Clinical Inclusions &amp; Deliverables:</span>
+                  @for (item of service.deliverables; track item) {
+                    <div class="flex items-center gap-2 text-xs text-slate-600">
+                      <i class="ph ph-check-circle text-[#0284c7] flex-shrink-0"></i>
+                      <span>{{ item }}</span>
+                    </div>
+                  }
+                </div>
+
+                <!-- Tags -->
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  @for (tag of service.tags; track tag) {
+                    <span class="px-2.5 py-0.5 rounded-full bg-sky-50 text-[#0284c7] border border-sky-200/60 text-[10px] font-semibold">
+                      {{ tag }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Unified Full-Width Card Action Footer (.gh-card__action-btn) -->
+        <div class="px-6 pb-6 pt-2 relative z-10">
+          <a [routerLink]="['/book']" [queryParams]="{ service: service.title }" class="gh-card__action-btn">
+            <span>Book Clinical Intake</span>
+            <span class="gh-card__action-arrow">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        </div>
+
+      </div>
+    }
+  </div>
+
+  <!-- FEATURE 3: 4-PHASE DIAGNOSTIC ASSESSMENT DOSSIER TIMELINE (Unified Dark Sanctuary Card) -->
+  <div 
+    appScrollReveal 
+    revealAnimation="fade-up"
+    class="mt-16 p-7 sm:p-11 rounded-[28px] sm:rounded-[36px] bg-[#0f172a] text-white border border-slate-800 shadow-[0_24px_60px_rgba(15,23,42,0.16)] relative overflow-hidden">
+    
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-3xl mb-8 space-y-2.5 relative z-10">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/25 text-xs font-bold uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-sky-400"></span> Gold-Standard Testing Protocol
+      </span>
+      <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
+        The Formal <span class="highlight-script highlight-script--dark">Diagnostic Assessment Dossier.</span>
+      </h3>
+      <p class="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed">
+        How our standardized adult ADHD evaluations, MCMI-IV personality testing, and cognitive batteries are conducted from initial interview to official RCI psychologist certification.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 relative z-10">
+      <!-- Phase 1 -->
+      <div class="p-5 rounded-2xl bg-white/[0.05] border border-white/10 hover:border-sky-400/40 transition-all duration-300 space-y-2.5">
+        <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-300 font-bold text-xs flex items-center justify-center border border-sky-400/30">
+          01
+        </div>
+        <h4 class="text-sm sm:text-base font-bold text-white">Clinical Intake &amp; History</h4>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          60-minute developmental clinical interview mapping symptom trajectories, childhood milestones, and differential diagnosis factors.
+        </p>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="p-5 rounded-2xl bg-white/[0.05] border border-white/10 hover:border-sky-400/40 transition-all duration-300 space-y-2.5">
+        <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-300 font-bold text-xs flex items-center justify-center border border-sky-400/30">
+          02
+        </div>
+        <h4 class="text-sm sm:text-base font-bold text-white">Testing Battery Execution</h4>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Supervised administration of standardized instruments (DIVA-5, ASRS v1.1, MCMI-IV, MMPI-2, and projective indices).
+        </p>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="p-5 rounded-2xl bg-white/[0.05] border border-white/10 hover:border-sky-400/40 transition-all duration-300 space-y-2.5">
+        <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-300 font-bold text-xs flex items-center justify-center border border-sky-400/30">
+          03
+        </div>
+        <h4 class="text-sm sm:text-base font-bold text-white">Certified Report Synthesis</h4>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Psychometric scoring, quantitative clinical profile creation, and RCI-certified diagnostic report compilation in 3–5 business days.
+        </p>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="p-5 rounded-2xl bg-white/[0.05] border border-white/10 hover:border-sky-400/40 transition-all duration-300 space-y-2.5">
+        <div class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-300 font-bold text-xs flex items-center justify-center border border-sky-400/30">
+          04
+        </div>
+        <h4 class="text-sm sm:text-base font-bold text-white">1-on-1 Clinical Debrief</h4>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          In-depth feedback consultation providing workplace accommodations, educational adjustments, and tailored therapeutic next steps.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO PREPARE FOR YOUR FIRST SESSION -->
+  <div 
+    appScrollReveal 
+    revealAnimation="fade-up"
+    class="mt-14 p-8 sm:p-10 rounded-[28px] bg-slate-50 border border-slate-200/90 shadow-xs">
+    <div class="max-w-3xl mb-8 space-y-2">
+      <span class="gh-eyebrow">What to Expect</span>
+      <h3 class="gh-h2">
+        Preparing for your <span class="highlight-script">initial consultation.</span>
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+        We strive to ensure your first encounter with therapy is completely transparent, stress-free, and grounded in psychological safety.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2.5">
+        <span class="w-8 h-8 rounded-xl bg-sky-50 border border-sky-200 text-[#0284c7] flex items-center justify-center font-bold text-xs">01</span>
+        <h4 class="font-bold text-slate-900 text-sm sm:text-base">No Need for Prior Preparation</h4>
+        <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
+          You don't need a polished summary of your life. Just bring whatever you are carrying today — whether messy, raw, or quiet.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2.5">
+        <span class="w-8 h-8 rounded-xl bg-sky-50 border border-sky-200 text-[#0284c7] flex items-center justify-center font-bold text-xs">02</span>
+        <h4 class="font-bold text-slate-900 text-sm sm:text-base">100% Confidential Clinical Space</h4>
+        <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
+          Every word exchanged is protected under strict RCI ethical guidelines and the Digital Personal Data Protection Act (DPDP 2023).
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-2.5">
+        <span class="w-8 h-8 rounded-xl bg-sky-50 border border-sky-200 text-[#0284c7] flex items-center justify-center font-bold text-xs">03</span>
+        <h4 class="font-bold text-slate-900 text-sm sm:text-base">Co-Created Treatment Plan</h4>
+        <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
+          Therapy pace is always agreed upon mutually. You remain in complete control of what we explore and when.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <p class="text-xs sm:text-sm text-slate-600">
+        Have questions about a specific psychometric battery or couples intake?
+      </p>
+      <div class="flex flex-wrap items-center gap-3">
+        <a routerLink="/book" class="gh-btn gh-btn--primary !py-2.5 !px-5 !text-xs">
+          <span>Book a Session</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a routerLink="/contact" class="gh-btn gh-btn--secondary !py-2.5 !px-5 !text-xs">
+          <span>Contact &amp; FAQs</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+

@@ -1,16 +1,59 @@
-<div class="page-wrapper animated-fade-in">
-  <section class="specializations-section">
-    <h2 class="main-section-title">Demographic Specializations</h2>
-    
-    <div class="specializations-grid">
-      @for (spec of specializations; track spec.title) {
-        <div class="premium-matrix-card">
-          <div class="specialization-icon-badge"><i class="ph" [ngClass]="spec.icon || 'ph-user-focus'"></i></div>
-          <h3 class="spec-title">{{ spec.title }}</h3>
-          <p class="spec-narrative">{{ spec.detailedDescription }}</p>
-          <button class="cta-glass-capsule" routerLink="/book">Request Initial Evaluation</button>
+<div class="pt-8 sm:pt-10 md:pt-12 pb-16 md:pb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-10 overflow-hidden font-sans">
+  <!-- Subtle Background Glow -->
+  <div class="absolute top-1/3 right-10 w-[500px] h-[500px] bg-gradient-to-br from-sky-100/50 via-cyan-50/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
+
+  <!-- Header -->
+  <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 space-y-3" appScrollReveal revealAnimation="fade-up">
+    <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 border border-sky-200/60 text-sky-700 text-xs font-bold tracking-widest uppercase mb-1 shadow-sm">
+      <i class="ph ph-users-three text-sky-500"></i> Demographic Focus
+    </span>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight leading-tight">
+      Care tailored for your <span class="bg-gradient-to-r from-sky-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent italic font-serif font-normal">life stage.</span>
+    </h1>
+    <p class="text-sm sm:text-base text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
+      Dedicated psychological support structured around the specific developmental, occupational, and emotional milestones of diverse populations.
+    </p>
+  </div>
+
+  <!-- Specializations Grid (Staggered Scroll Animation) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-start">
+    @for (spec of specializations; track spec.title; let idx = $index) {
+      <div 
+        appScrollReveal 
+        revealAnimation="fade-up" 
+        [revealDelay]="(idx % 3) * 100"
+        class="group relative bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 shadow-sm lively-card hover:border-sky-300 transition-all duration-300 flex flex-col justify-between overflow-hidden">
+        
+        <div class="space-y-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center text-xl shadow-xs group-hover:scale-105 transition-transform duration-300 flex-shrink-0">
+            <i class="ph" [ngClass]="spec.icon || 'ph-user-focus'"></i>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug">{{ spec.title }}</h3>
+          
+          <p class="text-slate-600 text-xs sm:text-[13px] leading-relaxed" [class.line-clamp-2]="!isExpanded(spec.title)">
+            {{ spec.detailedDescription }}
+          </p>
+
+          <!-- Inline Read More Toggle -->
+          <button 
+            type="button" 
+            (click)="toggleExpand(spec.title)" 
+            class="inline-flex items-center gap-1 text-xs font-bold text-sky-700 hover:text-sky-800 transition-colors cursor-pointer py-1">
+            <span>{{ isExpanded(spec.title) ? 'Show Less' : 'Read Scope & Clinical Focus' }}</span>
+            <i class="ph" [ngClass]="isExpanded(spec.title) ? 'ph-caret-up' : 'ph-caret-down'"></i>
+          </button>
         </div>
-      }
-    </div>
-  </section>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-4">
+          <a [routerLink]="['/book']" [queryParams]="{ service: spec.title }" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900 hover:bg-sky-600 text-white text-xs font-semibold transition-all text-decoration-none shadow-sm">
+            <span>Book Consultation</span>
+            <i class="ph ph-arrow-right text-xs"></i>
+          </a>
+          <span class="text-[11px] font-medium text-slate-500 flex items-center gap-1">
+            <i class="ph ph-check-circle text-emerald-600"></i> Evidence-Based
+          </span>
+        </div>
+      </div>
+    }
+  </div>
 </div>

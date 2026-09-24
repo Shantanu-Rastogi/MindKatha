@@ -1,0 +1,177 @@
+<div class="gh-page-shell px-4 sm:px-6 max-w-5xl mx-auto relative z-10 font-sans">
+  
+  <!-- Hero Header -->
+  <div class="text-center max-w-3xl mx-auto mb-10 md:mb-12 space-y-3" appScrollReveal revealAnimation="fade-up">
+    <div>
+      <span class="gh-pill gh-pill--clinical">
+        <span class="gh-pill__dot"></span>
+        Practice Transparency &amp; Ethics • DPDP Act 2023
+      </span>
+    </div>
+    <h1 class="gh-h1">
+      Legal, Privacy &amp; <span class="highlight-script">Informed Consent.</span>
+    </h1>
+    <p class="gh-p-lead">
+      Ethical standards, client confidentiality, and operational policies governing psychological services at MindKatha.
+    </p>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="flex justify-center mb-10">
+    <div class="inline-flex p-1.5 bg-slate-100/90 rounded-full border border-slate-200/90">
+      <button 
+        (click)="setTab('privacy')" 
+        [class.bg-[#0284c7]]="activeTab === 'privacy'" 
+        [class.text-white]="activeTab === 'privacy'" 
+        [class.shadow-sm]="activeTab === 'privacy'"
+        [class.text-slate-600]="activeTab !== 'privacy'"
+        class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer">
+        Privacy Policy
+      </button>
+      <button 
+        (click)="setTab('consent')" 
+        [class.bg-[#0284c7]]="activeTab === 'consent'" 
+        [class.text-white]="activeTab === 'consent'" 
+        [class.shadow-sm]="activeTab === 'consent'"
+        [class.text-slate-600]="activeTab !== 'consent'"
+        class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer">
+        Informed Consent
+      </button>
+      <button 
+        (click)="setTab('terms')" 
+        [class.bg-[#0284c7]]="activeTab === 'terms'" 
+        [class.text-white]="activeTab === 'terms'" 
+        [class.shadow-sm]="activeTab === 'terms'"
+        [class.text-slate-600]="activeTab !== 'terms'"
+        class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer">
+        Terms &amp; Policies
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT CONTAINER -->
+  <div class="bg-white border border-slate-200/90 rounded-[28px] p-8 sm:p-12 shadow-[0_12px_36px_rgba(15,23,42,0.04)] text-slate-700 text-sm sm:text-base leading-relaxed space-y-8">
+    
+    <!-- TAB 1: PRIVACY POLICY -->
+    <div *ngIf="activeTab === 'privacy'" class="space-y-6">
+      <div class="border-b border-slate-100 pb-4">
+        <h2 class="text-2xl font-bold text-slate-800">Privacy Policy</h2>
+        <p class="text-xs text-slate-400 mt-1">Last Updated: August 2026 • Compliant with Digital Personal Data Protection Act (DPDP Act 2023)</p>
+      </div>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">1. Commitment to Data Privacy</h3>
+        <p>
+          At MindKatha, client confidentiality and personal data security are fundamental ethical principles. We collect and process health-related and personal data solely to provide professional psychological counseling and psychotherapy services.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">2. Information We Collect</h3>
+        <ul class="list-disc pl-5 space-y-1.5">
+          <li><strong>Contact Information:</strong> Full name, email address, phone number, and location for appointment scheduling.</li>
+          <li><strong>Clinical Intake Notes:</strong> Background details voluntarily provided during consultation inquiries and intake forms.</li>
+          <li><strong>Session Records:</strong> De-identified clinical notes stored securely and separately from personally identifiable details.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">3. Data Security &amp; Telehealth</h3>
+        <p>
+          All digital intake forms, communication channels, and video telehealth platforms utilize encrypted transmission (AES-256 / TLS). We do not record video therapy sessions. No personal or clinical data is ever sold, rented, or shared with third-party advertisers or data brokers.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">4. Your Rights</h3>
+        <p>
+          Under applicable data protection laws, you retain the right to access your registered contact data, request corrections, or withdraw consent for non-clinical data processing at any time by contacting our practice at <a href="mailto:psychotherapy.leona@gmail.com" class="text-sky-600 underline font-medium">psychotherapy.leona&#64;gmail.com</a>.
+        </p>
+      </section>
+    </div>
+
+    <!-- TAB 2: INFORMED CONSENT -->
+    <div *ngIf="activeTab === 'consent'" class="space-y-6">
+      <div class="border-b border-slate-100 pb-4">
+        <h2 class="text-2xl font-bold text-slate-800">Clinical Informed Consent</h2>
+        <p class="text-xs text-slate-400 mt-1">Ethical Framework for Psychological Therapy</p>
+      </div>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">1. Nature of Psychotherapy</h3>
+        <p>
+          Psychotherapy is a collaborative process between client and therapist. While therapy often results in significant symptom relief, improved relationships, and greater emotional clarity, it also involves discussing difficult life experiences and uncomfortable emotions. Outcomes depend on mutual commitment and collaborative effort.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">2. Scope of Outpatient Care</h3>
+        <p>
+          MindKatha provides outpatient psychotherapy by RCI-registered practitioners. We do not provide medical prescriptions or emergency crisis intervention. Clients requiring pharmacological management or emergency psychiatric stabilization are referred to certified psychiatric facilities.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">3. Limits of Confidentiality</h3>
+        <p>
+          Information shared in therapy is strictly confidential. In accordance with clinical ethics and Indian law, confidentiality may only be broken under the following critical circumstances:
+        </p>
+        <ul class="list-disc pl-5 space-y-1.5 text-slate-600">
+          <li>Clear and imminent danger of harm to self (suicidality) or others.</li>
+          <li>Suspected abuse, neglect, or harm involving a minor, elderly individual, or dependent adult.</li>
+          <li>Direct court subpoena or legal mandate requiring disclosure.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">4. Telehealth Requirements</h3>
+        <p>
+          For online sessions, clients agree to attend from a quiet, private space with a stable internet connection to safeguard their own confidentiality and emotional focus.
+        </p>
+      </section>
+    </div>
+
+    <!-- TAB 3: TERMS & CANCELLATION POLICIES -->
+    <div *ngIf="activeTab === 'terms'" class="space-y-6">
+      <div class="border-b border-slate-100 pb-4">
+        <h2 class="text-2xl font-bold text-slate-800">Terms of Service &amp; Practice Policies</h2>
+        <p class="text-xs text-slate-400 mt-1">Operational Logistics &amp; Appointment Scheduling</p>
+      </div>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">1. Appointment Scheduling &amp; Punctuality</h3>
+        <p>
+          Standard psychotherapy sessions are 60 minutes in length (75 minutes for couples therapy). Sessions commence and conclude at the scheduled time to respect subsequent appointments.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">2. Cancellation &amp; Rescheduling Policy</h3>
+        <p>
+          We request a minimum of <strong>24 to 48 hours notice</strong> for cancelling or rescheduling an appointment. Because dedicated clinical time is reserved for you, cancellations made with less than 24 hours notice or unattended sessions may be subject to the full session fee.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">3. Payment &amp; Reimbursement</h3>
+        <p>
+          Fees are payable at the time of booking or at the conclusion of each session via approved payment methods (UPI, NetBanking, Cards). We operate as a direct self-pay practice and provide itemized clinical superbills on request for clients submitting claims to private insurers.
+        </p>
+      </section>
+
+      <section class="space-y-3">
+        <h3 class="text-lg font-bold text-slate-800">4. Emergency Crisis Protocol</h3>
+        <p class="bg-sky-50 border border-sky-200/80 rounded-2xl p-4 text-slate-700">
+          MindKatha is not a 24/7 crisis center. If you or someone you know is in immediate life-threatening danger, please contact national emergency helplines immediately (<strong>Tele-MANAS: 14416</strong>, <strong>Vandrevala Foundation: +91 9999 666 555</strong>, or <strong>AASRA: +91 98204 66726</strong>).
+        </p>
+      </section>
+    </div>
+
+  </div>
+
+  <div class="mt-8 text-center">
+    <a routerLink="/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm inline-flex items-center gap-1">
+      <i class="ph ph-arrow-left"></i> Return to Homepage
+    </a>
+  </div>
+</div>

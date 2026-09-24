@@ -25,7 +25,23 @@ export interface Specialization {
 }
 
 export interface Article {
+  id: string;
   title: string;
   excerpt: string;
   readTime: string;
+  category?: string;
+  tag?: string;
+  iconClass?: string;
+  author?: string;
+  authorTitle?: string;
+  publishedDate?: string;
+  content: string[];
+  keyTakeaways?: string[];
+}
+
+export interface EmergencyHelpline {
+  name: string;
+  number: string;
+  description: string;
+  hours: string;
 }

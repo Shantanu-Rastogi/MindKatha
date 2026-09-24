@@ -1,8 +1,9 @@
 .booking-drawer {
     position: fixed;
     top: 0;
-    right: -500px;
-    width: 450px;
+    right: -100%;
+    width: 100%;
+    max-width: 450px;
     height: 100vh;
     background: var(--white);
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
@@ -18,20 +19,29 @@
 }
 
 .drawer-header {
-    padding: 2rem;
+    padding: 1.25rem 1.5rem;
     border-bottom: 1px solid #F0F4F8;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (min-width: 768px) {
+        padding: 2rem;
+    }
 }
 
 .drawer-body {
-    padding: 2rem;
+    padding: 1.25rem 1.5rem;
     flex-grow: 1;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
+
+    @media (min-width: 768px) {
+        padding: 2rem;
+        gap: 2rem;
+    }
 }
 
 .step-view {
@@ -58,19 +68,29 @@
 
 .otp-inputs {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.5rem;
     justify-content: center;
+
+    @media (min-width: 400px) {
+        gap: 0.75rem;
+    }
 }
 
 .otp-box {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 48px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
+
+    @media (min-width: 400px) {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
 }
 
 .otp-box:focus {
@@ -170,4 +190,28 @@
     background: var(--primary);
     color: var(--white);
     border-color: var(--primary);
+}
+
+.custom-dropdown-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f1f5f9;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 8px;
+        
+        &:hover {
+            background-color: #94a3b8;
+        }
+    }
 }

@@ -1,19 +1,83 @@
 <footer class="cinematic-glass-footer">
   <div class="footer-grid-layout">
+    
+    <!-- Brand & Studio Column -->
     <div class="footer-brand-column">
-      <img src="assets/logo.png" alt="MindKatha" class="footer-logo-constrained">
-      <p class="footer-tagline">Therapy that understands your script.</p>
+      <a routerLink="/" class="inline-flex items-center gap-2.5 mb-1">
+        <img src="assets/brain-icon.png" alt="MindKatha Brain Icon" class="h-[26px] w-auto object-contain">
+        <img src="assets/logo.png" alt="MindKatha" class="h-[24px] w-auto object-contain">
+      </a>
+      <p class="footer-tagline">Therapy that understands <span class="highlight-script">your script.</span></p>
+      
+      <div class="footer-studio-info">
+        <div class="info-item">
+          <i class="ph ph-map-pin"></i>
+          <span>001, Ground Floor, Disha Eternia Society, Sakore Nagar, Viman Nagar, Pune 411014</span>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-clock"></i>
+          <span>03:00 PM – 05:00 PM &amp; 07:00 PM – 09:00 PM IST</span>
+        </div>
+        <div class="info-item">
+          <i class="ph ph-envelope"></i>
+          <a href="mailto:psychotherapy.leona@gmail.com">psychotherapy.leona&#64;gmail.com</a>
+        </div>
+      </div>
     </div>
+
+    <!-- Navigation Links -->
     <div class="footer-links-column">
-      <h4>Navigate</h4>
-      <a routerLink="/about">About Us</a>
-      <a routerLink="/specializations">Specializations</a>
-      <a routerLink="/insights">Insights</a>
+      <h4>Care &amp; Practice</h4>
+      <a routerLink="/">Home</a>
+      <a routerLink="/services">Services &amp; Specializations</a>
+      <a routerLink="/about">About &amp; Approach</a>
+      <a routerLink="/contact">Contact &amp; FAQ</a>
+      <a routerLink="/book">Book a Session</a>
     </div>
-    <div class="footer-legal-column">
-      <span class="rci-verification-badge"><i class="ph ph-certificate"></i> RCI Registered Practice</span>
-      <p class="emergency-disclaimer">MindKatha is an outpatient psychological service. If you are experiencing an acute mental health emergency, please immediately contact national crisis helplines or local emergency hospitals in Pune/Mumbai.</p>
+
+    <!-- Ethics & Legal -->
+    <div class="footer-links-column">
+      <h4>Ethics &amp; Legal</h4>
+      <span class="rci-verification-badge"><i class="ph ph-certificate"></i> RCI Reg. #A84920</span>
+      <a routerLink="/privacy">Privacy Policy (DPDP Act)</a>
+      <a routerLink="/consent">Informed Consent</a>
+      <a routerLink="/terms">Terms &amp; Cancellation</a>
+    </div>
+
+    <!-- Emergency Support Column (Identical structure to other columns) -->
+    <div class="footer-links-column">
+      <h4>24/7 Crisis Support</h4>
+      <p class="footer-column-note">
+        MindKatha is an outpatient practice. For acute emergency support:
+      </p>
+      <div class="footer-helpline-list">
+        <div class="helpline-row">
+          <span class="helpline-label">Tele-MANAS:</span>
+          <a href="tel:14416" class="helpline-tel">14416</a>
+        </div>
+        <div class="helpline-row">
+          <span class="helpline-label">Vandrevala:</span>
+          <a href="tel:+919999666555" class="helpline-tel">+91 9999 666 555</a>
+        </div>
+        <div class="helpline-row">
+          <span class="helpline-label">KIRAN:</span>
+          <a href="tel:18005990019" class="helpline-tel">1800-599-0019</a>
+        </div>
+        <div class="helpline-row">
+          <span class="helpline-label">AASRA:</span>
+          <a href="tel:+919820466726" class="helpline-tel">+91 98204 66726</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-base-copyright">
+    <div>© 2026 MindKatha Psychotherapy Practice. All rights reserved.</div>
+    <div class="footer-bottom-links">
+      <a routerLink="/privacy">Privacy</a> • 
+      <a routerLink="/consent">Consent</a> • 
+      <a routerLink="/terms">Terms</a>
     </div>
   </div>
-  <div class="footer-base-copyright">© 2026 MindKatha. Built with absolute care.</div>
 </footer>

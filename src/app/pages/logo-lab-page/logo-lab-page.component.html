@@ -1,0 +1,186 @@
+<div class="logo-lab-root" [attr.data-theme]="currentTheme">
+  
+  <!-- Subtle ambient background grid & radial glow -->
+  <div class="ambient-glow"></div>
+  <div class="burst-flash js-burst-flash"></div>
+
+  <!-- Header Nav -->
+  <header class="lab-header">
+    <div class="lab-header__inner">
+      <div class="lab-badge">
+        <span class="pulse-dot"></span>
+        MINDKATHA LABS &bull; BESPOKE BRAND ANIMATION SYSTEM
+      </div>
+      <div class="lab-links">
+        <a routerLink="/home-demo" class="lab-btn lab-btn--ghost">
+          &larr; Back to Home Demo
+        </a>
+        <a routerLink="/" class="lab-btn lab-btn--ghost">
+          Main Site
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="lab-container">
+
+    <!-- Hero Title -->
+    <section class="lab-hero-intro">
+      <h1 class="lab-title">
+        The Living <span class="text-gradient">Brain &amp; Logo</span>
+      </h1>
+      <p class="lab-subtitle">
+        A bespoke bioluminescent synaptic vector Lottie engine engineered directly from the MindKatha brand geometry: 33 boundary contour vertices, 10 active sulci conduits, and the iconic speech-bubble tail.
+      </p>
+    </section>
+
+    <!-- Master Stage: Cosmic Synapse -->
+    <section class="stage-card">
+      <div class="stage-card__header">
+        <div>
+          <span class="stage-tag">SYSTEM 01 &bull; MASTER ARTIFACT</span>
+          <h2 class="stage-title">Cerebral Synapse Master</h2>
+          <p class="stage-desc">
+            Organic somatic breathing cadence (4-second respiratory cycle) &bull; Bioluminescent multi-layer halo &bull; 10 dynamic cortical conduits with traveling energy pulses &bull; 6 diamond star flare nodes &bull; Harmonic resonance rings &bull; Orbiting thought particles.
+          </p>
+        </div>
+
+        <!-- Controls Toolbar -->
+        <div class="controls-toolbar">
+          <div class="control-group">
+            <span class="control-label">THEME</span>
+            <div class="btn-toggle-group">
+              <button (click)="setTheme('dark')" [class.is-active]="currentTheme === 'dark'" class="btn-toggle">Dark</button>
+              <button (click)="setTheme('light')" [class.is-active]="currentTheme === 'light'" class="btn-toggle">Light</button>
+              <button (click)="setTheme('cyan')" [class.is-active]="currentTheme === 'cyan'" class="btn-toggle">Cyan</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="control-label">SPEED</span>
+            <div class="btn-toggle-group">
+              <button (click)="setSpeed(0.5)" [class.is-active]="currentSpeed === 0.5" class="btn-toggle">0.5x</button>
+              <button (click)="setSpeed(1.0)" [class.is-active]="currentSpeed === 1.0" class="btn-toggle">1.0x</button>
+              <button (click)="setSpeed(1.5)" [class.is-active]="currentSpeed === 1.5" class="btn-toggle">1.5x</button>
+              <button (click)="setSpeed(2.0)" [class.is-active]="currentSpeed === 2.0" class="btn-toggle">2.0x</button>
+            </div>
+          </div>
+
+          <div class="control-actions">
+            <button (click)="togglePlay()" class="lab-btn lab-btn--secondary">
+              {{ isPlaying ? 'Pause' : 'Play' }}
+            </button>
+            <button (click)="triggerBurst()" class="lab-btn lab-btn--primary">
+              <span class="spark-icon">&#10024;</span> Synaptic Burst
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Master Lottie Stage -->
+      <div class="stage-viewport">
+        <div class="stage-halo"></div>
+        <div id="master-lottie-slot" class="lottie-canvas"></div>
+      </div>
+    </section>
+
+    <!-- System 02: Interactive Navbar Integration -->
+    <section class="stage-card">
+      <div class="stage-card__header">
+        <div>
+          <span class="stage-tag">SYSTEM 02 &bull; LIVE SITE INTEGRATION</span>
+          <h2 class="stage-title">Navbar Brand Emblem Simulator</h2>
+          <p class="stage-desc">
+            How the animated micro-brain integrates directly into MindKatha's floating island glass navbar. Hover over the brand emblem to witness the synaptic frequency accelerate in real-time.
+          </p>
+        </div>
+      </div>
+
+      <div class="navbar-simulator-stage">
+        <!-- Floating Glass Pill Replica -->
+        <div class="glass-pill-demo">
+          <div class="brand-group" (mouseenter)="onNavbarLogoEnter()" (mouseleave)="onNavbarLogoLeave()">
+            
+            <!-- Live Micro Lottie Brain -->
+            <div class="navbar-lottie-wrapper" [class.is-hovered]="navbarHovered">
+              <div id="navbar-lottie-slot" class="navbar-lottie-canvas"></div>
+            </div>
+
+            <!-- Typography Wordmark -->
+            <div class="brand-wordmark">
+              <img src="assets/logo.png" alt="MindKatha" class="brand-wordmark-img" />
+            </div>
+
+            <span class="hover-hint-badge" [class.is-visible]="!navbarHovered">Hover me</span>
+            <span class="hover-hint-badge active" [class.is-visible]="navbarHovered">Synapses Active!</span>
+          </div>
+
+          <!-- Dummy Nav Links to complete navbar look -->
+          <div class="dummy-nav-links">
+            <span>Services &amp; Specializations</span>
+            <span>Meet Leona</span>
+            <span>Contact &amp; FAQ</span>
+          </div>
+
+          <div class="dummy-cta">
+            <span>Book a Session</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System 03: Speech Conduit & Brand Lockup Flow -->
+    <section class="stage-card">
+      <div class="stage-card__header">
+        <div>
+          <span class="stage-tag">SYSTEM 03 &bull; STORY &amp; DIALOGUE FLOW</span>
+          <h2 class="stage-title">Speech Conduit &bull; Katha Shirorekha Arc</h2>
+          <p class="stage-desc">
+            Illustrates the conceptual core of MindKatha: neural impulses gather in the cortex, dive through the speech bubble tail, and arc into the Devanagari overline (shirorekha) of "katha", bringing narrative clarity to light.
+          </p>
+        </div>
+      </div>
+
+      <div class="lockup-stage">
+        <div class="lockup-wrapper">
+          <div id="lockup-lottie-slot" class="lockup-lottie-canvas"></div>
+          <div class="lockup-logo-overlay">
+            <img src="assets/logo.png" alt="MindKatha Logo" class="lockup-logo-img" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specs & Anatomy Grid -->
+    <section class="specs-grid">
+      <div class="spec-card">
+        <div class="spec-icon">&#129504;</div>
+        <h3>100% Vector Geometry</h3>
+        <p>Pure mathematical bezier curves with zero raster pixelation. Renders flawlessly at any screen resolution, from Apple Retina to 4K ultra-wide monitors.</p>
+        <span class="spec-meta">33 Control Vertices &bull; Exact Logo Silhouette</span>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-icon">&#9889;</div>
+        <h3>Active Synaptic Conduits</h3>
+        <p>10 distinct anatomical sulci conduits mapped across frontal, parietal, temporal, and occipital lobes, carrying dynamic light beads with phase-shifted trim-path math.</p>
+        <span class="spec-meta">10 Conduits &bull; 6 Junction Flares</span>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-icon">&#128172;</div>
+        <h3>Speech Bubble Bridge</h3>
+        <p>The iconic dialogue tail of the MindKatha emblem acts as a kinetic launchpad, transmitting energy impulses into the typography and narrative story.</p>
+        <span class="spec-meta">Katha Narrative Arc Protocol</span>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-icon">&#128640;</div>
+        <h3>60 FPS Low-Power Performance</h3>
+        <p>Engineered without heavy raster textures or CPU-intensive filters. Runs silky-smooth on iOS Safari, Android Chrome, and low-power mobile devices.</p>
+        <span class="spec-meta">Zero Dependencies &bull; Pure JSON</span>
+      </div>
+    </section>
+
+  </main>
+</div>

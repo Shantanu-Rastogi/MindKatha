@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -11,8 +11,20 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   isMobileMenuOpen = false;
+  scrollPercent = 0;
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const docElement = document.documentElement;
+    const docBody = document.body;
+    const scrollTop = docElement.scrollTop || docBody.scrollTop;
+    const scrollHeight = docElement.scrollHeight || docBody.scrollHeight;
+    const clientHeight = docElement.clientHeight;
+    const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+    this.scrollPercent = Math.min(100, Math.max(0, scrollPercent));
   }
 }

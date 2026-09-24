@@ -1,0 +1,109 @@
+<section class="py-14 md:py-24 px-4 sm:px-6 max-w-6xl mx-auto relative font-sans" id="faq-contact">
+
+  <!-- Section Header -->
+  <div class="max-w-3xl mb-12 text-left space-y-2" appScrollReveal revealAnimation="fade-up">
+    <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold uppercase tracking-wider shadow-sm">
+      <i class="ph ph-question text-sky-600"></i> Clear Clinical Guidance
+    </span>
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug">
+      Answers before your <span class="font-serif italic font-normal text-sky-700">first session.</span>
+    </h2>
+    <p class="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+      Transparent details on session structure, confidentiality, and what to expect during your therapeutic journey.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
+    
+    <!-- LEFT COLUMN: Direct Consultation & Appointment Gateway -->
+    <div 
+      appScrollReveal 
+      revealAnimation="fade-up" 
+      [revealDelay]="100"
+      class="lg:col-span-5 h-full">
+      <div class="h-full p-7 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+      
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-wider">
+            <i class="ph ph-calendar-check text-emerald-600"></i> Direct Clinical Booking
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-900">Schedule Your Consultation</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Skip manual inquiry forms and waiting lists. Select your clinical pathway, pick an available IST slot, and confirm your appointment in real time.
+          </p>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="space-y-3">
+          <!-- Intake Card -->
+          <a routerLink="/book" class="group block p-4 rounded-2xl bg-sky-50/70 hover:bg-sky-100/90 border border-sky-200 text-slate-900 transition-all duration-300 shadow-xs text-decoration-none">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider">In-Person &amp; Telehealth</span>
+              <i class="ph ph-arrow-right text-base text-sky-600 group-hover:translate-x-1 transition-transform"></i>
+            </div>
+            <h4 class="text-sm sm:text-base font-bold text-slate-900 mt-1">Book 50-Min Clinical Intake</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              In-depth initial evaluation and diagnostic formulation for individuals, couples, or adolescents.
+            </p>
+          </a>
+
+          <!-- Discovery Call Card -->
+          <a [routerLink]="['/book']" [queryParams]="{ service: 'Free 15-Minute Discovery Audio Call (Complimentary)' }" class="group block p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/90 border border-slate-200 text-slate-900 transition-all duration-300 shadow-xs text-decoration-none">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Complimentary Consultation</span>
+              <i class="ph ph-phone-call text-base text-slate-700 group-hover:scale-110 transition-transform"></i>
+            </div>
+            <h4 class="text-sm sm:text-base font-bold text-slate-900 mt-1">15-Minute Discovery Audio Call</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              A free initial voice conversation to explore fit, discuss your concerns, and ask any questions.
+            </p>
+          </a>
+        </div>
+
+        <!-- Practice Metadata -->
+        <div class="pt-4 border-t border-slate-100 text-xs text-slate-600 space-y-2">
+          <div class="flex items-start gap-2.5">
+            <i class="ph ph-map-pin text-sky-600 text-base shrink-0 mt-0.5"></i>
+            <span>001, Ground Floor, Disha Eternia Society, Sakore Nagar, Viman Nagar, Pune 411014</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <i class="ph ph-envelope text-sky-600 text-base shrink-0"></i>
+            <a href="mailto:psychotherapy.leona@gmail.com" class="text-slate-700 hover:text-sky-700 font-medium">psychotherapy.leona&#64;gmail.com</a>
+          </div>
+          <div class="flex items-center gap-2 pt-1 text-slate-500 font-medium">
+            <i class="ph ph-shield-check text-emerald-600 text-base shrink-0"></i>
+            <span>RCI Reg. #A84920 • Direct Self-Pay Practice</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: FAQ Accordion (Scroll Reveal) -->
+    <div 
+      appScrollReveal 
+      revealAnimation="fade-up" 
+      [revealDelay]="200"
+      class="lg:col-span-7 border-t border-slate-200/90 divide-y divide-slate-200/80">
+      
+      @for (faq of faqs; track faq.question; let idx = $index) {
+        <details class="group py-5 transition-all cursor-pointer" [open]="idx === 0">
+          <summary class="flex justify-between items-start font-bold text-base text-slate-900 list-none outline-none group-hover:text-sky-700 transition-colors">
+            <span class="pr-4">{{ faq.question }}</span>
+            <span class="text-slate-400 group-open:rotate-45 transition-transform text-lg flex-shrink-0 mt-0.5"><i class="ph ph-plus"></i></span>
+          </summary>
+          <div class="mt-3 text-slate-600 text-sm leading-relaxed pr-6">
+            {{ faq.answer }}
+          </div>
+        </details>
+      }
+
+      <div class="pt-6">
+        <a routerLink="/contact" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors text-decoration-none group">
+          <span>Have more specific clinical questions? Visit our full FAQ directory</span>
+          <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>

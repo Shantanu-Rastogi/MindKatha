@@ -1,62 +1,72 @@
-<section class="reveal clinical-section" id="clinical-services"
-    style="background: var(--background-alt); padding: 6rem 0;">
-    <div class="container">
-        <div class="section-title" style="text-align: center; margin-bottom: 4rem;">
-            <span class="badge"
-                style="display: inline-block; padding: 0.5rem 1rem; background: var(--white); color: var(--primary-dark); border-radius: var(--radius-pill); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Our
-                Modalities</span>
-            <h2 style="font-size: 2.5rem; margin-top: 1rem; margin-bottom: 1rem;">Grounded in Science.</h2>
-            <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">Evidence-based approaches
-                combining clinical excellence and empathetic understanding.</p>
-        </div>
+<section class="py-16 md:py-28 px-4 sm:px-6 max-w-7xl mx-auto relative z-10 overflow-hidden font-sans" id="clinical-services">
+  <!-- Subtle Background Glow -->
+  <div class="absolute top-1/4 left-10 w-[500px] h-[500px] bg-gradient-to-br from-blue-100/50 via-sky-50/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
 
-        <div class="grid grid-2 clinical-grid"
-            style="display: grid; gap: 2rem; grid-template-columns: repeat(2, 1fr);">
-            <div class="clinical-card glass"
-                style="padding: 3.5rem; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 2rem; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-md); transition: var(--transition);">
-                <div class="icon-wrap"
-                    style="width: 60px; height: 60px; background: var(--primary-light); color: var(--primary-dark); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
-                    <i class="ph ph-user"></i></div>
-                <div class="clinical-content" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <h3 style="font-size: 2rem;">Individual Psychotherapy</h3>
-                    <p style="color: var(--text-secondary);">Weekly one-on-one sessions using eclectic methods like
-                        CBT, Psychodynamics, and ACT. Available both in-person (Baner studio) and online.</p>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li
-                            style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
-                            <i class="ph ph-circle-wavy-check"
-                                style="color: var(--primary-dark); font-size: 1.25rem;"></i> Personalized Treatment
-                            Plans</li>
-                        <li
-                            style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
-                            <i class="ph ph-circle-wavy-check"
-                                style="color: var(--primary-dark); font-size: 1.25rem;"></i> RCI-Registered
-                            Practitioners</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="clinical-card glass"
-                style="padding: 3.5rem; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 2rem; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--shadow-md); transition: var(--transition);">
-                <div class="icon-wrap"
-                    style="width: 60px; height: 60px; background: var(--primary-light); color: var(--primary-dark); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.75rem;">
-                    <i class="ph ph-users-three"></i></div>
-                <div class="clinical-content" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <h3 style="font-size: 2rem;">Couples & Marriage Therapy</h3>
-                    <p style="color: var(--text-secondary);">Mediated sessions focused on communication, boundary
-                        setting, and intimacy restoration using Gottman principles.</p>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
-                        <li
-                            style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
-                            <i class="ph ph-circle-wavy-check"
-                                style="color: var(--primary-dark); font-size: 1.25rem;"></i> Non-judgmental
-                            facilitation</li>
-                        <li
-                            style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-secondary); font-weight: 500;">
-                            <i class="ph ph-circle-wavy-check"
-                                style="color: var(--primary-dark); font-size: 1.25rem;"></i> Attachment mapping</li>
-                    </ul>
-                </div>
-            </div>
+  <!-- Section Header -->
+  <div class="text-center max-w-3xl mx-auto mb-12 md:mb-20">
+    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 border border-sky-200/60 text-sky-700 text-xs sm:text-sm font-bold tracking-widest uppercase mb-4 shadow-sm">
+      <i class="ph ph-sparkle text-sky-500"></i> Clinical Modalities
+    </span>
+    <h2 class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-800 tracking-tight leading-tight mb-6">
+      Grounded in <span class="bg-gradient-to-r from-sky-600 via-cyan-500 to-blue-600 bg-clip-text text-transparent italic font-serif font-normal">Science.</span>
+    </h2>
+    <p class="text-base sm:text-xl text-slate-600 leading-relaxed font-normal">
+      Evidence-based psychological approaches combining rigorous clinical research, structured protocols, and empathetic understanding.
+    </p>
+  </div>
+
+  <!-- 2 Large Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+    
+    <!-- Card 1 -->
+    <div class="group relative bg-white/75 backdrop-blur-2xl border border-white/80 rounded-3xl p-8 sm:p-12 shadow-[0_10px_30px_rgba(0,70,95,0.04)] hover:shadow-[0_20px_50px_rgba(14,165,233,0.12)] hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-sky-100/60 rounded-full blur-3xl group-hover:bg-sky-200/80 transition-all duration-500"></div>
+      <div>
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center text-3xl mb-8 shadow-md shadow-sky-500/20 group-hover:scale-110 transition-transform duration-500">
+          <i class="ph ph-user"></i>
         </div>
+        <span class="text-xs font-bold text-sky-600 uppercase tracking-wider mb-2 block">Modality 01</span>
+        <h3 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-4 group-hover:text-sky-600 transition-colors">Individual Psychotherapy</h3>
+        <p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-8">
+          Weekly one-on-one sessions utilizing eclectic evidence-based frameworks like CBT, Psychodynamic analysis, and ACT. Available in-person at our Viman Nagar clinical studio and via HIPAA-compliant teletherapy.
+        </p>
+        <ul class="space-y-3.5 pt-6 border-t border-slate-100/80">
+          <li class="flex items-center gap-3 text-slate-700 font-semibold text-sm sm:text-base">
+            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-sm"><i class="ph ph-check font-bold"></i></span>
+            Tailored, Goal-Oriented Treatment Plans
+          </li>
+          <li class="flex items-center gap-3 text-slate-700 font-semibold text-sm sm:text-base">
+            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-sm"><i class="ph ph-check font-bold"></i></span>
+            Licensed &amp; RCI-Registered Practitioners
+          </li>
+        </ul>
+      </div>
     </div>
+
+    <!-- Card 2 -->
+    <div class="group relative bg-white/75 backdrop-blur-2xl border border-white/80 rounded-3xl p-8 sm:p-12 shadow-[0_10px_30px_rgba(0,70,95,0.04)] hover:shadow-[0_20px_50px_rgba(14,165,233,0.12)] hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between overflow-hidden">
+      <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-cyan-100/60 rounded-full blur-3xl group-hover:bg-cyan-200/80 transition-all duration-500"></div>
+      <div>
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-600 text-white flex items-center justify-center text-3xl mb-8 shadow-md shadow-cyan-500/20 group-hover:scale-110 transition-transform duration-500">
+          <i class="ph ph-users-three"></i>
+        </div>
+        <span class="text-xs font-bold text-cyan-600 uppercase tracking-wider mb-2 block">Modality 02</span>
+        <h3 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-4 group-hover:text-cyan-600 transition-colors">Couples &amp; Relational Care</h3>
+        <p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-8">
+          Structured, empathetic facilitation focused on resolving communication roadblocks, restoring intimacy, and setting healthy relational boundaries using validated Gottman principles.
+        </p>
+        <ul class="space-y-3.5 pt-6 border-t border-slate-100/80">
+          <li class="flex items-center gap-3 text-slate-700 font-semibold text-sm sm:text-base">
+            <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-sm"><i class="ph ph-check font-bold"></i></span>
+            Neutral, Non-Judgmental Mediation
+          </li>
+          <li class="flex items-center gap-3 text-slate-700 font-semibold text-sm sm:text-base">
+            <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center text-sm"><i class="ph ph-check font-bold"></i></span>
+            Attachment Pattern Mapping &amp; Repair
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </section>

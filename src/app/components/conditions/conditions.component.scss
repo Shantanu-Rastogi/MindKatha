@@ -1,12 +1,3 @@
 .conditions-section {
-    background: #FFFFFF;
-}
-
-.condition-card {
-    transition: var(--transition);
-}
-
-.condition-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
+    background: transparent;
 }

@@ -1,0 +1,26 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.main-content {
+  flex: 1 0 auto;
+  width: 100%;
+  padding-top: 5.75rem; /* ~92px desktop clearance for floating header */
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: 5.25rem; /* ~84px tablet clearance */
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding-top: 4.75rem; /* ~76px mobile clearance */
+  }
+}
