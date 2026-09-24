@@ -17,15 +17,15 @@
   </div>
 
   <!-- Tab Navigation -->
-  <div class="flex justify-center mb-10">
-    <div class="inline-flex p-1.5 bg-slate-100/90 rounded-full border border-slate-200/90">
+  <div class="flex justify-center mb-8 sm:mb-10">
+    <div class="inline-flex flex-wrap justify-center p-1 sm:p-1.5 bg-slate-100/90 rounded-2xl sm:rounded-full border border-slate-200/90 max-w-full">
       <button 
         (click)="setTab('privacy')" 
         [class.bg-[#0284c7]]="activeTab === 'privacy'" 
         [class.text-white]="activeTab === 'privacy'" 
         [class.shadow-sm]="activeTab === 'privacy'"
         [class.text-slate-600]="activeTab !== 'privacy'"
-        class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer">
+        class="px-3.5 sm:px-7 py-2 sm:py-2.5 rounded-xl sm:rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap">
         Privacy Policy
       </button>
       <button 
@@ -34,7 +34,7 @@
         [class.text-white]="activeTab === 'consent'" 
         [class.shadow-sm]="activeTab === 'consent'"
         [class.text-slate-600]="activeTab !== 'consent'"
-        class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer">
+        class="px-3.5 sm:px-7 py-2 sm:py-2.5 rounded-xl sm:rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap">
         Informed Consent
       </button>
       <button 
@@ -43,14 +43,14 @@
         [class.text-white]="activeTab === 'terms'" 
         [class.shadow-sm]="activeTab === 'terms'"
         [class.text-slate-600]="activeTab !== 'terms'"
-        class="px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer">
+        class="px-3.5 sm:px-7 py-2 sm:py-2.5 rounded-xl sm:rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap">
         Terms &amp; Policies
       </button>
     </div>
   </div>
 
   <!-- CONTENT CONTAINER -->
-  <div class="bg-white border border-slate-200/90 rounded-[28px] p-8 sm:p-12 shadow-[0_12px_36px_rgba(15,23,42,0.04)] text-slate-700 text-sm sm:text-base leading-relaxed space-y-8">
+  <div class="bg-white border border-slate-200/90 rounded-[24px] sm:rounded-[28px] p-5 sm:p-12 shadow-[0_12px_36px_rgba(15,23,42,0.04)] text-slate-700 text-sm sm:text-base leading-relaxed space-y-8">
     
     <!-- TAB 1: PRIVACY POLICY -->
     <div *ngIf="activeTab === 'privacy'" class="space-y-6">

@@ -850,3 +850,76 @@
     box-shadow: none;
     transform: none;
 }
+
+@media (max-width: 640px) {
+    .booking-sidebar {
+        padding: 16px;
+        border-radius: 18px;
+        gap: 14px;
+    }
+
+    .step-tracker {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        padding-top: 12px;
+    }
+
+    .step-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 8px 4px;
+        gap: 6px;
+    }
+
+    .step-desc {
+        display: none;
+    }
+
+    .step-title {
+        font-size: 0.72rem;
+    }
+
+    .booking-workspace {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .mode-switcher,
+    .week-switcher {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+
+    .mode-btn,
+    .week-btn {
+        justify-content: center;
+        padding: 8px 10px;
+        font-size: 0.78rem;
+    }
+
+    .selected-slot-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+
+    .change-slot-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-submit-btn {
+        height: auto;
+        min-height: 48px;
+        padding: 12px 16px;
+        font-size: 0.82rem;
+        line-height: 1.35;
+        text-align: center;
+        white-space: normal;
+    }
+}
+

@@ -21,12 +21,12 @@
 
     <!-- Low-Barrier Discovery Call Banner -->
     <div class="pt-3">
-      <div class="inline-flex flex-wrap items-center justify-center gap-2.5 py-2.5 px-5 rounded-full bg-sky-50/90 border border-sky-200/90 text-xs sm:text-[13px] text-slate-700 shadow-2xs">
+      <div class="inline-flex flex-wrap items-center justify-center gap-2 py-2.5 px-4 sm:px-5 rounded-2xl sm:rounded-full bg-sky-50/90 border border-sky-200/90 text-xs sm:text-[13px] text-slate-700 shadow-2xs">
         <span class="font-bold text-slate-900 flex items-center gap-1.5">
           <i class="ph ph-phone-call text-[#0284c7] text-sm"></i> Unsure where to start?
         </span>
         <span>Schedule a complimentary 15-min audio consultation.</span>
-        <a [routerLink]="['/book']" [queryParams]="{ service: 'Free 15-Minute Discovery Audio Call (Complimentary)' }" class="font-bold text-[#0284c7] hover:text-[#0369a1] underline decoration-sky-300 underline-offset-2 ml-1">
+        <a [routerLink]="['/book']" [queryParams]="{ service: 'Free 15-Minute Discovery Audio Call (Complimentary)' }" class="font-bold text-[#0284c7] hover:text-[#0369a1] underline decoration-sky-300 underline-offset-2 sm:ml-1">
           Book Free Discovery Call &rarr;
         </a>
       </div>
@@ -191,11 +191,11 @@
               class="w-full h-full object-cover lively-img">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/45 via-transparent to-transparent pointer-events-none"></div>
             
-            <div class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-slate-800 text-xs font-bold shadow-xs flex items-center gap-1.5">
+            <div class="absolute top-3 left-3 px-2.5 sm:px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-slate-800 text-[11px] sm:text-xs font-bold shadow-xs flex items-center gap-1.5">
               <i class="ph ph-clock text-[#0284c7]"></i>
               <span>{{ service.duration }}</span>
             </div>
-            <div class="absolute top-3.5 right-3.5 px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white text-[11px] font-semibold flex items-center gap-1.5">
+            <div class="absolute bottom-3 right-3 px-2.5 sm:px-3 py-1 rounded-full bg-slate-900/85 backdrop-blur-md text-white text-[10.5px] sm:text-[11px] font-semibold flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               <span>{{ service.delivery }}</span>
             </div>
@@ -388,12 +388,12 @@
       <p class="text-xs sm:text-sm text-slate-600">
         Have questions about a specific psychometric battery or couples intake?
       </p>
-      <div class="flex flex-wrap items-center gap-3">
-        <a routerLink="/book" class="gh-btn gh-btn--primary !py-2.5 !px-5 !text-xs">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+        <a routerLink="/book" class="gh-btn gh-btn--primary !py-2.5 !px-5 !text-xs w-full sm:w-auto">
           <span>Book a Session</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a routerLink="/contact" class="gh-btn gh-btn--secondary !py-2.5 !px-5 !text-xs">
+        <a routerLink="/contact" class="gh-btn gh-btn--secondary !py-2.5 !px-5 !text-xs w-full sm:w-auto">
           <span>Contact &amp; FAQs</span>
         </a>
       </div>

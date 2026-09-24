@@ -9,7 +9,7 @@ import {
   PLATFORM_ID
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
 import { BookingDrawerComponent } from '../../components/booking-drawer/booking-drawer.component';
 interface ValuePropSlide {
@@ -697,7 +697,13 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.activeSlideIndex = index;
   }
 
+  private router = inject(Router);
+
   openBooking(serviceName?: string): void {
-    this.bookingService.open();
+    if (serviceName) {
+      this.router.navigate(['/book'], { queryParams: { service: serviceName } });
+    } else {
+      this.router.navigate(['/book']);
+    }
   }
 }
