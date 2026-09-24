@@ -227,16 +227,15 @@
   transform: none;
 }
 
-/* 2. Armed state activates once JS is ready in the browser */
+/* 2. Armed state: keep all sections 100% visible with zero opacity gap on scroll */
 .home-demo-page.js-reveal-ready {
   .js-reveal-on-scroll {
-    opacity: 0;
-    transform: translate3d(0, 26px, 0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
     transition:
-      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
       box-shadow 0.35s ease;
-    will-change: opacity, transform;
 
     &.is-revealed {
       opacity: 1;
@@ -244,38 +243,12 @@
     }
   }
 
-  /* Section Header Internal Hierarchy Stagger (Eyebrow -> Heading -> Lead) */
   .gh-section-header.js-reveal-on-scroll {
     .gh-eyebrow,
     .gh-h1,
     .gh-p-lead {
-      opacity: 0;
-      transform: translate3d(0, 16px, 0);
-      transition:
-        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform;
-    }
-
-    .gh-eyebrow {
-      transition-delay: 0.04s;
-    }
-
-    .gh-h1 {
-      transition-delay: 0.14s;
-    }
-
-    .gh-p-lead {
-      transition-delay: 0.24s;
-    }
-
-    &.is-revealed {
-      .gh-eyebrow,
-      .gh-h1,
-      .gh-p-lead {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-      }
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -427,12 +400,13 @@
 .gh-hero {
   position: relative;
   width: 100%;
-  clip-path: inset(0);
   background: #f8fafc;
-  min-height: 200vh; /* Smooth, generous scroll travel for same-image transition */
+  min-height: 215vh;
+  margin: 0;
+  padding: 0;
 
   @media (max-width: 768px) {
-    min-height: 175vh;
+    min-height: 195vh;
   }
 
   /* Warm Editorial Intro Overlay (Fades quickly so image transition is visible first) */
@@ -453,41 +427,48 @@
     }
   }
 
-  /* Fixed Parallax Background Layer on desktop; native sticky layer on mobile for zero clip-path glitches */
+  /* Absolute Background Layer inside Sticky Stage with extra vertical bleed so parallax never exposes any gap */
   &__bg {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: -6%;
     left: 0;
     right: 0;
-    height: calc(100vh + 12vh);
+    width: 100%;
+    height: 118%;
     z-index: 0;
-    will-change: transform;
+    will-change: transform, opacity;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
     pointer-events: none;
 
-    @media (max-width: 768px) {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      height: 100svh;
-      margin-bottom: -100vh;
-      margin-bottom: -100svh;
+    &--primary {
+      z-index: 0;
+      opacity: 1;
+      transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+      &.is-dimmed {
+        opacity: 0;
+      }
+    }
+
+    &--secondary {
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+      &.is-active {
+        opacity: 1;
+      }
     }
   }
 
-  /* Stage 1 of Load Choreography: Image smoothly scales & unblurs in FIRST before text appears */
+  /* Stage 1 of Load Choreography: Image renders crisp and immediate with zero white flash */
   &__bg-scale {
     width: 100%;
     height: 100%;
-    transform: scale(1.08);
-    opacity: 0;
-    filter: blur(4px);
-    transition:
-      transform 1.25s cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-      filter 0.95s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform, opacity, filter;
+    transform: scale(1);
+    opacity: 1;
+    filter: none;
 
     picture {
       display: block;
@@ -498,7 +479,7 @@
     .is-loaded & {
       transform: scale(1);
       opacity: 1;
-      filter: blur(0px);
+      filter: none;
     }
   }
 
@@ -517,33 +498,36 @@
     }
   }
 
-  /* Background Overlay: none on desktop; crystal-clear upper sanctuary & clean lower text backdrop on mobile */
+  /* Background Overlay inside Sticky Stage: subtle bottom feather on desktop & lower text backdrop on mobile */
   &__overlay {
-    display: none;
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 76%,
+      rgba(248, 250, 252, 0.85) 92%,
+      #ffffff 100%
+    );
+    pointer-events: none;
+    z-index: 2;
 
     @media (max-width: 768px) {
-      display: block !important;
-      position: sticky;
-      top: 0;
-      width: 100%;
-      height: 100vh;
-      height: 100svh;
-      margin-bottom: -100vh;
-      margin-bottom: -100svh;
       background: linear-gradient(
         180deg,
         rgba(254, 252, 248, 0) 0%,
-        rgba(254, 252, 248, 0) 32%,
-        rgba(254, 252, 248, 0.84) 50%,
+        rgba(254, 252, 248, 0) 35%,
+        rgba(254, 252, 248, 0.86) 52%,
         rgba(254, 252, 248, 0.96) 66%,
-        rgba(254, 252, 248, 0.99) 100%
+        #ffffff 100%
       );
-      pointer-events: none;
-      z-index: 1;
     }
   }
 
-  /* Sticky Viewport Stage: centers stage cleanly across viewport */
+  /* Sticky Viewport Stage: pins background, overlay, and text cleanly across viewport with zero gap */
   &__stage {
     position: sticky;
     top: 0;
@@ -563,171 +547,100 @@
   &__text-block {
     position: absolute;
     top: 5.5rem;
-    bottom: 6vh;
+    bottom: 7vh;
     left: clamp(1.75rem, 7vw, 8rem);
     right: auto;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-end;
-    padding: 1.5rem 0;
+    padding: 1.25rem 0;
     max-width: 740px;
     margin: 0;
     text-align: left;
     color: #0f172a;
     box-sizing: border-box;
     pointer-events: none;
-    transition: opacity 0.45s cubic-bezier(0.25, 0.1, 0.25, 1),
-                transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 
     @media (max-width: 768px) {
       top: 4.25rem;
-      bottom: 1.25rem;
+      bottom: 3.5rem;
       left: 1rem;
       right: 1rem;
       max-width: 100%;
       padding: 0.5rem 0;
     }
 
-    /* Primary Text (Text 1) - Anchored lower-left */
+    .gh-hero__badge,
+    .gh-hero-2__eyebrow,
+    .js-line,
+    .gh-hero__subheadline,
+    .gh-hero__pills,
+    .gh-hero-2__bento,
+    .gh-hero__ctas,
+    .gh-hero__scroll-hint,
+    .gh-hero-2__scroll-cue {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    /* Primary Text (Slide 1) - Anchored lower-left */
     &--primary {
       z-index: 3;
       justify-content: flex-end;
-      padding-bottom: 2vh;
+      padding-bottom: 1.5vh;
 
       @media (max-width: 768px) {
         justify-content: flex-end;
-        padding-bottom: 0.75rem;
+        padding-bottom: 0.25rem;
       }
 
-      /* Hidden State: Fades out and glides up smoothly */
       &.is-hidden {
-        opacity: 0;
-        transform: translateY(-28px);
-        pointer-events: none;
-        transition: opacity 0.28s ease-out, transform 0.32s ease-out;
-
-        .gh-hero__badge,
-        .gh-hero-2__eyebrow,
-        .js-line,
-        .gh-hero__scroll-hint,
-        .gh-hero-2__scroll-cue {
-          opacity: 0;
-          transform: translateY(-16px);
-          transition: opacity 0.22s ease-out, transform 0.25s ease-out;
-        }
+        opacity: 0 !important;
+        visibility: hidden !important;
+        display: none !important;
+        transform: translateY(-12px);
+        pointer-events: none !important;
       }
 
-      /* Visible State: Revealing on load */
       &.is-visible {
-        opacity: 1;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
         transform: translateY(0);
         pointer-events: auto;
-
-        .gh-hero__badge,
-        .gh-hero-2__eyebrow {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .js-line {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.5s ease-out, transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
-
-          &:nth-child(1) { transition-delay: 0.05s; }
-          &:nth-child(2) { transition-delay: 0.18s; }
-          &:nth-child(3) { transition-delay: 0.28s; }
-        }
-
-        .gh-hero__scroll-hint,
-        .gh-hero-2__scroll-cue {
-          opacity: 0.95;
-          transform: translateY(0);
-          transition: opacity 0.5s ease-out, transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
-          transition-delay: 0.32s;
-        }
       }
     }
 
-    /* Secondary Text (Text 2) - Anchored lower-left in same open space */
+    /* Secondary Text (Slide 2 & Slide 3) - Anchored lower-left in same open space */
     &--secondary {
       z-index: 4;
       justify-content: flex-end;
-      padding-bottom: 2vh;
+      padding-bottom: 1.5vh;
 
       @media (max-width: 768px) {
         justify-content: flex-end;
-        padding-bottom: 1.5rem;
+        padding-bottom: 0.25rem;
       }
 
-      /* Hidden State: starts below and fully transparent */
       &.is-hidden {
-        opacity: 0;
-        transform: translateY(28px);
-        pointer-events: none;
-        transition: opacity 0.24s ease-out, transform 0.28s ease-out;
-
-        .gh-hero__badge,
-        .gh-hero-2__eyebrow,
-        .js-line,
-        .gh-hero__pills,
-        .gh-hero-2__bento,
-        .gh-hero__ctas {
-          opacity: 0;
-          transform: translateY(18px);
-          transition: opacity 0.18s ease-out, transform 0.22s ease-out;
-        }
+        opacity: 0 !important;
+        visibility: hidden !important;
+        display: none !important;
+        transform: translateY(12px);
+        pointer-events: none !important;
       }
 
-      /* Visible State: Staggered cinematic reveal */
       &.is-visible {
-        opacity: 1;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
         transform: translateY(0);
         pointer-events: auto;
-
-        .gh-hero__badge,
-        .gh-hero-2__eyebrow {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.4s ease-out, transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-          transition-delay: 0.04s;
-        }
-
-        .gh-hero__body-headline .js-line,
-        .gh-hero-2__body-headline .js-line {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
-
-          &:nth-child(1) { transition-delay: 0.08s; }
-          &:nth-child(2) { transition-delay: 0.16s; }
-          &:nth-child(3) { transition-delay: 0.24s; }
-        }
-
-        .gh-hero__body-sub .js-line {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
-          transition-delay: 0.32s;
-        }
-
-        .gh-hero__pills,
-        .gh-hero-2__bento {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
-          transition-delay: 0.38s;
-        }
-
-        .gh-hero__ctas {
-          opacity: 1;
-          transform: translateY(0);
-          transition: opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
-          transition-delay: 0.46s;
-        }
       }
     }
   }
@@ -737,6 +650,7 @@
     opacity: 0;
     transform: translateY(20px);
     align-self: flex-start;
+    max-width: 100%;
 
     .gh-pill {
       background: rgba(255, 255, 255, 0.94);
@@ -746,10 +660,19 @@
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
       font-weight: 700;
       letter-spacing: 0.06em;
+      max-width: 100%;
+
+      @media (max-width: 640px) {
+        font-size: 0.64rem;
+        padding: 5px 10px;
+        letter-spacing: 0.03em;
+        gap: 6px;
+      }
 
       &__dot {
         background: #0284c7;
         box-shadow: 0 0 8px #38bdf8;
+        flex-shrink: 0;
       }
     }
   }
@@ -1487,14 +1410,20 @@
 /* ========================================================================= */
 .gh-philosophy-section,
 .gh-clinical-lead-section {
-  padding: 4.5rem 0 5rem;
-  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  margin-top: -3.5rem;
+  padding: 2.25rem 0 4rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 32px 32px 0 0;
+  box-shadow: 0 -18px 42px rgba(15, 23, 42, 0.07);
   position: relative;
+  z-index: 10;
   overflow: hidden;
   scroll-margin-top: 5.5rem;
 
   @media (min-width: 768px) {
-    padding: 6.5rem 0 7.5rem;
+    margin-top: -4.5rem;
+    padding: 3.25rem 0 6rem;
+    border-radius: 40px 40px 0 0;
   }
 }
 

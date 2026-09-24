@@ -193,39 +193,15 @@ section {
     }
 }
 
-/* Lively Intersection Observer Reveal Animations */
-.reveal-init-fade-up {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
-}
-
-.reveal-init-fade-in {
-    opacity: 0;
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity;
-}
-
-.reveal-init-scale-up {
-    opacity: 0;
-    transform: scale(0.92);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
-}
-
-.reveal-init-slide-left {
-    opacity: 0;
-    transform: translateX(-35px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
-}
-
+/* Instant, non-blocking reveal states so pages never flash blank or faded */
+.reveal-init-fade-up,
+.reveal-init-fade-in,
+.reveal-init-scale-up,
+.reveal-init-slide-left,
 .reveal-init-slide-right {
-    opacity: 0;
-    transform: translateX(35px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .is-revealed {
@@ -485,14 +461,14 @@ main, .page-container {
 }
 
 .gh-page-shell {
-  padding-top: 6.75rem;
+  padding-top: 1.5rem;
   padding-bottom: 5rem;
   position: relative;
   z-index: 10;
   font-family: var(--font-body, 'Inter', sans-serif);
 
   @media (max-width: 768px) {
-    padding-top: 5.75rem;
+    padding-top: 1rem;
     padding-bottom: 3.5rem;
   }
 }

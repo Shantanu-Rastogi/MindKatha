@@ -11,37 +11,56 @@ export class ScrollRevealDirective implements OnInit, OnDestroy {
 
   @Input() revealAnimation: 'fade-up' | 'fade-in' | 'scale-up' | 'slide-left' | 'slide-right' = 'fade-up';
   @Input() revealDelay: number = 0; // ms
-  @Input() revealThreshold: number = 0.1;
+  @Input() revealThreshold: number = 0.01;
+  private safetyTimer?: ReturnType<typeof setTimeout>;
 
   ngOnInit() {
+    const el = this.el.nativeElement as HTMLElement;
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      this.renderer.addClass(this.el.nativeElement, 'is-revealed');
+      this.renderer.addClass(el, 'is-revealed');
       return;
     }
 
     // Set initial animation setup
-    this.renderer.addClass(this.el.nativeElement, `reveal-init-${this.revealAnimation}`);
+    this.renderer.addClass(el, `reveal-init-${this.revealAnimation}`);
     if (this.revealDelay > 0) {
-      this.renderer.setStyle(this.el.nativeElement, 'transition-delay', `${this.revealDelay}ms`);
+      this.renderer.setStyle(el, 'transition-delay', `${Math.min(this.revealDelay, 150)}ms`);
     }
+
+    // Immediately reveal if already within or near the initial viewport
+    requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 812;
+      if (rect.top <= vh + 100) {
+        this.renderer.addClass(el, 'is-revealed');
+      }
+    });
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.renderer.addClass(this.el.nativeElement, 'is-revealed');
-          this.observer?.unobserve(this.el.nativeElement);
+        if (entry.isIntersecting || entry.intersectionRatio > 0) {
+          this.renderer.addClass(el, 'is-revealed');
+          this.observer?.unobserve(el);
         }
       });
     }, {
-      threshold: this.revealThreshold,
-      rootMargin: '0px 0px -30px 0px'
+      threshold: 0.01,
+      rootMargin: '0px 0px 100px 0px'
     });
 
-    this.observer.observe(this.el.nativeElement);
+    this.observer.observe(el);
+
+    // Guaranteed safety fallback so tall mobile containers never stay hidden
+    this.safetyTimer = setTimeout(() => {
+      this.renderer.addClass(el, 'is-revealed');
+    }, 450);
   }
 
   ngOnDestroy() {
     this.observer?.disconnect();
+    if (this.safetyTimer) {
+      clearTimeout(this.safetyTimer);
+    }
   }
 }
 

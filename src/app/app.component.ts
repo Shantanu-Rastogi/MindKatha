@@ -24,7 +24,13 @@ export class AppComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        const hasDeepLink =
+          window.location.hash.length > 1 ||
+          window.location.search.includes('scroll=') ||
+          window.location.search.includes('section=');
+        if (!hasDeepLink) {
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }
       }
     });
   }

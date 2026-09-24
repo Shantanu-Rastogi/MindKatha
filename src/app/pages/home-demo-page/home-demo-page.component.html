@@ -1,40 +1,56 @@
 <div class="home-demo-page">
 
   <!-- ========================================================================= -->
-  <!-- 1. GOOGLE HEALTH-STYLE HERO: Image Smooth-In First, Then Text, Minimal Parallax -->
+  <!-- 1 & 2. UNIFIED STICKY HERO STAGE: Seamless Cross-Fade & Zero-Gap Scroll   -->
   <!-- ========================================================================= -->
-  <section id="hero" class="gh-hero js-hero-container">
+  <section id="hero" class="gh-hero js-hero-container is-loaded">
+    <!-- Anchor marker for #clinical-dialogue scroll navigation -->
+    <div id="clinical-dialogue" class="gh-hero__dialogue-anchor" aria-hidden="true"></div>
 
-    <!-- White Overlay for Smooth Intro Reveal -->
-    <div class="gh-hero__intro-overlay js-hero-intro-overlay" aria-hidden="true"></div>
-
-    <!-- Background: Fixed & Clipped with Scale-Down Animation & Minimal Scroll Parallax -->
-    <div class="gh-hero__bg js-hero-bg">
-      <div class="gh-hero__bg-scale">
-        <picture>
-          <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.webp" type="image/webp" />
-          <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.jpg" type="image/jpeg" />
-          <source srcset="assets/images/hero_therapy_sanctuary_4k.webp" type="image/webp" />
-          <img
-            src="assets/images/hero_therapy_sanctuary_4k.jpg"
-            alt="MindKatha Clinical Psychotherapy & Diagnostic Sanctuary"
-            class="gh-hero__bg-image"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </picture>
-      </div>
-    </div>
-
-    <!-- Background Overlay: Soft desktop radial text scrim; crystal-clear upper sanctuary & lower text gradient on mobile -->
-    <div class="gh-hero__overlay js-hero-overlay" aria-hidden="true"></div>
-
-    <!-- Sticky Presentation Stage for Text 1 and Text 2 (Google Health Layout) -->
+    <!-- Unified Sticky Presentation Stage (Pins across entire hero scroll track with 0px gap) -->
     <div class="gh-hero__stage">
 
-      <!-- Text Block 1: Initial Headline (Starts hidden so background image smoothly transitions in FIRST) -->
-      <div class="gh-hero__text-block gh-hero__text-block--primary js-hero-text-1 is-hidden">
+      <!-- Background 1: Primary Sanctuary Artwork -->
+      <div class="gh-hero__bg gh-hero__bg--primary js-hero-bg is-active">
+        <div class="gh-hero__bg-scale">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.webp" type="image/webp" />
+            <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.jpg" type="image/jpeg" />
+            <source srcset="assets/images/hero_therapy_sanctuary_4k.webp" type="image/webp" />
+            <img
+              src="assets/images/hero_therapy_sanctuary_4k.jpg"
+              alt="MindKatha Clinical Psychotherapy & Diagnostic Sanctuary"
+              class="gh-hero__bg-image"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+        </div>
+      </div>
+
+      <!-- Background 2: Clinical Studio Artwork (Smoothly cross-fades in place on scroll) -->
+      <div class="gh-hero__bg gh-hero__bg--secondary js-hero-2-bg">
+        <div class="gh-hero__bg-scale">
+          <picture>
+            <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.webp" type="image/webp" />
+            <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.jpg" type="image/jpeg" />
+            <source srcset="assets/images/hero_clinical_studio_4k.webp" type="image/webp" />
+            <img
+              src="assets/images/hero_clinical_studio_4k.jpg"
+              alt="MindKatha Clinical Consultation Studio & Diagnostic Library"
+              class="gh-hero__bg-image"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+        </div>
+      </div>
+
+      <!-- Background Overlay: Crystal-clear upper sanctuary & lower text gradient on mobile -->
+      <div class="gh-hero__overlay js-hero-overlay" aria-hidden="true"></div>
+
+      <!-- Slide 1: Initial Headline (0% -> 34% scroll) -->
+      <div class="gh-hero__text-block gh-hero__text-block--primary js-hero-text-1 is-visible">
         <div class="gh-hero__badge">
           <span class="gh-pill gh-pill--clinical">
             <span class="gh-pill__dot"></span>
@@ -75,7 +91,7 @@
         </div>
       </div>
 
-      <!-- Text Block 2: Secondary Content (Flows smoothly in on the same sanctuary image on scroll) -->
+      <!-- Slide 2: What Brings You Here Today (34% -> 67% scroll) -->
       <div class="gh-hero__text-block gh-hero__text-block--secondary js-hero-text-2 is-hidden">
         <div class="gh-hero__badge">
           <span class="gh-pill gh-pill--clinical">
@@ -90,7 +106,6 @@
           <span class="gh-hero__line js-line">with warmth and <span class="highlight-script">clinical rigor.</span></span>
         </h2>
 
-        <!-- Lived Experience Focus Pills (Distinct from Hero 2's diagnostic methodologies) -->
         <div class="gh-hero__pills js-hero-pills">
           <div class="gh-hero__pill">
             <span class="gh-hero__pill-icon">
@@ -121,109 +136,29 @@
           </div>
         </div>
 
-        <!-- Action Buttons (Distinct Primary & Secondary CTAs) -->
         <div class="gh-hero__ctas js-hero-ctas">
           <button (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--primary">
             <span>Start 15-Min Discovery Call</span>
             <i class="ph ph-phone-call"></i>
           </button>
-          <button (click)="scrollToSection('clinical-dialogue')" class="gh-btn gh-btn--ghost">
+          <button (click)="scrollToSection('care-journey')" class="gh-btn gh-btn--ghost">
             <span>Explore Clinical Methodology</span>
             <i class="ph ph-arrow-down"></i>
           </button>
         </div>
       </div>
 
-    </div>
-
-  </section>
-
-  <!-- ========================================================================= -->
-  <!-- 2. SECOND HERO STAGE: Therapeutic Dialogue & Clinical Frameworks          -->
-  <!-- ========================================================================= -->
-  <section id="clinical-dialogue" class="gh-hero gh-hero--secondary-sanctuary js-hero-2-container">
-
-    <!-- Background: Fixed & Clipped with Scale-Down Animation & Minimal Scroll Parallax -->
-    <div class="gh-hero__bg js-hero-2-bg">
-      <div class="gh-hero__bg-scale">
-        <picture>
-          <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.webp" type="image/webp" />
-          <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.jpg" type="image/jpeg" />
-          <source srcset="assets/images/hero_clinical_studio_4k.webp" type="image/webp" />
-          <img
-            src="assets/images/hero_clinical_studio_4k.jpg"
-            alt="MindKatha Clinical Consultation Studio & Diagnostic Library"
-            class="gh-hero__bg-image"
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
-      </div>
-    </div>
-
-    <!-- Background Overlay: Soft desktop radial text scrim & lower text scrim on mobile -->
-    <div class="gh-hero__overlay js-hero-2-overlay" aria-hidden="true"></div>
-
-    <!-- Sticky Presentation Stage for Story Slide 1 and Story Slide 2 -->
-    <div class="gh-hero__stage">
-
-      <!-- Text Block 1: The Narrative Premise (MindKatha Dialogue) - Starts hidden for Image-First reveal -->
-      <div class="gh-hero__text-block gh-hero__text-block--primary gh-hero-2__text-block js-hero-2-text-1 is-hidden">
-        <!-- Distinct Editorial Numbered Tag -->
+      <!-- Slide 3: Clinical Studio & Integrative Modalities (67% -> 100% scroll) -->
+      <div class="gh-hero__text-block gh-hero__text-block--secondary gh-hero-2__text-block js-hero-2-text-1 is-hidden">
         <div class="gh-hero-2__eyebrow js-line">
           <span class="gh-hero-2__eyebrow-num">02</span>
-          <span class="gh-hero-2__eyebrow-line"></span>
-          <span class="gh-hero-2__eyebrow-text">CLINICAL METHODOLOGY &amp; DIAGNOSTIC RIGOR</span>
-        </div>
-
-        <!-- Distinct Headline Typography -->
-        <h2 class="gh-hero-2__headline">
-          <span class="gh-hero__line js-line">Where your lived narrative</span>
-          <span class="gh-hero__line js-line">meets <span class="highlight-script">clinical neuroscience.</span></span>
-        </h2>
-
-        <!-- Differentiated 2-Column Methodology Cards -->
-        <div class="gh-hero-2__pillars-grid js-line">
-          <div class="gh-hero-2__pillar-item">
-            <div class="gh-hero-2__pillar-icon-box">
-              <i class="ph ph-book-open-text"></i>
-            </div>
-            <div class="gh-hero-2__pillar-content">
-              <h4 class="gh-hero-2__pillar-title">Narrative &amp; Somatic Inquiry</h4>
-              <p class="gh-hero-2__pillar-desc">Separating your core identity from problem-saturated scripts while calming fight-or-flight states.</p>
-            </div>
-          </div>
-
-          <div class="gh-hero-2__pillar-item">
-            <div class="gh-hero-2__pillar-icon-box">
-              <i class="ph ph-fingerprint"></i>
-            </div>
-            <div class="gh-hero-2__pillar-content">
-              <h4 class="gh-hero-2__pillar-title">Gold-Standard Psychometrics</h4>
-              <p class="gh-hero-2__pillar-desc">Standardized DSM-5 &amp; RCI batteries (DIVA-5, WAIS-IV, MCMI-IV) for diagnostic precision.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Distinct Horizontal Scroll Prompt (Scrolls forward to #care-journey) -->
-        <div class="gh-hero-2__scroll-cue js-hero-2-scroll-hint" (click)="scrollToSection('care-journey')">
-          <span class="gh-hero-2__scroll-cue-dot"></span>
-          <span class="gh-hero-2__scroll-cue-text">Scroll to see how your therapy journey unfolds</span>
-          <i class="ph ph-arrow-down gh-hero-2__scroll-cue-arrow"></i>
-        </div>
-      </div>
-
-      <!-- Text Block 2: Core Therapeutic Modalities (Reveals on scroll) - Differentiated Bento Grid -->
-      <div class="gh-hero__text-block gh-hero__text-block--secondary gh-hero-2__text-block js-hero-2-text-2 is-hidden">
-        <div class="gh-hero-2__eyebrow js-line">
-          <span class="gh-hero-2__eyebrow-num">02.B</span>
           <span class="gh-hero-2__eyebrow-line"></span>
           <span class="gh-hero-2__eyebrow-text">EVIDENCE-BASED MODALITIES</span>
         </div>
 
         <h2 class="gh-hero-2__body-headline">
-          <span class="gh-hero__line js-line">Integrative therapeutic frameworks</span>
-          <span class="gh-hero__line js-line">paced at your <span class="highlight-script">nervous system's comfort.</span></span>
+          <span class="gh-hero__line js-line">Where your lived narrative</span>
+          <span class="gh-hero__line js-line">meets <span class="highlight-script">clinical neuroscience.</span></span>
         </h2>
 
         <!-- Differentiated Bento Matrix (4 Distinct Modalities from MindKatha Practice) -->
@@ -257,11 +192,11 @@
 
           <div class="gh-hero-2__bento-card">
             <div class="gh-hero-2__bento-header">
-              <div class="gh-hero-2__bento-icon"><i class="ph ph-users-three"></i></div>
-              <span class="gh-hero-2__bento-tag">Systemic</span>
+              <div class="gh-hero-2__bento-icon"><i class="ph ph-fingerprint"></i></div>
+              <span class="gh-hero-2__bento-tag">Diagnostics</span>
             </div>
-            <div class="gh-hero-2__bento-title">Gottman &amp; EFT Couples</div>
-            <div class="gh-hero-2__bento-sub">De-escalating conflict &amp; attachment repair</div>
+            <div class="gh-hero-2__bento-title">Gold-Standard Testing</div>
+            <div class="gh-hero-2__bento-sub">DIVA-5, WAIS-IV &amp; MCMI-IV clinical batteries</div>
           </div>
         </div>
 

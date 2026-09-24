@@ -78,15 +78,12 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private prefersReducedMotion = false;
 
   // Hero state management
-  private activeHeroBlock: 'text1' | 'fading-to-2' | 'text2' | 'fading-to-1' = 'text1';
-  private activeHero2Block: 'text1' | 'fading-to-2' | 'text2' | 'fading-to-1' = 'text1';
+  private activeHeroBlock: 'text1' | 'text2' | 'text3' = 'text1';
   private heroFadeTimer: any = null;
   private heroIntroTimer: any = null;
   private hero2IntroTimer: any = null;
   private safetyTimer: any = null;
   loadAnimationComplete = false;
-  private hero2LoadTriggered = false;
-  private hero2LoadAnimationComplete = false;
 
   // Stat Counter states
   statsAnimated = false;
@@ -342,7 +339,23 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setupScrollListener();
 
     // Check for URL hash or ?section= query param to scroll directly
-    const targetId = window.location.hash.replace('#', '') || new URLSearchParams(window.location.search).get('section');
+    const params = new URLSearchParams(window.location.search);
+    const scrollParam = params.get('scroll');
+    if (scrollParam) {
+      const targetY = Number(scrollParam);
+      const applyScroll = () => {
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, targetY);
+        document.documentElement.scrollTop = targetY;
+        document.body.scrollTop = targetY;
+        this.loadAnimationComplete = true;
+        this.handleScrollCalculations();
+      };
+      applyScroll();
+      requestAnimationFrame(applyScroll);
+      setTimeout(applyScroll, 80);
+    }
+    const targetId = window.location.hash.replace('#', '') || params.get('section');
     if (targetId) {
       setTimeout(() => {
         this.scrollToSection(targetId, 'auto');
@@ -380,23 +393,10 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private playHeroLoadAnimation(): void {
     const hero = this.el.nativeElement.querySelector('.js-hero-container');
-    const text1 = this.el.nativeElement.querySelector('.js-hero-text-1');
     if (!hero) return;
-
-    requestAnimationFrame(() => {
-      // Stage 1: Smoothly transition the background sanctuary image FIRST
-      hero.classList.add('is-loaded');
-
-      // Stage 2: Transition the primary text AFTER the image transition settles
-      const textRevealDelay = this.prefersReducedMotion ? 0 : 850;
-      this.heroIntroTimer = setTimeout(() => {
-        if (text1 && this.activeHeroBlock === 'text1') {
-          text1.classList.remove('is-hidden');
-          text1.classList.add('is-visible');
-        }
-        this.loadAnimationComplete = true;
-      }, textRevealDelay);
-    });
+    hero.classList.add('is-loaded');
+    this.loadAnimationComplete = true;
+    this.handleScrollCalculations();
   }
 
   /**
@@ -412,12 +412,11 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const vh = window.innerHeight || 800;
-    const isMobile = window.innerWidth < 768;
 
-    // 1. Reveal anything already in or above the visible viewport on initial render
+    // 1. Reveal anything already in or near the visible viewport on initial render
     revealItems.forEach((item: Element) => {
       const rect = item.getBoundingClientRect();
-      if (rect.top < vh * 0.90) {
+      if (rect.top < vh * 1.05) {
         item.classList.add('is-revealed');
       }
     });
@@ -427,11 +426,10 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       pageEl.classList.add('js-reveal-ready');
     }
 
-    // 3. Responsive IntersectionObserver:
-    // Mobile: -35px margin triggers cleanly as elements emerge into comfortable thumb view
-    // Desktop: -55px provides a graceful floating elevation
-    const rootMargin = isMobile ? '0px 0px -35px 0px' : '0px 0px -55px 0px';
-    const threshold = isMobile ? 0.05 : 0.08;
+    // 3. Positive bottom rootMargin (80px) triggers elements smoothly right before they enter the viewport
+    // so there is never an empty white gap when scrolling out of the hero section
+    const rootMargin = '0px 0px 80px 0px';
+    const threshold = 0.02;
 
     this.observer = new IntersectionObserver(
       (entries) => {
@@ -451,14 +449,14 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    // 4. Safety net: Guarantee all content is 100% visible after 3.5s
+    // 4. Safety net: Guarantee all content is 100% visible after 2.5s
     this.safetyTimer = setTimeout(() => {
       revealItems.forEach((item: Element) => {
         if (!item.classList.contains('is-revealed')) {
           item.classList.add('is-revealed');
         }
       });
-    }, 3500);
+    }, 2500);
 
     // Stats Section observer
     const statsSection = this.el.nativeElement.querySelector('.js-stats-section');
@@ -481,8 +479,8 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Centralized high-performance scroll handling:
-   * 1. Google Health-style hero parallax & subtle depth zoom (active on BOTH desktop and mobile)
-   * 2. Hero Text 1 / Text 2 seamless cross-fade on the same background
+   * 1. Unified 3-stage sticky hero parallax & background cross-fade (active on BOTH desktop and mobile)
+   * 2. Slide 1 -> Slide 2 -> Slide 3 seamless cross-fade inside a single sticky stage (zero gap)
    * 3. Hairline reading progress bar calculation
    */
   private setupScrollListener(): void {
@@ -521,27 +519,32 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // =========================================================================
-    // 1. Hero Parallax & Text Blocks (Same Image Storytelling on Desktop & Mobile)
+    // 1. Unified 3-Slide Hero Parallax & Background Cross-Fade
     // =========================================================================
     const heroContainer = this.el.nativeElement.querySelector('.js-hero-container');
     if (heroContainer) {
       const heroRect = heroContainer.getBoundingClientRect();
       const heroBg = this.el.nativeElement.querySelector('.js-hero-bg');
+      const hero2Bg = this.el.nativeElement.querySelector('.js-hero-2-bg');
       const text1 = this.el.nativeElement.querySelector('.js-hero-text-1');
       const text2 = this.el.nativeElement.querySelector('.js-hero-text-2');
+      const text3 = this.el.nativeElement.querySelector('.js-hero-2-text-1');
       const scrollHint = this.el.nativeElement.querySelector('.js-hero-scroll-hint');
 
-      if (heroRect.bottom > 0 && heroRect.top <= 0) {
-        const scrollIntoHero = -heroRect.top;
+      if (heroRect.bottom > 0) {
+        const scrollIntoHero = Math.max(0, -heroRect.top);
         const maxScroll = Math.max(1, heroContainer.offsetHeight - vh);
         const heroFraction = Math.min(1, Math.max(0, scrollIntoHero / maxScroll));
 
-        // Smooth Parallax & Depth Scale on BOTH desktop and mobile
+        // Smooth Parallax & Depth Scale within the 118% height bleed of .gh-hero__bg
+        const bgOvershoot = vh * 0.05;
+        const offset = Math.round(-heroFraction * bgOvershoot);
+        const depthScale = isDesktop ? 1 : 1 + heroFraction * 0.025;
         if (heroBg) {
-          const bgOvershoot = isDesktop ? vh * 0.08 : vh * 0.10;
-          const offset = Math.round(-heroFraction * bgOvershoot);
-          const depthScale = isDesktop ? 1 : 1 + heroFraction * 0.045;
           heroBg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
+        }
+        if (hero2Bg) {
+          hero2Bg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
         }
 
         // Scroll Hint auto-hides once scrolled, and restores at top
@@ -553,92 +556,49 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
 
-        // Text 1 / Text 2 Switching on the same image with smooth hysteresis
-        if (text1 && text2) {
-          if (heroFraction > 0.16) {
-            // Ensure load animation state is marked complete if user scrolls down quickly
-            this.loadAnimationComplete = true;
-            if (this.activeHeroBlock !== 'text2') {
-              this.activeHeroBlock = 'text2';
-              text1.classList.remove('is-visible');
-              text1.classList.add('is-hidden');
-              text2.classList.remove('is-hidden');
-              text2.classList.add('is-visible');
-            }
-          } else if (this.loadAnimationComplete && this.activeHeroBlock === 'text2' && heroFraction <= 0.10) {
-            this.activeHeroBlock = 'text1';
-            text2.classList.remove('is-visible');
-            text2.classList.add('is-hidden');
+        // 3-Stage Slide & Background Choreography with zero dead zone
+        if (text1 && text2 && text3) {
+          let targetBlock: 'text1' | 'text2' | 'text3' = 'text1';
+          if (heroFraction >= 0.62) {
+            targetBlock = 'text3';
+          } else if (heroFraction >= 0.24) {
+            targetBlock = 'text2';
+          } else {
+            targetBlock = 'text1';
+          }
+
+          this.loadAnimationComplete = true;
+          this.activeHeroBlock = targetBlock;
+
+          // Update Slide 1
+          if (targetBlock === 'text1') {
             text1.classList.remove('is-hidden');
             text1.classList.add('is-visible');
-          }
-        }
-      }
-    }
-
-    // =========================================================================
-    // 1B. Hero 2 Choreographed Image-First Reveal + Parallax & Text Blocks
-    // =========================================================================
-    const hero2Container = this.el.nativeElement.querySelector('.js-hero-2-container');
-    if (hero2Container) {
-      const hero2Rect = hero2Container.getBoundingClientRect();
-      const hero2Bg = this.el.nativeElement.querySelector('.js-hero-2-bg');
-      const text2_1 = this.el.nativeElement.querySelector('.js-hero-2-text-1');
-      const text2_2 = this.el.nativeElement.querySelector('.js-hero-2-text-2');
-      const scrollHint2 = this.el.nativeElement.querySelector('.js-hero-2-scroll-hint');
-
-      // Stage 1 -> Stage 2 Image-First Choreography when Hero 2 enters viewport
-      if (hero2Rect.top < vh * 0.96 && !this.hero2LoadTriggered) {
-        this.hero2LoadTriggered = true;
-        hero2Container.classList.add('is-loaded');
-        const delay2Ms = this.prefersReducedMotion ? 0 : 380;
-        this.hero2IntroTimer = setTimeout(() => {
-          this.hero2LoadAnimationComplete = true;
-          if (text2_1 && this.activeHero2Block === 'text1') {
-            text2_1.classList.remove('is-hidden');
-            text2_1.classList.add('is-visible');
-          }
-        }, delay2Ms);
-      }
-
-      if (hero2Rect.bottom > 0 && hero2Rect.top <= 0) {
-        const scrollIntoHero2 = -hero2Rect.top;
-        const maxScroll2 = Math.max(1, hero2Container.offsetHeight - vh);
-        const hero2Fraction = Math.min(1, Math.max(0, scrollIntoHero2 / maxScroll2));
-
-        // Smooth Parallax & Depth Scale on BOTH desktop and mobile
-        if (hero2Bg) {
-          const bgOvershoot = isDesktop ? vh * 0.08 : vh * 0.10;
-          const offset = Math.round(-hero2Fraction * bgOvershoot);
-          const depthScale = isDesktop ? 1 : 1 + hero2Fraction * 0.045;
-          hero2Bg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
-        }
-
-        if (scrollHint2) {
-          if (scrollIntoHero2 > 40) {
-            scrollHint2.classList.add('is-hidden');
           } else {
-            scrollHint2.classList.remove('is-hidden');
+            text1.classList.remove('is-visible');
+            text1.classList.add('is-hidden');
           }
-        }
 
-        if (text2_1 && text2_2) {
-          if (hero2Fraction > 0.16) {
-            hero2Container.classList.add('is-loaded');
-            this.hero2LoadAnimationComplete = true;
-            if (this.activeHero2Block !== 'text2') {
-              this.activeHero2Block = 'text2';
-              text2_1.classList.remove('is-visible');
-              text2_1.classList.add('is-hidden');
-              text2_2.classList.remove('is-hidden');
-              text2_2.classList.add('is-visible');
-            }
-          } else if (this.hero2LoadAnimationComplete && this.activeHero2Block === 'text2' && hero2Fraction <= 0.10) {
-            this.activeHero2Block = 'text1';
-            text2_2.classList.remove('is-visible');
-            text2_2.classList.add('is-hidden');
-            text2_1.classList.remove('is-hidden');
-            text2_1.classList.add('is-visible');
+          // Update Slide 2
+          if (targetBlock === 'text2') {
+            text2.classList.remove('is-hidden');
+            text2.classList.add('is-visible');
+          } else {
+            text2.classList.remove('is-visible');
+            text2.classList.add('is-hidden');
+          }
+
+          // Update Slide 3 & Secondary Studio Background Crossfade
+          if (targetBlock === 'text3') {
+            text3.classList.remove('is-hidden');
+            text3.classList.add('is-visible');
+            hero2Bg?.classList.add('is-active');
+            heroBg?.classList.add('is-dimmed');
+          } else {
+            text3.classList.remove('is-visible');
+            text3.classList.add('is-hidden');
+            hero2Bg?.classList.remove('is-active');
+            heroBg?.classList.remove('is-dimmed');
           }
         }
       }
@@ -683,6 +643,19 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scrollToSection(id: string, behavior: ScrollBehavior = 'smooth'): void {
     if (!this.isBrowser) return;
+    if (id === 'clinical-dialogue') {
+      const heroContainer = this.el.nativeElement.querySelector('.js-hero-container');
+      if (heroContainer) {
+        const vh = window.innerHeight || 800;
+        const maxScroll = Math.max(1, heroContainer.offsetHeight - vh);
+        const targetTop = heroContainer.offsetTop + maxScroll * 0.68;
+        window.scrollTo({
+          top: Math.max(0, targetTop),
+          behavior
+        });
+        return;
+      }
+    }
     const target = this.el.nativeElement.querySelector(`#${id}`);
     if (target) {
       const topOffset = target.getBoundingClientRect().top + window.scrollY - 70;
