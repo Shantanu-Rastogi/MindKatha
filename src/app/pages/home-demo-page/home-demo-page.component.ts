@@ -391,16 +391,50 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
    * Stage 2 (850ms): Once the sanctuary image has smoothly settled into view, Text 1 glides up with a
    *                  staggered line-by-line cascade (`is-visible`).
    */
+  /**
+   * Choreographed 2-Stage Page Load Sequence (matching google-health-v2 CustomHomeHero.js):
+   * Stage 1 (0ms): Immediately triggers background image scale-down (1.12 -> 1.0), unblur, and fade-in
+   *                while Text 1 remains hidden (`is-hidden`) so the sanctuary image smoothly settles first.
+   * Stage 2 (220ms): Text 1 glides up with a staggered line-by-line cascade (`is-visible`).
+   */
   private playHeroLoadAnimation(): void {
     const hero = this.el.nativeElement.querySelector('.js-hero-container');
+    const text1 = this.el.nativeElement.querySelector('.js-hero-text-1');
     if (!hero) return;
-    hero.classList.add('is-loaded');
-    this.loadAnimationComplete = true;
-    this.handleScrollCalculations();
+
+    if (this.prefersReducedMotion) {
+      hero.classList.add('is-loaded');
+      text1?.classList.remove('is-hidden');
+      text1?.classList.add('is-visible');
+      this.loadAnimationComplete = true;
+      return;
+    }
+
+    // Stage 1: Trigger sanctuary image scale-in & unblur on next animation frame
+    requestAnimationFrame(() => {
+      hero.classList.add('is-loaded');
+
+      if (window.scrollY > 40) {
+        this.loadAnimationComplete = true;
+        this.handleScrollCalculations();
+        return;
+      }
+
+      // Stage 2: Staggered line-by-line reveal of Slide 1
+      this.heroIntroTimer = setTimeout(() => {
+        if (window.scrollY <= 40) {
+          this.activeHeroBlock = 'text1';
+          text1?.classList.remove('is-hidden');
+          text1?.classList.add('is-visible');
+        }
+        this.loadAnimationComplete = true;
+        this.handleScrollCalculations();
+      }, 220);
+    });
   }
 
   /**
-   * IntersectionObserver for scroll reveal animations & stat counters
+   * IntersectionObserver for Google Health v2 scroll reveal animations & stat counters
    */
   private setupIntersectionObserver(): void {
     const pageEl = this.el.nativeElement.querySelector('.home-demo-page');
@@ -413,23 +447,22 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const vh = window.innerHeight || 800;
 
-    // 1. Reveal anything already in or near the visible viewport on initial render
+    // 1. Reveal anything already visible in the initial viewport on load
     revealItems.forEach((item: Element) => {
       const rect = item.getBoundingClientRect();
-      if (rect.top < vh * 1.05) {
+      if (rect.top < vh * 0.92 && rect.bottom > 0) {
         item.classList.add('is-revealed');
       }
     });
 
-    // 2. Arm the animation system once above-the-fold content is secured
+    // 2. Arm the Google Health v2 RevealAnimation system
     if (pageEl) {
       pageEl.classList.add('js-reveal-ready');
     }
 
-    // 3. Positive bottom rootMargin (80px) triggers elements smoothly right before they enter the viewport
-    // so there is never an empty white gap when scrolling out of the hero section
-    const rootMargin = '0px 0px 80px 0px';
-    const threshold = 0.02;
+    // 3. Observe all remaining sections so they smoothly glide up as they enter the viewport
+    const rootMargin = '0px 0px 40px 0px';
+    const threshold = 0.08;
 
     this.observer = new IntersectionObserver(
       (entries) => {
@@ -448,15 +481,6 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.observer?.observe(item);
       }
     });
-
-    // 4. Safety net: Guarantee all content is 100% visible after 2.5s
-    this.safetyTimer = setTimeout(() => {
-      revealItems.forEach((item: Element) => {
-        if (!item.classList.contains('is-revealed')) {
-          item.classList.add('is-revealed');
-        }
-      });
-    }, 2500);
 
     // Stats Section observer
     const statsSection = this.el.nativeElement.querySelector('.js-stats-section');
@@ -480,7 +504,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Centralized high-performance scroll handling:
    * 1. Unified 3-stage sticky hero parallax & background cross-fade (active on BOTH desktop and mobile)
-   * 2. Slide 1 -> Slide 2 -> Slide 3 seamless cross-fade inside a single sticky stage (zero gap)
+   * 2. Slide 1 -> Slide 2 -> Slide 3 sequential handoff inside a single sticky stage (zero gap)
    * 3. Hairline reading progress bar calculation
    */
   private setupScrollListener(): void {
@@ -536,10 +560,10 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
         const maxScroll = Math.max(1, heroContainer.offsetHeight - vh);
         const heroFraction = Math.min(1, Math.max(0, scrollIntoHero / maxScroll));
 
-        // Smooth Parallax & Depth Scale within the 118% height bleed of .gh-hero__bg
-        const bgOvershoot = vh * 0.05;
+        // Smooth Parallax & Subtle Depth Scale within the 118% height bleed of .gh-hero__bg
+        const bgOvershoot = isDesktop ? vh * 0.065 : vh * 0.04;
         const offset = Math.round(-heroFraction * bgOvershoot);
-        const depthScale = isDesktop ? 1 : 1 + heroFraction * 0.025;
+        const depthScale = isDesktop ? 1 + heroFraction * 0.015 : 1 + heroFraction * 0.025;
         if (heroBg) {
           heroBg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
         }
@@ -556,7 +580,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
 
-        // 3-Stage Slide & Background Choreography with zero dead zone
+        // 3-Stage Slide & Background Choreography (Google Health v2 CustomHomeHero sequential handoff)
         if (text1 && text2 && text3) {
           let targetBlock: 'text1' | 'text2' | 'text3' = 'text1';
           if (heroFraction >= 0.62) {
@@ -567,38 +591,53 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
             targetBlock = 'text1';
           }
 
-          this.loadAnimationComplete = true;
-          this.activeHeroBlock = targetBlock;
-
-          // Update Slide 1
-          if (targetBlock === 'text1') {
-            text1.classList.remove('is-hidden');
-            text1.classList.add('is-visible');
-          } else {
-            text1.classList.remove('is-visible');
-            text1.classList.add('is-hidden');
-          }
-
-          // Update Slide 2
-          if (targetBlock === 'text2') {
-            text2.classList.remove('is-hidden');
-            text2.classList.add('is-visible');
-          } else {
-            text2.classList.remove('is-visible');
-            text2.classList.add('is-hidden');
-          }
-
-          // Update Slide 3 & Secondary Studio Background Crossfade
+          // Background cross-fade between Sanctuary (Slides 1-2) and Clinical Studio (Slide 3)
           if (targetBlock === 'text3') {
-            text3.classList.remove('is-hidden');
-            text3.classList.add('is-visible');
             hero2Bg?.classList.add('is-active');
             heroBg?.classList.add('is-dimmed');
           } else {
-            text3.classList.remove('is-visible');
-            text3.classList.add('is-hidden');
             hero2Bg?.classList.remove('is-active');
             heroBg?.classList.remove('is-dimmed');
+          }
+
+          // If initial load animation is still playing at scrollY <= 40, let heroIntroTimer reveal text1
+          if (!this.loadAnimationComplete && scrollIntoHero <= 40) {
+            return;
+          }
+
+          this.loadAnimationComplete = true;
+
+          const blockMap: Record<'text1' | 'text2' | 'text3', HTMLElement> = {
+            text1,
+            text2,
+            text3
+          };
+
+          if (targetBlock !== this.activeHeroBlock) {
+            this.activeHeroBlock = targetBlock;
+
+            // 1. Immediately fade out all non-target slides (upward exit glide)
+            (['text1', 'text2', 'text3'] as const).forEach((key) => {
+              if (key !== targetBlock) {
+                blockMap[key].classList.remove('is-visible');
+                blockMap[key].classList.add('is-hidden');
+              }
+            });
+
+            // 2. Sequential handoff (160ms) so outgoing lines glide out cleanly before incoming lines stagger up
+            if (this.heroFadeTimer) {
+              clearTimeout(this.heroFadeTimer);
+            }
+            this.heroFadeTimer = setTimeout(() => {
+              const currentTarget = blockMap[this.activeHeroBlock];
+              if (currentTarget) {
+                currentTarget.classList.remove('is-hidden');
+                currentTarget.classList.add('is-visible');
+              }
+            }, 160);
+          } else if (!blockMap[targetBlock].classList.contains('is-visible') && !this.heroFadeTimer) {
+            blockMap[targetBlock].classList.remove('is-hidden');
+            blockMap[targetBlock].classList.add('is-visible');
           }
         }
       }
