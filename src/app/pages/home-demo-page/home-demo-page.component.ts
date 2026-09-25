@@ -77,13 +77,17 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private scrollRafId: number | null = null;
   private prefersReducedMotion = false;
 
-  // Hero state management
-  private activeHeroBlock: 'text1' | 'text2' | 'text3' = 'text1';
+  // Hero 1 & Hero 2 (2 stacked components) state management
+  private activeHeroBlock: 'text1' | 'text2' = 'text1';
+  private activeHero2Block: 'text1' | 'text2' = 'text1';
   private heroFadeTimer: any = null;
+  private hero2FadeTimer: any = null;
   private heroIntroTimer: any = null;
   private hero2IntroTimer: any = null;
   private safetyTimer: any = null;
   loadAnimationComplete = false;
+  hero2LoadTriggered = false;
+  hero2LoadAnimationComplete = false;
 
   // Stat Counter states
   statsAnimated = false;
@@ -370,6 +374,9 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.heroFadeTimer) {
       clearTimeout(this.heroFadeTimer);
     }
+    if (this.hero2FadeTimer) {
+      clearTimeout(this.hero2FadeTimer);
+    }
     if (this.heroIntroTimer) {
       clearTimeout(this.heroIntroTimer);
     }
@@ -543,16 +550,14 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // =========================================================================
-    // 1. Unified 3-Slide Hero Parallax & Background Cross-Fade
+    // 1A. Hero 1 (Primary Sanctuary): Parallax & Text 1 <-> Text 2 Choreography
     // =========================================================================
     const heroContainer = this.el.nativeElement.querySelector('.js-hero-container');
     if (heroContainer) {
       const heroRect = heroContainer.getBoundingClientRect();
       const heroBg = this.el.nativeElement.querySelector('.js-hero-bg');
-      const hero2Bg = this.el.nativeElement.querySelector('.js-hero-2-bg');
       const text1 = this.el.nativeElement.querySelector('.js-hero-text-1');
       const text2 = this.el.nativeElement.querySelector('.js-hero-text-2');
-      const text3 = this.el.nativeElement.querySelector('.js-hero-2-text-1');
       const scrollHint = this.el.nativeElement.querySelector('.js-hero-scroll-hint');
 
       if (heroRect.bottom > 0) {
@@ -560,15 +565,12 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
         const maxScroll = Math.max(1, heroContainer.offsetHeight - vh);
         const heroFraction = Math.min(1, Math.max(0, scrollIntoHero / maxScroll));
 
-        // Smooth Parallax & Subtle Depth Scale within the 118% height bleed of .gh-hero__bg
-        const bgOvershoot = isDesktop ? vh * 0.065 : vh * 0.04;
-        const offset = Math.round(-heroFraction * bgOvershoot);
-        const depthScale = isDesktop ? 1 + heroFraction * 0.015 : 1 + heroFraction * 0.025;
+        // Smooth Parallax & Subtle Depth Scale on BOTH desktop and mobile
         if (heroBg) {
+          const bgOvershoot = isDesktop ? vh * 0.065 : vh * 0.045;
+          const offset = Math.round(-heroFraction * bgOvershoot);
+          const depthScale = isDesktop ? 1 + heroFraction * 0.015 : 1 + heroFraction * 0.025;
           heroBg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
-        }
-        if (hero2Bg) {
-          hero2Bg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
         }
 
         // Scroll Hint auto-hides once scrolled, and restores at top
@@ -580,64 +582,116 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
 
-        // 3-Stage Slide & Background Choreography (Google Health v2 CustomHomeHero sequential handoff)
-        if (text1 && text2 && text3) {
-          let targetBlock: 'text1' | 'text2' | 'text3' = 'text1';
-          if (heroFraction >= 0.62) {
-            targetBlock = 'text3';
-          } else if (heroFraction >= 0.24) {
-            targetBlock = 'text2';
-          } else {
-            targetBlock = 'text1';
-          }
-
-          // Background cross-fade between Sanctuary (Slides 1-2) and Clinical Studio (Slide 3)
-          if (targetBlock === 'text3') {
-            hero2Bg?.classList.add('is-active');
-            heroBg?.classList.add('is-dimmed');
-          } else {
-            hero2Bg?.classList.remove('is-active');
-            heroBg?.classList.remove('is-dimmed');
-          }
-
-          // If initial load animation is still playing at scrollY <= 40, let heroIntroTimer reveal text1
+        // Hero 1 Text 1 <-> Text 2 Sequential Handoff (Google Health v2 CustomHomeHero)
+        if (text1 && text2) {
           if (!this.loadAnimationComplete && scrollIntoHero <= 40) {
-            return;
-          }
+            // Let initial heroIntroTimer reveal text1
+          } else {
+            this.loadAnimationComplete = true;
+            const targetBlock: 'text1' | 'text2' = heroFraction >= 0.20 ? 'text2' : 'text1';
 
-          this.loadAnimationComplete = true;
+            if (targetBlock !== this.activeHeroBlock) {
+              this.activeHeroBlock = targetBlock;
+              const outgoing = targetBlock === 'text2' ? text1 : text2;
+              const incoming = targetBlock === 'text2' ? text2 : text1;
 
-          const blockMap: Record<'text1' | 'text2' | 'text3', HTMLElement> = {
-            text1,
-            text2,
-            text3
-          };
+              outgoing.classList.remove('is-visible');
+              outgoing.classList.add('is-hidden');
 
-          if (targetBlock !== this.activeHeroBlock) {
-            this.activeHeroBlock = targetBlock;
-
-            // 1. Immediately fade out all non-target slides (upward exit glide)
-            (['text1', 'text2', 'text3'] as const).forEach((key) => {
-              if (key !== targetBlock) {
-                blockMap[key].classList.remove('is-visible');
-                blockMap[key].classList.add('is-hidden');
+              if (this.heroFadeTimer) {
+                clearTimeout(this.heroFadeTimer);
               }
-            });
-
-            // 2. Sequential handoff (160ms) so outgoing lines glide out cleanly before incoming lines stagger up
-            if (this.heroFadeTimer) {
-              clearTimeout(this.heroFadeTimer);
+              this.heroFadeTimer = setTimeout(() => {
+                const currentIncoming = this.activeHeroBlock === 'text2' ? text2 : text1;
+                currentIncoming.classList.remove('is-hidden');
+                currentIncoming.classList.add('is-visible');
+              }, 160);
+            } else {
+              const activeEl = targetBlock === 'text2' ? text2 : text1;
+              if (!activeEl.classList.contains('is-visible') && !this.heroFadeTimer) {
+                activeEl.classList.remove('is-hidden');
+                activeEl.classList.add('is-visible');
+              }
             }
-            this.heroFadeTimer = setTimeout(() => {
-              const currentTarget = blockMap[this.activeHeroBlock];
-              if (currentTarget) {
-                currentTarget.classList.remove('is-hidden');
-                currentTarget.classList.add('is-visible');
-              }
+          }
+        }
+      }
+    }
+
+    // =========================================================================
+    // 1B. Hero 2 (Clinical Studio Component Below Hero 1): Swipe-Up Reveal & Parallax
+    // =========================================================================
+    const hero2Container = this.el.nativeElement.querySelector('.js-hero-2-container');
+    if (hero2Container) {
+      const hero2Rect = hero2Container.getBoundingClientRect();
+      const hero2Bg = this.el.nativeElement.querySelector('.js-hero-2-bg');
+      const text2_1 = this.el.nativeElement.querySelector('.js-hero-2-text-1');
+      const text2_2 = this.el.nativeElement.querySelector('.js-hero-2-text-2');
+      const scrollHint2 = this.el.nativeElement.querySelector('.js-hero-2-scroll-hint');
+
+      // Trigger Hero 2 scale settle & staggered Text 2.1 reveal as Hero 2 swipes up into view
+      if (hero2Rect.top < vh * 0.72 && !this.hero2LoadTriggered) {
+        this.hero2LoadTriggered = true;
+        hero2Container.classList.add('is-loaded');
+        const delay2Ms = this.prefersReducedMotion ? 0 : 180;
+        this.hero2IntroTimer = setTimeout(() => {
+          this.hero2LoadAnimationComplete = true;
+          if (text2_1 && this.activeHero2Block === 'text1') {
+            text2_1.classList.remove('is-hidden');
+            text2_1.classList.add('is-visible');
+          }
+        }, delay2Ms);
+      }
+
+      if (hero2Rect.bottom > 0 && hero2Rect.top < vh) {
+        const scrollIntoHero2 = Math.max(0, -hero2Rect.top);
+        const maxScroll2 = Math.max(1, hero2Container.offsetHeight - vh);
+        const hero2Fraction = Math.min(1, Math.max(0, scrollIntoHero2 / maxScroll2));
+
+        // Smooth Parallax & Depth Scale on BOTH desktop and mobile
+        if (hero2Bg) {
+          const bgOvershoot = isDesktop ? vh * 0.065 : vh * 0.045;
+          const offset = Math.round(-hero2Fraction * bgOvershoot);
+          const depthScale = isDesktop ? 1 + hero2Fraction * 0.015 : 1 + hero2Fraction * 0.025;
+          hero2Bg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
+        }
+
+        if (scrollHint2) {
+          if (scrollIntoHero2 > 40) {
+            scrollHint2.classList.add('is-hidden');
+          } else {
+            scrollHint2.classList.remove('is-hidden');
+          }
+        }
+
+        // Hero 2 Text 2.1 <-> Text 2.2 Sequential Handoff inside Hero 2
+        if (text2_1 && text2_2 && hero2Rect.top <= 0) {
+          hero2Container.classList.add('is-loaded');
+          this.hero2LoadAnimationComplete = true;
+          const target2Block: 'text1' | 'text2' = hero2Fraction >= 0.20 ? 'text2' : 'text1';
+
+          if (target2Block !== this.activeHero2Block) {
+            this.activeHero2Block = target2Block;
+            const outgoing2 = target2Block === 'text2' ? text2_1 : text2_2;
+            const incoming2 = target2Block === 'text2' ? text2_2 : text2_1;
+
+            outgoing2.classList.remove('is-visible');
+            outgoing2.classList.add('is-hidden');
+
+            if (this.hero2FadeTimer) {
+              clearTimeout(this.hero2FadeTimer);
+            }
+            this.hero2FadeTimer = setTimeout(() => {
+              const currentIncoming2 = this.activeHero2Block === 'text2' ? text2_2 : text2_1;
+              currentIncoming2.classList.remove('is-hidden');
+              currentIncoming2.classList.add('is-visible');
             }, 160);
-          } else if (!blockMap[targetBlock].classList.contains('is-visible') && !this.heroFadeTimer) {
-            blockMap[targetBlock].classList.remove('is-hidden');
-            blockMap[targetBlock].classList.add('is-visible');
+          } else {
+            const active2El = target2Block === 'text2' ? text2_2 : text2_1;
+            if (!active2El.classList.contains('is-visible') && !this.hero2FadeTimer) {
+              active2El.classList.remove('is-hidden');
+              active2El.classList.add('is-visible');
+            }
           }
         }
       }
@@ -682,22 +736,10 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scrollToSection(id: string, behavior: ScrollBehavior = 'smooth'): void {
     if (!this.isBrowser) return;
-    if (id === 'clinical-dialogue') {
-      const heroContainer = this.el.nativeElement.querySelector('.js-hero-container');
-      if (heroContainer) {
-        const vh = window.innerHeight || 800;
-        const maxScroll = Math.max(1, heroContainer.offsetHeight - vh);
-        const targetTop = heroContainer.offsetTop + maxScroll * 0.68;
-        window.scrollTo({
-          top: Math.max(0, targetTop),
-          behavior
-        });
-        return;
-      }
-    }
     const target = this.el.nativeElement.querySelector(`#${id}`);
     if (target) {
-      const topOffset = target.getBoundingClientRect().top + window.scrollY - 70;
+      const offset = id === 'clinical-dialogue' ? 0 : 70;
+      const topOffset = target.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({
         top: Math.max(0, topOffset),
         behavior
