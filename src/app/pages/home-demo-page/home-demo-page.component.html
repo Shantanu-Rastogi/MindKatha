@@ -1,287 +1,197 @@
 <div class="home-demo-page">
 
   <!-- ========================================================================= -->
-  <!-- 1. FIRST HERO STAGE: Primary Sanctuary (Slide 1 -> Slide 2 on Scroll)     -->
+  <!-- 1. HERO: Google Health v2 "HomeValueProps" pinned slider                   -->
+  <!--    3 full-bleed slides across 3 core clinical pillars. Every slide         -->
+  <!--    carries concise copy directly on the photo with a chapter pill.         -->
+  <!--    The stage pins; every slide swipes up 1:1 with scroll while its photo   -->
+  <!--    counter-parallaxes behind it (transforms written by updateHeroSlider).  -->
   <!-- ========================================================================= -->
-  <section id="hero" class="gh-hero gh-hero--primary-sanctuary js-hero-container">
+  <section id="hero" class="gh-hvp js-hvp" aria-label="Welcome to MindKatha">
+    <div class="gh-hvp__track js-hvp-track">
+      <div class="gh-hvp__sticky js-hvp-sticky">
 
-    <!-- Sticky Presentation Stage for Hero 1 -->
-    <div class="gh-hero__stage">
+        <!-- ─── Slide 1 · Sanctuary & Clinical Welcome ────────────────────────── -->
+        <div class="gh-hvp__slide gh-hvp__slide--content gh-hvp__slide--intro js-hvp-slide" data-slide-index="0" style="z-index: 1">
+          <div class="gh-hvp__media-wrap js-hvp-media">
+            <div class="gh-hvp__media-scale">
+              <picture class="gh-hvp__picture">
+                <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.webp?v=2" type="image/webp" />
+                <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.jpg?v=2" type="image/jpeg" />
+                <source srcset="assets/images/hero_therapy_sanctuary_4k.webp" type="image/webp" />
+                <img
+                  src="assets/images/hero_therapy_sanctuary_4k.jpg"
+                  alt="Sunlit MindKatha therapy sanctuary with a reading armchair, plants and soft window light"
+                  class="gh-hvp__image gh-hvp__image--sanctuary"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </picture>
+            </div>
+          </div>
+          <div class="gh-hvp__scrim" aria-hidden="true"></div>
 
-      <!-- Background 1: Primary Sanctuary Artwork -->
-      <div class="gh-hero__bg js-hero-bg">
-        <div class="gh-hero__bg-scale">
-          <picture>
-            <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.webp" type="image/webp" />
-            <source media="(max-width: 768px)" srcset="assets/images/hero_therapy_sanctuary_mobile.jpg" type="image/jpeg" />
-            <source srcset="assets/images/hero_therapy_sanctuary_4k.webp" type="image/webp" />
-            <img
-              src="assets/images/hero_therapy_sanctuary_4k.jpg"
-              alt="MindKatha Clinical Psychotherapy & Diagnostic Sanctuary"
-              class="gh-hero__bg-image"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </picture>
+          <div class="gh-hvp__content-wrapper">
+            <div class="gh-hvp__content is-animated js-hvp-content">
+              <div class="gh-hvp__pills js-hvp-pills">
+                <span class="gh-hvp__pill gh-hvp__pill--label">Therapy</span>
+                <span class="gh-hvp__pill gh-hvp__pill--icon" aria-hidden="true"><i class="ph ph-plant"></i></span>
+              </div>
+
+              <div class="gh-hvp__copy">
+                <p class="gh-hvp__eyebrow js-hvp-line">
+                  <span class="gh-hvp__eyebrow-dot" aria-hidden="true"></span>
+                  <span>RCI Registered Clinical Practice · Pune &amp; Telehealth</span>
+                </p>
+                <h1 class="gh-hvp__headline">
+                  <span class="gh-hvp__line js-hvp-line">Your healing journey </span>
+                  <span class="gh-hvp__line js-hvp-line">begins in a <span class="highlight-script highlight-script--light">safe space.</span></span>
+                </h1>
+                <p class="gh-hvp__description">
+                  <span class="gh-hvp__desc-line js-hvp-line">Connect with an RCI-licensed clinical psychologist in Pune or online </span>
+                  <span class="gh-hvp__desc-line js-hvp-line">to untangle overwhelm and author a grounded chapter of clarity.</span>
+                </p>
+                <div class="gh-hvp__ctas js-hvp-line js-hvp-cta">
+                  <button type="button" (click)="openBooking('Individual Psychotherapy & Emotional Regulation (50 mins)')" class="gh-btn gh-btn--primary">
+                    <span>Begin Your Clinical Intake</span>
+                    <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" (click)="scrollToSection('care-journey')" class="gh-btn gh-btn--glass">
+                    <span>How Therapy Unfolds</span>
+                    <i class="ph ph-arrow-down" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+
+              <button type="button" class="gh-hvp__scroll-cue js-hvp-line js-hvp-cta" (click)="scrollToHeroSlide(1)" aria-label="Scroll to the next slide">
+                <span class="gh-hvp__scroll-track" aria-hidden="true"><span class="gh-hvp__scroll-dot"></span></span>
+                <span class="gh-hvp__scroll-label" aria-hidden="true">Scroll</span>
+              </button>
+            </div>
+          </div>
         </div>
+
+        <!-- ─── Slide 2 · Lived Story & Whole-Person Care ─────────────────────── -->
+        <div class="gh-hvp__slide gh-hvp__slide--content gh-hvp__slide--story js-hvp-slide" data-slide-index="1" style="z-index: 2">
+          <div class="gh-hvp__media-wrap js-hvp-media">
+            <picture class="gh-hvp__picture">
+              <source media="(max-width: 768px)" srcset="assets/images/hero_chapter1_reflection_mobile.webp" type="image/webp" />
+              <source media="(max-width: 768px)" srcset="assets/images/hero_chapter1_sanctuary_mobile.jpg" type="image/jpeg" />
+              <source srcset="assets/images/hero_chapter1_reflection.webp" type="image/webp" />
+              <img
+                src="assets/images/hero_chapter1_sanctuary.jpg"
+                alt="Sunlit mindful reflection nook with an open journal, warm tea, and garden greenery views"
+                class="gh-hvp__image gh-hvp__image--reflection"
+                loading="eager"
+                fetchpriority="low"
+                decoding="async"
+              />
+            </picture>
+          </div>
+          <div class="gh-hvp__scrim" aria-hidden="true"></div>
+
+          <div class="gh-hvp__content-wrapper">
+            <div class="gh-hvp__content is-animated js-hvp-content">
+              <div class="gh-hvp__pills js-hvp-pills">
+                <span class="gh-hvp__pill gh-hvp__pill--label">Whole-Person Care</span>
+                <span class="gh-hvp__pill gh-hvp__pill--icon" aria-hidden="true"><i class="ph ph-compass"></i></span>
+              </div>
+
+              <div class="gh-hvp__copy">
+                <p class="gh-hvp__eyebrow js-hvp-line">
+                  <span class="gh-hvp__eyebrow-dot" aria-hidden="true"></span>
+                  <span>What brings you here today?</span>
+                </p>
+                <h2 class="gh-hvp__headline">
+                  <span class="gh-hvp__line js-hvp-line">Every emotion carries </span>
+                  <span class="gh-hvp__line js-hvp-line">a story worth <span class="highlight-script highlight-script--light">hearing.</span></span>
+                </h2>
+                <p class="gh-hvp__description">
+                  <span class="gh-hvp__desc-line js-hvp-line">Anxiety, burnout, attachment wounds, and neuro-affirming ADHD care — </span>
+                  <span class="gh-hvp__desc-line js-hvp-line">we untangle it together with warmth and clinical rigor.</span>
+                </p>
+                <div class="gh-hvp__ctas js-hvp-line js-hvp-cta">
+                  <button type="button" (click)="openBooking('Free Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--primary">
+                    <i class="ph ph-phone-call" aria-hidden="true"></i>
+                    <span>Start Free Discovery Call</span>
+                  </button>
+                  <a routerLink="/services" class="gh-btn gh-btn--glass">
+                    <span>Explore Specializations</span>
+                    <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Slide 3 · Clinical Method & Integrative Care Plan ─────────────── -->
+        <div id="clinical-dialogue" class="gh-hvp__slide gh-hvp__slide--content gh-hvp__slide--last js-hvp-slide" data-slide-index="2" style="z-index: 3">
+          <div class="gh-hvp__media-wrap js-hvp-media">
+            <picture class="gh-hvp__picture">
+              <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.webp?v=2" type="image/webp" />
+              <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.jpg?v=2" type="image/jpeg" />
+              <source srcset="assets/images/hero_clinical_studio_4k.webp" type="image/webp" />
+              <img
+                src="assets/images/hero_clinical_studio_4k.jpg"
+                alt="MindKatha consultation studio with a clinical library and calm seating"
+                class="gh-hvp__image gh-hvp__image--studio"
+                loading="eager"
+                fetchpriority="low"
+                decoding="async"
+              />
+            </picture>
+          </div>
+          <div class="gh-hvp__scrim" aria-hidden="true"></div>
+
+          <div class="gh-hvp__content-wrapper">
+            <div class="gh-hvp__content is-animated js-hvp-content">
+              <div class="gh-hvp__pills js-hvp-pills">
+                <span class="gh-hvp__pill gh-hvp__pill--label">Clinical Method</span>
+                <span class="gh-hvp__pill gh-hvp__pill--icon" aria-hidden="true"><i class="ph ph-brain"></i></span>
+              </div>
+
+              <div class="gh-hvp__copy">
+                <p class="gh-hvp__eyebrow js-hvp-line">
+                  <span class="gh-hvp__eyebrow-dot" aria-hidden="true"></span>
+                  <span>Evidence-Based · DSM-5 &amp; RCI Aligned</span>
+                </p>
+                <h2 class="gh-hvp__headline">
+                  <span class="gh-hvp__line js-hvp-line">Where your lived </span>
+                  <span class="gh-hvp__line js-hvp-line">narrative meets </span>
+                  <span class="gh-hvp__line js-hvp-line"><span class="highlight-script highlight-script--light">clinical neuroscience.</span></span>
+                </h2>
+                <p class="gh-hvp__description">
+                  <span class="gh-hvp__desc-line js-hvp-line">Narrative, somatic, ACT and CBT therapy paired with gold-standard </span>
+                  <span class="gh-hvp__desc-line js-hvp-line">diagnostics (DIVA-5, WAIS-IV &amp; MCMI-IV) — paced to your readiness.</span>
+                </p>
+                <div class="gh-hvp__ctas js-hvp-line js-hvp-cta">
+                  <button type="button" (click)="scrollToSection('three-up')" class="gh-btn gh-btn--primary">
+                    <span>Explore Session Formats</span>
+                    <i class="ph ph-arrow-down" aria-hidden="true"></i>
+                  </button>
+                  <a routerLink="/about" class="gh-btn gh-btn--glass">
+                    <span>About Our Approach</span>
+                    <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-      <!-- Background Overlay: Subtle mobile text readability backdrop (no white bottom seam) -->
-      <div class="gh-hero__overlay js-hero-overlay" aria-hidden="true"></div>
-
-      <!-- Hero 1 - Text Block 1: Initial Headline -->
-      <div class="gh-hero__text-block gh-hero__text-block--primary js-hero-text-1 is-hidden">
-        <div class="gh-hero__badge">
-          <span class="gh-pill gh-pill--clinical">
-            <span class="gh-pill__dot"></span>
-            <span>RCI Registered Clinical Practice • Pune &amp; Telehealth</span>
-          </span>
-        </div>
-
-        <h1 class="gh-hero__headline">
-          <span class="gh-hero__line js-line">
-            Your healing journey
-          </span>
-          <span class="gh-hero__line js-line">
-            begins in a <span class="highlight-script">safe space.</span>
-          </span>
-        </h1>
-
-        <p class="gh-hero__subheadline js-line">
-          Connect with an RCI-licensed clinical psychologist. Untangle persistent overwhelm, navigate life transitions, and author a grounded chapter of emotional clarity.
-        </p>
-
-        <div class="gh-hero__ctas js-line">
-          <button (click)="openBooking('Individual Psychotherapy & Emotional Regulation (50 mins)')" class="gh-btn gh-btn--primary">
-            <span>Begin Your Clinical Intake</span>
-            <i class="ph ph-arrow-right"></i>
-          </button>
-          <button (click)="scrollToSection('clinical-dialogue')" class="gh-btn gh-btn--ghost">
-            <span>How Therapy Unfolds</span>
-            <i class="ph ph-arrow-down"></i>
-          </button>
-        </div>
-
-        <!-- Minimalist Scroll Hint -->
-        <div class="gh-hero__scroll-hint js-hero-scroll-hint" (click)="scrollToSection('clinical-dialogue')">
-          <span class="gh-hero__scroll-hint-text">Scroll to explore what brings you here</span>
-          <div class="gh-hero__scroll-indicator">
-            <div class="gh-hero__scroll-dot"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hero 1 - Text Block 2: Secondary Content on Sanctuary Image -->
-      <div class="gh-hero__text-block gh-hero__text-block--secondary js-hero-text-2 is-hidden">
-        <div class="gh-hero__badge">
-          <span class="gh-pill gh-pill--clinical">
-            <span class="gh-pill__dot"></span>
-            <span>What Brings You Here Today</span>
-          </span>
-        </div>
-
-        <h2 class="gh-hero__body-headline">
-          <span class="gh-hero__line js-line">Every emotion carries a story.</span>
-          <span class="gh-hero__line js-line">We help you untangle it</span>
-          <span class="gh-hero__line js-line">with warmth and <span class="highlight-script">clinical rigor.</span></span>
-        </h2>
-
-        <div class="gh-hero__pills js-hero-pills">
-          <div class="gh-hero__pill">
-            <span class="gh-hero__pill-icon">
-              <i class="ph ph-wind"></i>
-            </span>
-            <span class="gh-hero__pill-text">Anxiety &amp; Overthinking Loops</span>
-          </div>
-
-          <div class="gh-hero__pill">
-            <span class="gh-hero__pill-icon">
-              <i class="ph ph-heart-half"></i>
-            </span>
-            <span class="gh-hero__pill-text">Attachment &amp; Relational Wounds</span>
-          </div>
-
-          <div class="gh-hero__pill">
-            <span class="gh-hero__pill-icon">
-              <i class="ph ph-battery-low"></i>
-            </span>
-            <span class="gh-hero__pill-text">High-Functioning Burnout</span>
-          </div>
-
-          <div class="gh-hero__pill gh-hero__pill--accredited">
-            <span class="gh-hero__pill-icon">
-              <i class="ph ph-rainbow"></i>
-            </span>
-            <span class="gh-hero__pill-text">Queer &amp; Neuro-Affirming Space</span>
-          </div>
-        </div>
-
-        <div class="gh-hero__ctas js-hero-ctas">
-          <button (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--primary">
-            <span>Start 15-Min Discovery Call</span>
-            <i class="ph ph-phone-call"></i>
-          </button>
-          <button (click)="scrollToSection('clinical-dialogue')" class="gh-btn gh-btn--ghost">
-            <span>Explore Clinical Methodology</span>
-            <i class="ph ph-arrow-down"></i>
-          </button>
-        </div>
-      </div>
-
     </div>
-
   </section>
 
   <!-- ========================================================================= -->
-  <!-- 2. SECOND HERO STAGE: Clinical Studio (Swipes Up Below Hero 1)            -->
-  <!-- ========================================================================= -->
-  <section id="clinical-dialogue" class="gh-hero gh-hero--secondary-sanctuary js-hero-2-container">
-
-    <!-- Sticky Presentation Stage for Hero 2 -->
-    <div class="gh-hero__stage">
-
-      <!-- Background 2: Clinical Studio Artwork (Swipes up physically as 2nd component) -->
-      <div class="gh-hero__bg js-hero-2-bg">
-        <div class="gh-hero__bg-scale">
-          <picture>
-            <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.webp" type="image/webp" />
-            <source media="(max-width: 768px)" srcset="assets/images/hero_clinical_studio_mobile.jpg" type="image/jpeg" />
-            <source srcset="assets/images/hero_clinical_studio_4k.webp" type="image/webp" />
-            <img
-              src="assets/images/hero_clinical_studio_4k.jpg"
-              alt="MindKatha Clinical Consultation Studio & Diagnostic Library"
-              class="gh-hero__bg-image"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </picture>
-        </div>
-      </div>
-
-      <!-- Background Overlay: Soft readability backdrop & seamless bottom transition into #care-journey -->
-      <div class="gh-hero__overlay gh-hero__overlay--secondary js-hero-2-overlay" aria-hidden="true"></div>
-
-      <!-- Hero 2 - Text Block 1: The Narrative Premise (MindKatha Dialogue) -->
-      <div class="gh-hero__text-block gh-hero__text-block--primary gh-hero-2__text-block js-hero-2-text-1 is-hidden">
-        <div class="gh-hero-2__eyebrow js-line">
-          <span class="gh-hero-2__eyebrow-num">02</span>
-          <span class="gh-hero-2__eyebrow-line"></span>
-          <span class="gh-hero-2__eyebrow-text">CLINICAL METHODOLOGY &amp; DIAGNOSTIC RIGOR</span>
-        </div>
-
-        <h2 class="gh-hero-2__headline">
-          <span class="gh-hero__line js-line">Where your lived narrative</span>
-          <span class="gh-hero__line js-line">meets <span class="highlight-script">clinical neuroscience.</span></span>
-        </h2>
-
-        <!-- Differentiated 2-Column Methodology Cards -->
-        <div class="gh-hero-2__pillars-grid js-line">
-          <div class="gh-hero-2__pillar-item">
-            <div class="gh-hero-2__pillar-icon-box">
-              <i class="ph ph-book-open-text"></i>
-            </div>
-            <div class="gh-hero-2__pillar-content">
-              <h4 class="gh-hero-2__pillar-title">Narrative &amp; Somatic Inquiry</h4>
-              <p class="gh-hero-2__pillar-desc">Separating your core identity from problem-saturated scripts while calming fight-or-flight states.</p>
-            </div>
-          </div>
-
-          <div class="gh-hero-2__pillar-item">
-            <div class="gh-hero-2__pillar-icon-box">
-              <i class="ph ph-fingerprint"></i>
-            </div>
-            <div class="gh-hero-2__pillar-content">
-              <h4 class="gh-hero-2__pillar-title">Gold-Standard Psychometrics</h4>
-              <p class="gh-hero-2__pillar-desc">Standardized DSM-5 &amp; RCI batteries (DIVA-5, WAIS-IV, MCMI-IV) for diagnostic precision.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Distinct Horizontal Scroll Prompt (Scrolls forward to #care-journey) -->
-        <div class="gh-hero-2__scroll-cue js-hero-2-scroll-hint" (click)="scrollToSection('care-journey')">
-          <span class="gh-hero-2__scroll-cue-dot"></span>
-          <span class="gh-hero-2__scroll-cue-text">Scroll to see how your therapy journey unfolds</span>
-          <i class="ph ph-arrow-down gh-hero-2__scroll-cue-arrow"></i>
-        </div>
-      </div>
-
-      <!-- Hero 2 - Text Block 2: Core Therapeutic Modalities (Reveals on scroll inside Hero 2) -->
-      <div class="gh-hero__text-block gh-hero__text-block--secondary gh-hero-2__text-block js-hero-2-text-2 is-hidden">
-        <div class="gh-hero-2__eyebrow js-line">
-          <span class="gh-hero-2__eyebrow-num">02.B</span>
-          <span class="gh-hero-2__eyebrow-line"></span>
-          <span class="gh-hero-2__eyebrow-text">EVIDENCE-BASED MODALITIES</span>
-        </div>
-
-        <h2 class="gh-hero-2__body-headline">
-          <span class="gh-hero__line js-line">Integrative therapeutic frameworks</span>
-          <span class="gh-hero__line js-line">paced at your <span class="highlight-script">nervous system's comfort.</span></span>
-        </h2>
-
-        <!-- Differentiated Bento Matrix (4 Distinct Modalities from MindKatha Practice) -->
-        <div class="gh-hero-2__bento js-hero-2-pills">
-          <div class="gh-hero-2__bento-card">
-            <div class="gh-hero-2__bento-header">
-              <div class="gh-hero-2__bento-icon"><i class="ph ph-feather"></i></div>
-              <span class="gh-hero-2__bento-tag">Identity</span>
-            </div>
-            <div class="gh-hero-2__bento-title">Narrative Therapy</div>
-            <div class="gh-hero-2__bento-sub">Externalizing shame &amp; re-authoring life scripts</div>
-          </div>
-
-          <div class="gh-hero-2__bento-card">
-            <div class="gh-hero-2__bento-header">
-              <div class="gh-hero-2__bento-icon"><i class="ph ph-heartbeat"></i></div>
-              <span class="gh-hero-2__bento-tag">Autonomic</span>
-            </div>
-            <div class="gh-hero-2__bento-title">Polyvagal &amp; Somatics</div>
-            <div class="gh-hero-2__bento-sub">Bottom-up vagal regulation for panic &amp; freeze</div>
-          </div>
-
-          <div class="gh-hero-2__bento-card">
-            <div class="gh-hero-2__bento-header">
-              <div class="gh-hero-2__bento-icon"><i class="ph ph-compass"></i></div>
-              <span class="gh-hero-2__bento-tag">Cognitive</span>
-            </div>
-            <div class="gh-hero-2__bento-title">ACT &amp; CBT Protocols</div>
-            <div class="gh-hero-2__bento-sub">Psychological flexibility &amp; cognitive defusion</div>
-          </div>
-
-          <div class="gh-hero-2__bento-card">
-            <div class="gh-hero-2__bento-header">
-              <div class="gh-hero-2__bento-icon"><i class="ph ph-fingerprint"></i></div>
-              <span class="gh-hero-2__bento-tag">Diagnostics</span>
-            </div>
-            <div class="gh-hero-2__bento-title">Gold-Standard Testing</div>
-            <div class="gh-hero-2__bento-sub">DIVA-5, WAIS-IV &amp; MCMI-IV clinical batteries</div>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="gh-hero__ctas js-hero-2-ctas">
-          <button (click)="scrollToSection('three-up')" class="gh-btn gh-btn--primary">
-            <span>Explore Session Formats</span>
-            <i class="ph ph-arrow-down"></i>
-          </button>
-          <button (click)="scrollToSection('care-journey')" class="gh-btn gh-btn--ghost">
-            <span>See 3-Step Care Process</span>
-            <i class="ph ph-footprints"></i>
-          </button>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- ========================================================================= -->
-  <!-- 3. HOW YOUR CARE JOURNEY UNFOLDS (Connected 3-Stage Architectural Track)  -->
+  <!-- 2. HOW YOUR CARE JOURNEY UNFOLDS (Connected 3-Stage Architectural Track)  -->
   <!-- ========================================================================= -->
   <section id="care-journey" class="gh-clinical-lead-section">
     <div class="container">
 
       <div class="gh-section-header text-center js-reveal-on-scroll gh-process-header">
-        <span class="gh-eyebrow">CHAPTER 03 • HOW THERAPY UNFOLDS</span>
+        <span class="gh-eyebrow">CHAPTER 02 • HOW THERAPY UNFOLDS</span>
         <h2 class="gh-h1">A transparent, unhurried <span class="highlight-script">clinical process.</span></h2>
         <p class="gh-p-lead">
           Knowing what to expect removes the hesitation of starting therapy. Every stage is collaborative, confidential, and paced around your readiness.
@@ -313,9 +223,9 @@
                 *ngIf="sIdx === 0"
                 type="button"
                 class="gh-step-inline-btn"
-                (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')"
+                (click)="openBooking('Free Discovery Audio Call (Complimentary)')"
               >
-                <span>Book Free Audio Check-In</span>
+                <span>Book Free Discovery Call</span>
                 <i class="ph ph-arrow-right"></i>
               </button>
               <button
@@ -358,12 +268,12 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- 4. TRANSPARENT SESSION FORMATS & CARE TRACKS (#three-up)                  -->
+  <!-- 3. TRANSPARENT SESSION FORMATS & CARE TRACKS (#three-up)                  -->
   <!-- ========================================================================= -->
   <section id="three-up" class="gh-three-up-section">
     <div class="container">
       <div class="gh-section-header text-center js-reveal-on-scroll">
-        <span class="gh-eyebrow">CHAPTER 04 • SESSION FORMATS &amp; CADENCE</span>
+        <span class="gh-eyebrow">CHAPTER 03 • SESSION FORMATS &amp; CADENCE</span>
         <h2 class="gh-h1">Clear structure for <span class="highlight-script">every stage of care.</span></h2>
         <p class="gh-p-lead">
           Whether you are seeking weekly individual therapy, a formal 2-phase diagnostic battery, or structured partner mediation, choose the format that fits your life.
@@ -439,7 +349,7 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- 5. CLINICAL ECOSYSTEM & SANCTUARY (Authentic Studio Visual)               -->
+  <!-- 4. CLINICAL ECOSYSTEM & SANCTUARY (Authentic Studio Visual)               -->
   <!-- ========================================================================= -->
   <section id="ecosystem" class="gh-ecosystem-section js-ecosystem-section">
     <div class="container">
@@ -447,7 +357,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
 
           <div class="lg:col-span-7">
-            <span class="gh-eyebrow text-sky-300">CHAPTER 05 • CLINICAL INFRASTRUCTURE</span>
+            <span class="gh-eyebrow text-sky-300">CHAPTER 04 • CLINICAL INFRASTRUCTURE</span>
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight mt-2 mb-4 leading-tight">
               A sanctuary for healing <span class="highlight-script">in-person and online.</span>
             </h2>
@@ -553,7 +463,7 @@
         </h2>
 
         <p class="gh-cta-banner__sub">
-          Start with a complimentary 15-minute discovery audio call to ask questions and feel comfortable, or schedule your first 60-minute clinical intake in Viman Nagar or online.
+          Start with a complimentary discovery audio call to ask questions and feel comfortable, or schedule your first 60-minute clinical intake in Viman Nagar or online.
         </p>
 
         <div class="gh-cta-banner__actions">
@@ -561,8 +471,8 @@
             <span>Book Your First Session</span>
             <i class="ph ph-calendar-check"></i>
           </button>
-          <button (click)="openBooking('Free 15-Minute Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--secondary">
-            <span>Request 15-Min Discovery Call</span>
+          <button (click)="openBooking('Free Discovery Audio Call (Complimentary)')" class="gh-btn gh-btn--secondary">
+            <span>Request Free Discovery Call</span>
             <i class="ph ph-phone-call"></i>
           </button>
         </div>
@@ -587,8 +497,8 @@
           <div class="gh-cta-banner__step-item">
             <span class="gh-cta-banner__step-badge">3</span>
             <div class="gh-cta-banner__step-text">
-              <strong>Immediate Confirmation</strong>
-              <span>Calendar invite, studio map &amp; video link</span>
+              <strong>Therapist Confirmation</strong>
+              <span>Leona approves &amp; sends calendar invite</span>
             </div>
           </div>
         </div>

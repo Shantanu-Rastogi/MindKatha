@@ -32,7 +32,7 @@ export class BookingDrawerComponent implements OnInit, OnDestroy {
   sessionMode: 'telehealth' | 'studio' = 'telehealth';
   
   serviceOptions: DrawerServiceOption[] = [
-    { name: 'Free 15-Minute Discovery Audio Call (Complimentary)', category: 'Discovery', duration: '15 mins', icon: 'ph-phone-call' },
+    { name: 'Free Discovery Audio Call (Complimentary)', category: 'Discovery', duration: 'Complimentary', icon: 'ph-phone-call' },
     { name: 'Individual Psychotherapy & Emotional Regulation (50 mins)', category: 'Psychotherapy', duration: '50 mins', icon: 'ph-user' },
     { name: 'Occupational Burnout & High-Performance Restoration (50 mins)', category: 'Burnout Care', duration: '50 mins', icon: 'ph-briefcase' },
     { name: 'Trauma-Informed Healing & Complex Grief Processing (50 mins)', category: 'Trauma Care', duration: '50 mins', icon: 'ph-shield-check' },
@@ -48,7 +48,7 @@ export class BookingDrawerComponent implements OnInit, OnDestroy {
     { name: 'Other / Custom Clinical Inquiry', category: 'Custom Care', duration: 'Custom Inquiry', icon: 'ph-chat-circle-dots' }
   ];
 
-  selectedService: string = 'Free 15-Minute Discovery Audio Call (Complimentary)';
+  selectedService: string = 'Free Discovery Audio Call (Complimentary)';
   customServiceDetails: string = '';
   isServiceDropdownOpen: boolean = false;
 

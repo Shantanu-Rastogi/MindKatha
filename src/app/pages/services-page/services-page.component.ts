@@ -274,7 +274,7 @@ export class ServicesPageComponent {
   screenerFormats = [
     { id: 'in-person', label: 'In-Person Studio (Viman Nagar, Pune)', icon: 'ph-map-pin' },
     { id: 'telehealth', label: 'Encrypted Online Telehealth Video', icon: 'ph-video-camera' },
-    { id: 'discovery', label: 'Free 15-Minute Audio Discovery Call', icon: 'ph-phone-call' }
+    { id: 'discovery', label: 'Free Audio Discovery Call', icon: 'ph-phone-call' }
   ];
 
   get filteredServices(): ServiceDetail[] {

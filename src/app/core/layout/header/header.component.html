@@ -14,18 +14,18 @@
     </a>
 
     <!-- Desktop Navigation Links -->
-    <ul class="hidden md:flex items-center gap-1 lg:gap-2 text-[14px] lg:text-[15px] text-slate-600 font-medium">
+    <ul class="hidden lg:flex items-center gap-1 xl:gap-2 text-[14px] xl:text-[15px] text-slate-600 font-medium">
       <li>
-        <a routerLink="/" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" class="px-3.5 lg:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">Home</a>
+        <a routerLink="/" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" class="px-3 xl:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200 whitespace-nowrap">Home</a>
       </li>
       <li>
-        <a routerLink="/services" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" class="px-3.5 lg:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">Services &amp; Specializations</a>
+        <a routerLink="/services" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" class="px-3 xl:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200 whitespace-nowrap">Services &amp; Specializations</a>
       </li>
       <li>
-        <a routerLink="/about" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" [routerLinkActiveOptions]="{exact: true}" class="px-3.5 lg:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">About &amp; Approach</a>
+        <a routerLink="/about" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" [routerLinkActiveOptions]="{exact: true}" class="px-3 xl:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200 whitespace-nowrap">About &amp; Approach</a>
       </li>
       <li>
-        <a routerLink="/contact" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" class="px-3.5 lg:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200">Contact &amp; FAQ</a>
+        <a routerLink="/contact" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90 border border-sky-200/70 shadow-2xs" class="px-3 xl:px-4 py-2 rounded-full hover:bg-slate-100/80 hover:text-slate-900 transition-all duration-200 whitespace-nowrap">Contact &amp; FAQ</a>
       </li>
     </ul>
 
@@ -37,7 +37,7 @@
       </a>
 
       <!-- Mobile Hamburger Button -->
-      <button (click)="toggleMobileMenu()" aria-label="Toggle Menu" class="md:hidden flex items-center justify-center w-9 h-9 rounded-full text-slate-800 hover:bg-slate-100 focus:outline-none transition-colors shrink-0">
+      <button type="button" (click)="toggleMobileMenu()" aria-label="Toggle Menu" [attr.aria-expanded]="isMobileMenuOpen" class="lg:hidden flex items-center justify-center w-9 h-9 rounded-full text-slate-800 hover:bg-slate-100 focus:outline-none transition-colors shrink-0">
         <svg *ngIf="!isMobileMenuOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
@@ -50,7 +50,7 @@
   </nav>
 
   <!-- Mobile Dropdown Menu -->
-  <div *ngIf="isMobileMenuOpen" class="md:hidden mt-2 w-full max-w-7xl rounded-2xl bg-white/98 backdrop-blur-2xl border border-slate-200/90 shadow-[0_16px_40px_rgba(15,23,42,0.14)] p-3.5 pointer-events-auto transition-all animate-fadeIn">
+  <div *ngIf="isMobileMenuOpen" class="lg:hidden mt-2 w-full max-w-7xl rounded-2xl bg-white/98 backdrop-blur-2xl border border-slate-200/90 shadow-[0_16px_40px_rgba(15,23,42,0.14)] p-3.5 pointer-events-auto transition-all animate-fadeIn">
     <ul class="flex flex-col gap-1 text-[15px] text-slate-700 font-medium">
       <li>
         <a routerLink="/" (click)="isMobileMenuOpen = false" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-[#0284c7] font-semibold bg-sky-50/90" class="block px-4 py-3 rounded-xl hover:bg-slate-50 hover:text-slate-900 transition-all">Home</a>

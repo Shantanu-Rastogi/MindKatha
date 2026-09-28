@@ -77,17 +77,27 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private scrollRafId: number | null = null;
   private prefersReducedMotion = false;
 
-  // Hero 1 & Hero 2 (2 stacked components) state management
-  private activeHeroBlock: 'text1' | 'text2' = 'text1';
-  private activeHero2Block: 'text1' | 'text2' = 'text1';
-  private heroFadeTimer: any = null;
-  private hero2FadeTimer: any = null;
-  private heroIntroTimer: any = null;
-  private hero2IntroTimer: any = null;
-  private safetyTimer: any = null;
+  // Hero: Google Health v2 "HomeValueProps" pinned slider (3 slides across 3 core clinical pillars)
+  private heroIntroTimer: ReturnType<typeof setTimeout> | null = null;
+  private resizeTimer: ReturnType<typeof setTimeout> | null = null;
   loadAnimationComplete = false;
-  hero2LoadTriggered = false;
-  hero2LoadAnimationComplete = false;
+
+  private hvpSection: HTMLElement | null = null;
+  private hvpTrack: HTMLElement | null = null;
+  private hvpSticky: HTMLElement | null = null;
+  private hvpSlides: HTMLElement[] = [];
+  private hvpMedia: Array<HTMLElement | null> = [];
+  private hvpRevealed: boolean[] = [];
+  private hvpSlideY: number[] = [];
+  private hvpMediaY: number[] = [];
+  private hvpHeight = 0;
+  private hvpTrackTop = 0;
+  private hvpProgress = 0;
+  private hvpStatic = false;
+  private lastInputWasKeyboard = false;
+  private progressBarEl: HTMLElement | null = null;
+  private valuePropsTrackEl: HTMLElement | null = null;
+  private readonly teardownFns: Array<() => void> = [];
 
   // Stat Counter states
   statsAnimated = false;
@@ -99,10 +109,10 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly careSteps: CareProcessStep[] = [
     {
       stepNum: '01',
-      duration: '15 Mins • Complimentary',
-      title: 'Discovery Audio Check-In',
+      duration: 'Complimentary • Zero Pressure',
+      title: 'Free Discovery Call',
       description:
-        'A brief, zero-pressure phone or audio conversation to share what brings you to therapy, ask questions about our approach, and ensure mutual comfort before booking.',
+        'A zero-pressure phone or audio conversation to share what brings you to therapy, ask questions about our approach, and ensure mutual comfort before booking.',
       outcomeTag: 'Clarity & Fit Match',
       icon: 'ph-phone-call'
     },
@@ -338,20 +348,22 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (!this.isBrowser) return;
 
+    const root: HTMLElement = this.el.nativeElement;
+    this.progressBarEl = root.querySelector('.js-scroll-progress-bar');
+    this.valuePropsTrackEl = root.querySelector('.js-value-props-track');
+
+    this.initHeroSlider();
     this.playHeroLoadAnimation();
     this.setupIntersectionObserver();
     this.setupScrollListener();
 
-    // Check for URL hash or ?section= query param to scroll directly
+    // ?scroll=<px> (deterministic QA screenshots), URL hash or ?section= deep links
     const params = new URLSearchParams(window.location.search);
     const scrollParam = params.get('scroll');
-    if (scrollParam) {
-      const targetY = Number(scrollParam);
+    if (scrollParam !== null && scrollParam.trim() !== '' && Number.isFinite(Number(scrollParam))) {
+      const targetY = Math.max(0, Number(scrollParam));
       const applyScroll = () => {
-        document.documentElement.style.scrollBehavior = 'auto';
-        window.scrollTo(0, targetY);
-        document.documentElement.scrollTop = targetY;
-        document.body.scrollTop = targetY;
+        this.jumpTo(targetY);
         this.loadAnimationComplete = true;
         this.handleScrollCalculations();
       };
@@ -370,73 +382,86 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.scrollRafId !== null) {
       cancelAnimationFrame(this.scrollRafId);
-    }
-    if (this.heroFadeTimer) {
-      clearTimeout(this.heroFadeTimer);
-    }
-    if (this.hero2FadeTimer) {
-      clearTimeout(this.hero2FadeTimer);
+      this.scrollRafId = null;
     }
     if (this.heroIntroTimer) {
       clearTimeout(this.heroIntroTimer);
+      this.heroIntroTimer = null;
     }
-    if (this.hero2IntroTimer) {
-      clearTimeout(this.hero2IntroTimer);
+    if (this.resizeTimer) {
+      clearTimeout(this.resizeTimer);
+      this.resizeTimer = null;
     }
-    if (this.safetyTimer) {
-      clearTimeout(this.safetyTimer);
-    }
+    this.teardownFns.forEach((teardown) => teardown());
+    this.teardownFns.length = 0;
     if (this.observer) {
       this.observer.disconnect();
     }
   }
 
   /**
-   * Choreographed 2-Stage Page Load Sequence (Image First -> Text Second):
-   * Stage 1 (0ms): Immediately triggers background image scale-down (1.08 -> 1.0), unblur, and fade-in
-   *                while Text 1 remains hidden (`is-hidden`) so the sanctuary image smoothly transitions first.
-   * Stage 2 (850ms): Once the sanctuary image has smoothly settled into view, Text 1 glides up with a
-   *                  staggered line-by-line cascade (`is-visible`).
+   * Google Health v2 HomeValueProps setup. Google drives the slides with CSS
+   * scroll-driven animations (animation-timeline: view()); this is a JS port of the
+   * same math because Safari/Firefox support for scroll timelines is still incomplete.
    */
-  /**
-   * Choreographed 2-Stage Page Load Sequence (matching google-health-v2 CustomHomeHero.js):
-   * Stage 1 (0ms): Immediately triggers background image scale-down (1.12 -> 1.0), unblur, and fade-in
-   *                while Text 1 remains hidden (`is-hidden`) so the sanctuary image smoothly settles first.
-   * Stage 2 (220ms): Text 1 glides up with a staggered line-by-line cascade (`is-visible`).
-   */
-  private playHeroLoadAnimation(): void {
-    const hero = this.el.nativeElement.querySelector('.js-hero-container');
-    const text1 = this.el.nativeElement.querySelector('.js-hero-text-1');
-    if (!hero) return;
+  private initHeroSlider(): void {
+    const root: HTMLElement = this.el.nativeElement;
+    this.hvpSection = root.querySelector('.js-hvp');
+    this.hvpTrack = root.querySelector('.js-hvp-track');
+    this.hvpSticky = root.querySelector('.js-hvp-sticky');
+    if (!this.hvpSection || !this.hvpTrack || !this.hvpSticky) return;
+
+    this.hvpSlides = Array.from(root.querySelectorAll<HTMLElement>('.js-hvp-slide'));
+    this.hvpMedia = this.hvpSlides.map((slide) => slide.querySelector<HTMLElement>('.js-hvp-media'));
+    this.hvpRevealed = this.hvpSlides.map(() => false);
+    this.hvpSlideY = this.hvpSlides.map(() => Number.NaN);
+    this.hvpMediaY = this.hvpSlides.map(() => Number.NaN);
+    this.hvpSection.style.setProperty('--hvp-slides', String(this.hvpSlides.length));
 
     if (this.prefersReducedMotion) {
-      hero.classList.add('is-loaded');
-      text1?.classList.remove('is-hidden');
-      text1?.classList.add('is-visible');
+      // Static stacked layout: no pinning, no parallax, every slide fully visible
+      this.hvpStatic = true;
+      this.hvpSection.classList.add('gh-hvp--static');
+      this.hvpSlides.forEach((_, index) => this.revealHeroSlide(index));
+      return;
+    }
+
+    this.measureHeroSlider();
+  }
+
+  /** Cache stage height (100vh = large viewport, stable while mobile toolbars move) and track offset. */
+  private measureHeroSlider(): void {
+    if (!this.hvpTrack || !this.hvpSticky || this.hvpStatic) return;
+    this.hvpHeight = this.hvpSticky.getBoundingClientRect().height || window.innerHeight;
+    this.hvpTrackTop = this.hvpTrack.getBoundingClientRect().top + window.scrollY;
+    this.hvpSlideY.fill(Number.NaN);
+    this.hvpMediaY.fill(Number.NaN);
+  }
+
+  /**
+   * Page-load choreography (Google Health v2 CustomHomeHero): the sanctuary photo settles
+   * from scale(1.12) to 1 first, then slide 1's pills and lines cascade in.
+   */
+  private playHeroLoadAnimation(): void {
+    const section = this.hvpSection;
+    if (!section) return;
+
+    if (this.prefersReducedMotion || this.hvpStatic) {
+      section.classList.add('is-loaded');
       this.loadAnimationComplete = true;
       return;
     }
 
-    // Stage 1: Trigger sanctuary image scale-in & unblur on next animation frame
-    requestAnimationFrame(() => {
-      hero.classList.add('is-loaded');
-
-      if (window.scrollY > 40) {
-        this.loadAnimationComplete = true;
-        this.handleScrollCalculations();
-        return;
-      }
-
-      // Stage 2: Staggered line-by-line reveal of Slide 1
-      this.heroIntroTimer = setTimeout(() => {
-        if (window.scrollY <= 40) {
-          this.activeHeroBlock = 'text1';
-          text1?.classList.remove('is-hidden');
-          text1?.classList.add('is-visible');
-        }
-        this.loadAnimationComplete = true;
-        this.handleScrollCalculations();
-      }, 220);
+    this.ngZone.runOutsideAngular(() => {
+      requestAnimationFrame(() => {
+        section.classList.add('is-loaded');
+        const delay = window.scrollY > 40 ? 0 : 220;
+        this.heroIntroTimer = setTimeout(() => {
+          this.heroIntroTimer = null;
+          this.loadAnimationComplete = true;
+          this.handleScrollCalculations();
+        }, delay);
+      });
     });
   }
 
@@ -509,203 +534,204 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Centralized high-performance scroll handling:
-   * 1. Unified 3-stage sticky hero parallax & background cross-fade (active on BOTH desktop and mobile)
-   * 2. Slide 1 -> Slide 2 -> Slide 3 sequential handoff inside a single sticky stage (zero gap)
-   * 3. Hairline reading progress bar calculation
+   * Window listeners (registered outside Angular, removed in ngOnDestroy):
+   * rAF-throttled scroll, debounced resize re-measure, and keyboard-focus handling so
+   * tabbing into an off-screen slide lands that slide fully in view.
    */
   private setupScrollListener(): void {
-    if (this.prefersReducedMotion) return;
-
     this.ngZone.runOutsideAngular(() => {
       const onScroll = () => {
         if (this.scrollRafId !== null) return;
         this.scrollRafId = requestAnimationFrame(() => {
-          this.handleScrollCalculations();
           this.scrollRafId = null;
+          this.handleScrollCalculations();
         });
+      };
+      const onResize = () => {
+        if (this.resizeTimer) clearTimeout(this.resizeTimer);
+        this.resizeTimer = setTimeout(() => {
+          this.resizeTimer = null;
+          this.measureHeroSlider();
+          this.handleScrollCalculations();
+        }, 150);
+      };
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Tab') this.lastInputWasKeyboard = true;
+      };
+      const onPointerDown = () => {
+        this.lastInputWasKeyboard = false;
       };
 
       window.addEventListener('scroll', onScroll, { passive: true });
-      // Run once immediately so initial viewport state is synchronized
+      window.addEventListener('resize', onResize, { passive: true });
+      window.addEventListener('orientationchange', onResize);
+      window.addEventListener('keydown', onKeyDown, true);
+      window.addEventListener('pointerdown', onPointerDown, true);
+      this.teardownFns.push(() => {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
+        window.removeEventListener('orientationchange', onResize);
+        window.removeEventListener('keydown', onKeyDown, true);
+        window.removeEventListener('pointerdown', onPointerDown, true);
+      });
+
+      if (this.hvpSection && this.hvpSticky && !this.hvpStatic) {
+        const section = this.hvpSection;
+        const stageEls: HTMLElement[] = [this.hvpSticky, ...this.hvpSlides];
+        // overflow:hidden boxes remain programmatically scrollable; focus can nudge them
+        const onStageScroll = (event: Event) => {
+          const stageEl = event.currentTarget as HTMLElement;
+          if (stageEl.scrollTop !== 0 || stageEl.scrollLeft !== 0) {
+            stageEl.scrollTop = 0;
+            stageEl.scrollLeft = 0;
+          }
+        };
+        const onFocusIn = (event: FocusEvent) => this.handleHeroFocus(event);
+        stageEls.forEach((stageEl) => stageEl.addEventListener('scroll', onStageScroll, { passive: true }));
+        section.addEventListener('focusin', onFocusIn);
+        this.teardownFns.push(() => {
+          stageEls.forEach((stageEl) => stageEl.removeEventListener('scroll', onStageScroll));
+          section.removeEventListener('focusin', onFocusIn);
+        });
+      }
+
+      // Run once immediately so the initial viewport state is synchronized
       this.handleScrollCalculations();
+    });
+  }
+
+  /** Keyboard users tabbing into a pinned (translated) slide: scroll that slide exactly into view. */
+  private handleHeroFocus(event: FocusEvent): void {
+    if (this.hvpStatic || !this.lastInputWasKeyboard) return;
+    const target = event.target as HTMLElement | null;
+    const slide = target?.closest<HTMLElement>('.js-hvp-slide');
+    if (!slide) return;
+    const index = this.hvpSlides.indexOf(slide);
+    if (index < 0) return;
+
+    // Wait for the browser's own focus scroll-into-view, then land exactly on the slide
+    requestAnimationFrame(() => {
+      if (Math.abs(this.hvpProgress - index) > 0.01) {
+        this.scrollToHeroSlide(index, 'auto');
+      }
     });
   }
 
   private handleScrollCalculations(): void {
     const scrollY = window.scrollY;
     const vh = window.innerHeight;
-    const isDesktop = window.innerWidth >= 768;
 
-    // =========================================================================
-    // 0. Hairline Scroll Progress Bar
-    // =========================================================================
-    const progressBar = this.el.nativeElement.querySelector('.js-scroll-progress-bar');
-    if (progressBar) {
-      const docHeight = document.documentElement.scrollHeight - vh;
-      if (docHeight > 0) {
-        const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
-        progressBar.style.width = `${progress.toFixed(2)}%`;
-      }
+    // Reads first, writes after (no forced style/layout between transform writes)
+    const docHeight = this.progressBarEl ? document.documentElement.scrollHeight - vh : 0;
+    const valuePropsRect = this.valuePropsTrackEl ? this.valuePropsTrackEl.getBoundingClientRect() : null;
+
+    // 0. Hairline scroll progress bar
+    if (this.progressBarEl && docHeight > 0) {
+      const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
+      this.progressBarEl.style.width = `${progress.toFixed(2)}%`;
     }
 
-    // =========================================================================
-    // 1A. Hero 1 (Primary Sanctuary): Parallax & Text 1 <-> Text 2 Choreography
-    // =========================================================================
-    const heroContainer = this.el.nativeElement.querySelector('.js-hero-container');
-    if (heroContainer) {
-      const heroRect = heroContainer.getBoundingClientRect();
-      const heroBg = this.el.nativeElement.querySelector('.js-hero-bg');
-      const text1 = this.el.nativeElement.querySelector('.js-hero-text-1');
-      const text2 = this.el.nativeElement.querySelector('.js-hero-text-2');
-      const scrollHint = this.el.nativeElement.querySelector('.js-hero-scroll-hint');
+    // 1. Hero: Google Health v2 HomeValueProps pinned slider
+    this.updateHeroSlider(scrollY);
 
-      if (heroRect.bottom > 0) {
-        const scrollIntoHero = Math.max(0, -heroRect.top);
-        const maxScroll = Math.max(1, heroContainer.offsetHeight - vh);
-        const heroFraction = Math.min(1, Math.max(0, scrollIntoHero / maxScroll));
-
-        // Smooth Parallax & Subtle Depth Scale on BOTH desktop and mobile
-        if (heroBg) {
-          const bgOvershoot = isDesktop ? vh * 0.065 : vh * 0.045;
-          const offset = Math.round(-heroFraction * bgOvershoot);
-          const depthScale = isDesktop ? 1 + heroFraction * 0.015 : 1 + heroFraction * 0.025;
-          heroBg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
-        }
-
-        // Scroll Hint auto-hides once scrolled, and restores at top
-        if (scrollHint) {
-          if (scrollIntoHero > 40) {
-            scrollHint.classList.add('is-hidden');
-          } else {
-            scrollHint.classList.remove('is-hidden');
-          }
-        }
-
-        // Hero 1 Text 1 <-> Text 2 Sequential Handoff (Google Health v2 CustomHomeHero)
-        if (text1 && text2) {
-          if (!this.loadAnimationComplete && scrollIntoHero <= 40) {
-            // Let initial heroIntroTimer reveal text1
-          } else {
-            this.loadAnimationComplete = true;
-            const targetBlock: 'text1' | 'text2' = heroFraction >= 0.20 ? 'text2' : 'text1';
-
-            if (targetBlock !== this.activeHeroBlock) {
-              this.activeHeroBlock = targetBlock;
-              const outgoing = targetBlock === 'text2' ? text1 : text2;
-              const incoming = targetBlock === 'text2' ? text2 : text1;
-
-              outgoing.classList.remove('is-visible');
-              outgoing.classList.add('is-hidden');
-
-              if (this.heroFadeTimer) {
-                clearTimeout(this.heroFadeTimer);
-              }
-              this.heroFadeTimer = setTimeout(() => {
-                const currentIncoming = this.activeHeroBlock === 'text2' ? text2 : text1;
-                currentIncoming.classList.remove('is-hidden');
-                currentIncoming.classList.add('is-visible');
-              }, 160);
-            } else {
-              const activeEl = targetBlock === 'text2' ? text2 : text1;
-              if (!activeEl.classList.contains('is-visible') && !this.heroFadeTimer) {
-                activeEl.classList.remove('is-hidden');
-                activeEl.classList.add('is-visible');
-              }
-            }
-          }
-        }
-      }
+    // 2. Value Props section progress
+    if (valuePropsRect) {
+      this.slideProgress = Math.min(
+        1,
+        Math.max(0, (vh - valuePropsRect.top) / (vh + valuePropsRect.height))
+      );
     }
+  }
 
-    // =========================================================================
-    // 1B. Hero 2 (Clinical Studio Component Below Hero 1): Swipe-Up Reveal & Parallax
-    // =========================================================================
-    const hero2Container = this.el.nativeElement.querySelector('.js-hero-2-container');
-    if (hero2Container) {
-      const hero2Rect = hero2Container.getBoundingClientRect();
-      const hero2Bg = this.el.nativeElement.querySelector('.js-hero-2-bg');
-      const text2_1 = this.el.nativeElement.querySelector('.js-hero-2-text-1');
-      const text2_2 = this.el.nativeElement.querySelector('.js-hero-2-text-2');
-      const scrollHint2 = this.el.nativeElement.querySelector('.js-hero-2-scroll-hint');
+  /**
+   * Per-frame slider update (Google HomeValueProps keyframes, expressed in px):
+   *   slide i:  translateY =  clamp(i - p, -1, 1) * H          → swipes 1:1 with scroll
+   *   media i:  translateY = -0.8 * clamp(i - p, -1, 1) * H    → photo drifts at 20% speed
+   *   last media keeps drifting (+0.8 * exit * H) while the stage scrolls away.
+   */
+  private updateHeroSlider(scrollY: number): void {
+    const count = this.hvpSlides.length;
+    const stageHeight = this.hvpHeight;
+    if (this.hvpStatic || count === 0 || stageHeight <= 0) return;
 
-      // Trigger Hero 2 scale settle & staggered Text 2.1 reveal as Hero 2 swipes up into view
-      if (hero2Rect.top < vh * 0.72 && !this.hero2LoadTriggered) {
-        this.hero2LoadTriggered = true;
-        hero2Container.classList.add('is-loaded');
-        const delay2Ms = this.prefersReducedMotion ? 0 : 180;
-        this.hero2IntroTimer = setTimeout(() => {
-          this.hero2LoadAnimationComplete = true;
-          if (text2_1 && this.activeHero2Block === 'text1') {
-            text2_1.classList.remove('is-hidden');
-            text2_1.classList.add('is-visible');
-          }
-        }, delay2Ms);
+    const rawScroll = scrollY - this.hvpTrackTop;
+    const scrolled = Math.min(count * stageHeight, Math.max(0, rawScroll));
+    const progress = Math.min(count - 1, scrolled / stageHeight);
+    const exit = Math.min(1, Math.max(0, (scrolled - (count - 1) * stageHeight) / stageHeight));
+    const dpr = window.devicePixelRatio || 1;
+    this.hvpProgress = progress;
+
+    for (let i = 0; i < count; i++) {
+      const offset = Math.max(-1, Math.min(1, i - progress));
+
+      // Snap slide edges to device pixels so adjacent slides never open a hairline seam
+      const slideY = Math.round(offset * stageHeight * dpr) / dpr;
+      if (slideY !== this.hvpSlideY[i]) {
+        this.hvpSlideY[i] = slideY;
+        this.hvpSlides[i].style.transform = `translate3d(0, ${slideY}px, 0)`;
       }
 
-      if (hero2Rect.bottom > 0 && hero2Rect.top < vh) {
-        const scrollIntoHero2 = Math.max(0, -hero2Rect.top);
-        const maxScroll2 = Math.max(1, hero2Container.offsetHeight - vh);
-        const hero2Fraction = Math.min(1, Math.max(0, scrollIntoHero2 / maxScroll2));
-
-        // Smooth Parallax & Depth Scale on BOTH desktop and mobile
-        if (hero2Bg) {
-          const bgOvershoot = isDesktop ? vh * 0.065 : vh * 0.045;
-          const offset = Math.round(-hero2Fraction * bgOvershoot);
-          const depthScale = isDesktop ? 1 + hero2Fraction * 0.015 : 1 + hero2Fraction * 0.025;
-          hero2Bg.style.transform = `translate3d(0, ${offset}px, 0) scale(${depthScale.toFixed(4)})`;
-        }
-
-        if (scrollHint2) {
-          if (scrollIntoHero2 > 40) {
-            scrollHint2.classList.add('is-hidden');
-          } else {
-            scrollHint2.classList.remove('is-hidden');
-          }
-        }
-
-        // Hero 2 Text 2.1 <-> Text 2.2 Sequential Handoff inside Hero 2
-        if (text2_1 && text2_2 && hero2Rect.top <= 0) {
-          hero2Container.classList.add('is-loaded');
-          this.hero2LoadAnimationComplete = true;
-          const target2Block: 'text1' | 'text2' = hero2Fraction >= 0.20 ? 'text2' : 'text1';
-
-          if (target2Block !== this.activeHero2Block) {
-            this.activeHero2Block = target2Block;
-            const outgoing2 = target2Block === 'text2' ? text2_1 : text2_2;
-            const incoming2 = target2Block === 'text2' ? text2_2 : text2_1;
-
-            outgoing2.classList.remove('is-visible');
-            outgoing2.classList.add('is-hidden');
-
-            if (this.hero2FadeTimer) {
-              clearTimeout(this.hero2FadeTimer);
-            }
-            this.hero2FadeTimer = setTimeout(() => {
-              const currentIncoming2 = this.activeHero2Block === 'text2' ? text2_2 : text2_1;
-              currentIncoming2.classList.remove('is-hidden');
-              currentIncoming2.classList.add('is-visible');
-            }, 160);
-          } else {
-            const active2El = target2Block === 'text2' ? text2_2 : text2_1;
-            if (!active2El.classList.contains('is-visible') && !this.hero2FadeTimer) {
-              active2El.classList.remove('is-hidden');
-              active2El.classList.add('is-visible');
-            }
-          }
+      const media = this.hvpMedia[i];
+      if (media) {
+        let mediaY = -0.8 * offset * stageHeight;
+        if (i === count - 1) mediaY += 0.8 * exit * stageHeight;
+        mediaY = Math.round(mediaY * 100) / 100;
+        if (mediaY !== this.hvpMediaY[i]) {
+          this.hvpMediaY[i] = mediaY;
+          media.style.transform = `translate3d(0, ${mediaY}px, 0)`;
         }
       }
-    }
 
-    // =========================================================================
-    // 2. Value Props Section Progress
-    // =========================================================================
-    const track = this.el.nativeElement.querySelector('.js-value-props-track');
-    if (track) {
-      const trackRect = track.getBoundingClientRect();
-      const visibleFraction = Math.min(1, Math.max(0, (vh - trackRect.top) / (vh + trackRect.height)));
-      this.slideProgress = visibleFraction;
+      // One-time reveal once the slide's top edge is between -30% and +50% of the stage
+      const inRevealZone = offset > -0.3 && offset < 0.5 && rawScroll < count * stageHeight;
+      if (inRevealZone && !this.hvpRevealed[i] && (i > 0 || this.loadAnimationComplete)) {
+        this.revealHeroSlide(i);
+      }
     }
+  }
+
+  /**
+   * Google HomeValueProps.triggerLineReveal(): pills expand first (chapter openers only), the
+   * eyebrow and headline lines follow (0.5s + 60ms stagger), then description lines (+0.3s) and CTAs.
+   */
+  private revealHeroSlide(index: number): void {
+    const slide = this.hvpSlides[index];
+    if (!slide || this.hvpRevealed[index]) return;
+    this.hvpRevealed[index] = true;
+
+    const content = slide.querySelector<HTMLElement>('.js-hvp-content');
+    if (!content) return;
+
+    const pills = content.querySelector<HTMLElement>('.js-hvp-pills');
+    const lines = Array.from(content.querySelectorAll<HTMLElement>('.js-hvp-line'));
+    const isHeadline = (line: HTMLElement) => !!line.closest('.gh-hvp__headline');
+    const isDescription = (line: HTMLElement) => !!line.closest('.gh-hvp__description');
+    const stagger = 0.06;
+    const headlineStart = 0.5;
+    const descriptionStart = headlineStart + lines.filter(isHeadline).length * stagger + 0.3;
+    const ctaStart = descriptionStart + lines.filter(isDescription).length * stagger + 0.12;
+    let headlineIndex = 0;
+    let descriptionIndex = 0;
+    let ctaIndex = 0;
+
+    lines.forEach((line) => {
+      let delay: number;
+      if (isHeadline(line)) {
+        delay = headlineStart + headlineIndex++ * stagger;
+      } else if (isDescription(line)) {
+        delay = descriptionStart + descriptionIndex++ * stagger;
+      } else if (line.classList.contains('js-hvp-cta')) {
+        delay = ctaStart + ctaIndex++ * 0.1;
+      } else {
+        delay = headlineStart - 0.1; // eyebrow leads the headline
+      }
+      line.style.setProperty('--animation-delay', `${delay.toFixed(2)}s`);
+    });
+
+    requestAnimationFrame(() => {
+      pills?.classList.add('is-visible');
+      lines.forEach((line) => line.classList.add('is-visible'));
+    });
   }
 
   /**
@@ -735,16 +761,57 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   scrollToSection(id: string, behavior: ScrollBehavior = 'smooth'): void {
-    if (!this.isBrowser) return;
-    const target = this.el.nativeElement.querySelector(`#${id}`);
-    if (target) {
-      const offset = id === 'clinical-dialogue' ? 0 : 70;
-      const topOffset = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({
-        top: Math.max(0, topOffset),
-        behavior
-      });
+    // Only plain element ids (the value can come from the URL hash / ?section=)
+    if (!this.isBrowser || !/^[A-Za-z][\w-]*$/.test(id)) return;
+    const target = this.el.nativeElement.querySelector(`#${id}`) as HTMLElement | null;
+    if (!target) return;
+
+    // Hero slides are pinned + transformed: map them to their scroll position instead
+    const heroSlide = target.closest<HTMLElement>('.js-hvp-slide');
+    if (heroSlide && this.hvpSlides.includes(heroSlide)) {
+      this.scrollToHeroSlide(this.hvpSlides.indexOf(heroSlide), behavior);
+      return;
     }
+    if (target === this.hvpSection) {
+      this.scrollToHeroSlide(0, behavior);
+      return;
+    }
+
+    this.scrollWindowTo(target.getBoundingClientRect().top + window.scrollY - 70, behavior);
+  }
+
+  /** Scroll so hero slide `index` sits exactly in view (each slide = one viewport of pinned scroll). */
+  scrollToHeroSlide(index: number, behavior: ScrollBehavior = 'smooth'): void {
+    if (!this.isBrowser) return;
+    const slide = this.hvpSlides[index];
+    if (!slide) return;
+
+    if (this.hvpStatic) {
+      this.scrollWindowTo(slide.getBoundingClientRect().top + window.scrollY, behavior);
+      return;
+    }
+    if (this.hvpHeight <= 0) this.measureHeroSlider();
+    this.scrollWindowTo(this.hvpTrackTop + index * this.hvpHeight, behavior);
+  }
+
+  private scrollWindowTo(top: number, behavior: ScrollBehavior): void {
+    const y = Math.max(0, Math.round(top));
+    if (behavior === 'smooth') {
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    } else {
+      this.jumpTo(y);
+    }
+  }
+
+  /** Instant jump: html has `scroll-behavior: smooth`, so bypass it for this one scroll. */
+  private jumpTo(y: number): void {
+    const rootStyle = document.documentElement.style;
+    const previous = rootStyle.scrollBehavior;
+    rootStyle.scrollBehavior = 'auto';
+    window.scrollTo(0, y);
+    requestAnimationFrame(() => {
+      rootStyle.scrollBehavior = previous;
+    });
   }
 
   selectSlide(index: number): void {

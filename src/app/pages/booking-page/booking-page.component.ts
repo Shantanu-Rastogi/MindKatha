@@ -76,7 +76,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   readonly practiceEmail = 'psychotherapy.leona@gmail.com';
 
   serviceOptions: ServiceOption[] = [
-    { name: 'Free 15-Minute Discovery Audio Call (Complimentary)', category: 'Discovery', duration: '15 mins', durationMinutes: 15, icon: 'ph-phone-call' },
+    { name: 'Free Discovery Audio Call (Complimentary)', category: 'Discovery', duration: 'Complimentary', durationMinutes: 30, icon: 'ph-phone-call' },
     { name: 'Individual Psychotherapy & Emotional Regulation', category: 'Psychotherapy', duration: '50 mins', durationMinutes: 50, icon: 'ph-user' },
     { name: 'Occupational Burnout & High-Performance Restoration', category: 'Burnout Care', duration: '50 mins', durationMinutes: 50, icon: 'ph-briefcase' },
     { name: 'Trauma-Informed Healing & Complex Grief Processing', category: 'Trauma Care', duration: '50 mins', durationMinutes: 50, icon: 'ph-shield-check' },
@@ -92,7 +92,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     { name: 'Other / Custom Clinical Inquiry', category: 'Custom Care', duration: 'Custom Inquiry', durationMinutes: 50, icon: 'ph-chat-circle-dots' }
   ];
 
-  selectedService: string = 'Free 15-Minute Discovery Audio Call (Complimentary)';
+  selectedService: string = 'Free Discovery Audio Call (Complimentary)';
   customServiceDetails: string = '';
   isServiceDropdownOpen: boolean = false;
 
@@ -484,14 +484,12 @@ export class BookingPageComponent implements OnInit, OnDestroy {
         ? 'In-Person Studio (Viman Nagar, Pune)'
         : 'Encrypted Online Video';
 
-    // Block slot locally immediately to prevent double-booking
-    this.markSlotBookedLocally(this.selectedDate, this.selectedSlot);
-
-    // Block Leona's Google Calendar & trigger email notification via Google Apps Script Webhook
+    // Send approval request to Leona via Google Apps Script Webhook (Calendar is only booked after Leona confirms)
     if (this.calendarWebhookUrl) {
       try {
         const query = new URLSearchParams({
-          action: 'createBooking',
+          action: 'requestBooking',
+          webhookUrl: this.calendarWebhookUrl,
           clientName: cleanName,
           phoneNumber: `+91 ${cleanPhone}`,
           clientEmail: cleanEmail,
@@ -509,7 +507,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
           mode: 'no-cors'
         });
       } catch {
-        // Proceed to confirmation screen even if network request encounters offline warning
+        // Proceed to request-received screen even if network request encounters offline warning
       }
     }
 

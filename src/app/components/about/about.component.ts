@@ -15,7 +15,6 @@ export class AboutComponent implements OnInit, OnDestroy {
   private observer?: IntersectionObserver;
   private hasAnimated = false;
 
-  displayYears = 0;
   displaySessions = 0;
 
   // Interactive Self-Reflection Screener State (CoachForMind / SafeStories inspired)
@@ -81,7 +80,6 @@ export class AboutComponent implements OnInit, OnDestroy {
 
       this.observer.observe(this.el.nativeElement);
     } else {
-      this.displayYears = 5;
       this.displaySessions = 7000;
     }
   }
@@ -95,13 +93,11 @@ export class AboutComponent implements OnInit, OnDestroy {
       const progress = Math.min(elapsed / duration, 1);
       const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
 
-      this.displayYears = Math.floor(easeOut * 5);
       this.displaySessions = Math.floor(easeOut * 7000);
 
       if (progress < 1) {
         requestAnimationFrame(update);
       } else {
-        this.displayYears = 5;
         this.displaySessions = 7000;
       }
     };
