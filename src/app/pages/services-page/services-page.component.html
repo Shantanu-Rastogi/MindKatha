@@ -1,5 +1,5 @@
-
 <div class="gh-page-shell px-4 sm:px-6 max-w-7xl mx-auto relative z-10 font-sans">
+  <app-breadcrumb currentLabel="Services &amp; Specializations"></app-breadcrumb>
   
   <!-- Subtle Ambient Glow -->
   <div class="absolute top-16 left-1/4 w-96 h-96 bg-sky-200/35 rounded-full blur-3xl pointer-events-none -z-10"></div>
@@ -187,7 +187,11 @@
           <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
             <img 
               [src]="service.image" 
-              [alt]="service.title" 
+              [alt]="service.imageAlt" 
+              width="900"
+              height="563"
+              [attr.loading]="idx < 3 ? 'eager' : 'lazy'"
+              decoding="async"
               class="w-full h-full object-cover lively-img">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/45 via-transparent to-transparent pointer-events-none"></div>
             
@@ -363,7 +367,7 @@
         <span class="w-8 h-8 rounded-xl bg-sky-50 border border-sky-200 text-[#0284c7] flex items-center justify-center font-bold text-xs">01</span>
         <h4 class="font-bold text-slate-900 text-sm sm:text-base">No Need for Prior Preparation</h4>
         <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
-          You don't need a polished summary of your life. Just bring whatever you are carrying today — whether messy, raw, or quiet.
+          You do not need a polished summary of your life. Bring whatever you are carrying today, whether it feels overwhelming, uncertain, or quiet.
         </p>
       </div>
 
@@ -371,7 +375,7 @@
         <span class="w-8 h-8 rounded-xl bg-sky-50 border border-sky-200 text-[#0284c7] flex items-center justify-center font-bold text-xs">02</span>
         <h4 class="font-bold text-slate-900 text-sm sm:text-base">100% Confidential Clinical Space</h4>
         <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
-          Every word exchanged is protected under strict RCI ethical guidelines and the Digital Personal Data Protection Act (DPDP 2023).
+          Every conversation is protected under strict RCI ethical guidelines and the Digital Personal Data Protection Act (DPDP Act 2023).
         </p>
       </div>
 
@@ -379,7 +383,7 @@
         <span class="w-8 h-8 rounded-xl bg-sky-50 border border-sky-200 text-[#0284c7] flex items-center justify-center font-bold text-xs">03</span>
         <h4 class="font-bold text-slate-900 text-sm sm:text-base">Co-Created Treatment Plan</h4>
         <p class="text-xs sm:text-[13px] text-slate-600 leading-relaxed">
-          Therapy pace is always agreed upon mutually. You remain in complete control of what we explore and when.
+          Therapy pace is agreed upon mutually. You remain in complete control of what we explore and when.
         </p>
       </div>
     </div>
@@ -399,6 +403,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Clinical Author Attribution (E-E-A-T) -->
+  <app-author-bio></app-author-bio>
 
 </div>
 

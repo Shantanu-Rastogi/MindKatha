@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ScrollRevealDirective } from '../../core/directives/scroll-reveal.directive';
+import { BreadcrumbComponent } from '../../components/breadcrumb/breadcrumb.component';
 
 export interface ServiceOption {
   name: string;
@@ -24,7 +25,7 @@ export interface BookingDayChip {
 @Component({
   selector: 'app-booking-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, ScrollRevealDirective],
+  imports: [CommonModule, FormsModule, RouterLink, ScrollRevealDirective, BreadcrumbComponent],
   templateUrl: './booking-page.component.html',
   styleUrl: './booking-page.component.scss'
 })
@@ -72,7 +73,6 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   private phoneTypingTimer?: ReturnType<typeof setTimeout>;
   private emailTypingTimer?: ReturnType<typeof setTimeout>;
 
-  readonly practiceWhatsAppNumber = '919876543210';
   readonly practiceEmail = 'psychotherapy.leona@gmail.com';
 
   serviceOptions: ServiceOption[] = [
@@ -522,19 +522,12 @@ export class BookingPageComponent implements OnInit, OnDestroy {
       `• Preferred Time: ${this.selectedDayLabel} at ${this.selectedSlot} IST`
     ].join('\n');
 
-    this.whatsappConfirmationUrl = `https://wa.me/${this.practiceWhatsAppNumber}?text=${encodeURIComponent(summaryLines)}`;
     this.mailtoConfirmationUrl = `mailto:${this.practiceEmail}?subject=${encodeURIComponent(
       `MindKatha Consultation Request — ${cleanName} (${this.selectedDayLabel})`
     )}&body=${encodeURIComponent(summaryLines)}`;
 
     this.isSubmittingBooking = false;
     this.currentStep = 3;
-  }
-
-  sendBookingViaWhatsApp(): void {
-    if (this.whatsappConfirmationUrl) {
-      window.open(this.whatsappConfirmationUrl, '_blank', 'noopener,noreferrer');
-    }
   }
 
   setStep(step: number): void {

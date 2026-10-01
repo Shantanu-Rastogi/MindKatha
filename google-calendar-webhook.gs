@@ -118,6 +118,18 @@ function doPost(e) {
 }
 
 /**
+ * Escapes user-supplied strings before interpolating into HTML email templates or HtmlService pages.
+ */
+function escapeHtml(raw) {
+  return String(raw || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Normalizes a phone number for wa.me links (ensures 91 country code for 10-digit Indian numbers).
  */
 function formatWhatsAppPhone(rawPhone) {
@@ -205,20 +217,28 @@ function handleRequestBooking(data) {
   const waRescheduleLink = buildPrefilledWhatsAppUrl(data, 'reschedule');
   const waInquiryLink = buildPrefilledWhatsAppUrl(data, 'inquiry');
 
+  const safeName = escapeHtml(data.clientName);
+  const safePhone = escapeHtml(data.phoneNumber);
+  const safeEmail = escapeHtml(data.clientEmail || '—');
+  const safeDayLabel = escapeHtml(data.dayLabel);
+  const safeSlot = escapeHtml(data.slot);
+  const safeMode = escapeHtml(data.mode);
+  const safeService = escapeHtml(data.service);
+
   // 1. Send Approval Request Email to Leona
   const emailSubject = '[Action Required] Approve Session Request: ' + data.clientName + ' — ' + data.dayLabel + ' at ' + data.slot + ' IST';
   const emailHtml = [
     '<div style="font-family: Arial, sans-serif; max-width: 580px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; color: #0f172a;">',
     '  <div style="display: inline-block; padding: 4px 12px; border-radius: 999px; background: #fef3c7; color: #b45309; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;">Awaiting Your Confirmation</div>',
     '  <h2 style="margin: 0 0 8px; color: #0f172a;">New MindKatha Session Request</h2>',
-    '  <p style="margin: 0 0 18px; font-size: 14px; color: #475569; line-height: 1.5;">This slot has <strong>not</strong> been booked on your calendar yet. Click <strong>Confirm &amp; Book Calendar Slot</strong> to lock the calendar, or tap a <strong>1-Tap WhatsApp</strong> button to message ' + data.clientName + ' with pre-filled details.</p>',
+    '  <p style="margin: 0 0 18px; font-size: 14px; color: #475569; line-height: 1.5;">This slot has <strong>not</strong> been booked on your calendar yet. Click <strong>Confirm &amp; Book Calendar Slot</strong> to lock the calendar, or tap a <strong>1-Tap WhatsApp</strong> button to message ' + safeName + ' with pre-filled details.</p>',
     '  <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 22px; background: #f8fafc; border-radius: 12px; padding: 12px;">',
-    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Client Name:</strong></td><td style="padding: 8px 12px;">' + data.clientName + '</td></tr>',
-    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>WhatsApp / Mobile:</strong></td><td style="padding: 8px 12px;">' + data.phoneNumber + '</td></tr>',
-    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Email:</strong></td><td style="padding: 8px 12px;">' + (data.clientEmail || '—') + '</td></tr>',
-    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Requested Slot:</strong></td><td style="padding: 8px 12px;"><strong>' + data.dayLabel + ' • ' + data.slot + ' IST</strong></td></tr>',
-    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Format:</strong></td><td style="padding: 8px 12px;">' + data.mode + '</td></tr>',
-    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Care Pathway:</strong></td><td style="padding: 8px 12px;">' + data.service + '</td></tr>',
+    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Client Name:</strong></td><td style="padding: 8px 12px;">' + safeName + '</td></tr>',
+    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>WhatsApp / Mobile:</strong></td><td style="padding: 8px 12px;">' + safePhone + '</td></tr>',
+    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Email:</strong></td><td style="padding: 8px 12px;">' + safeEmail + '</td></tr>',
+    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Requested Slot:</strong></td><td style="padding: 8px 12px;"><strong>' + safeDayLabel + ' • ' + safeSlot + ' IST</strong></td></tr>',
+    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Format:</strong></td><td style="padding: 8px 12px;">' + safeMode + '</td></tr>',
+    '    <tr><td style="padding: 8px 12px; color: #64748b;"><strong>Care Pathway:</strong></td><td style="padding: 8px 12px;">' + safeService + '</td></tr>',
     '  </table>',
     '  <div style="margin-bottom: 14px;">',
     '    <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-bottom: 8px;">Step 1: Calendar Decision</div>',
@@ -226,7 +246,7 @@ function handleRequestBooking(data) {
     '    <a href="' + declineUrl + '" style="display: inline-block; padding: 13px 20px; background: #f1f5f9; color: #be123c; border: 1px solid #fecdd3; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 13px; margin-bottom: 8px;">&#10005; Decline / Keep Slot Open</a>',
     '  </div>',
     '  <div style="padding-top: 14px; border-top: 1px solid #e2e8f0;">',
-    '    <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-bottom: 8px;">1-Tap WhatsApp to ' + data.clientName + ' (Pre-Filled with Booking Details)</div>',
+    '    <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-bottom: 8px;">1-Tap WhatsApp to ' + safeName + ' (Pre-Filled with Booking Details)</div>',
     '    <a href="' + waConfirmLink + '" style="display: inline-block; padding: 10px 16px; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 12px; margin-right: 8px; margin-bottom: 6px;">WhatsApp: Confirm Slot &rarr;</a>',
     '    <a href="' + waRescheduleLink + '" style="display: inline-block; padding: 10px 16px; background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 12px; margin-right: 8px; margin-bottom: 6px;">WhatsApp: Propose New Time &rarr;</a>',
     '    <a href="' + waInquiryLink + '" style="display: inline-block; padding: 10px 16px; background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; text-decoration: none; border-radius: 999px; font-weight: bold; font-size: 12px; margin-bottom: 6px;">WhatsApp: Quick Chat &rarr;</a>',
@@ -247,11 +267,11 @@ function handleRequestBooking(data) {
       '<div style="font-family: Arial, sans-serif; max-width: 560px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; color: #0f172a;">',
       '  <div style="display: inline-block; padding: 4px 12px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;">Pending Therapist Confirmation</div>',
       '  <h2 style="margin: 0 0 8px; color: #0284c7;">We Have Received Your Session Request</h2>',
-      '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Hi ' + data.clientName + ', thank you for reaching out to MindKatha. Your preferred slot has been shared with Leona Lahkar for review:</p>',
-      '  <p style="margin: 0 0 16px; font-size: 14px; background: #f8fafc; padding: 14px; border-radius: 12px;"><strong>Requested Date &amp; Time:</strong> ' + data.dayLabel + ' at ' + data.slot + ' IST<br/>',
-      '  <strong>Format:</strong> ' + data.mode + '<br/>',
-      '  <strong>Care Pathway:</strong> ' + data.service + '</p>',
-      '  <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">Once Leona confirms the slot, you will receive your official Google Calendar invitation and confirmation message via email and WhatsApp (' + data.phoneNumber + ').</p>',
+      '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Hi ' + safeName + ', thank you for reaching out to MindKatha. Your preferred slot has been shared with Leona Lahkar for review:</p>',
+      '  <p style="margin: 0 0 16px; font-size: 14px; background: #f8fafc; padding: 14px; border-radius: 12px;"><strong>Requested Date &amp; Time:</strong> ' + safeDayLabel + ' at ' + safeSlot + ' IST<br/>',
+      '  <strong>Format:</strong> ' + safeMode + '<br/>',
+      '  <strong>Care Pathway:</strong> ' + safeService + '</p>',
+      '  <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">Once Leona confirms the slot, you will receive your official Google Calendar invitation and confirmation message via email and WhatsApp (' + safePhone + ').</p>',
       '</div>'
     ].join('\n');
 
@@ -284,6 +304,12 @@ function handleApproveBooking(data) {
   });
 
   const eventTitle = 'MindKatha Session: ' + data.clientName + ' (' + data.slot + ')';
+  const safeName = escapeHtml(data.clientName);
+  const safeDayLabel = escapeHtml(data.dayLabel);
+  const safeSlot = escapeHtml(data.slot);
+  const safeMode = escapeHtml(data.mode);
+  const safeService = escapeHtml(data.service);
+  const safeEmail = escapeHtml(data.clientEmail);
 
   // Only create the event if not already created
   if (existingEvents.length === 0) {
@@ -318,10 +344,10 @@ function handleApproveBooking(data) {
         '<div style="font-family: Arial, sans-serif; max-width: 560px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; color: #0f172a;">',
         '  <div style="display: inline-block; padding: 4px 12px; border-radius: 999px; background: #d1fae5; color: #047857; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;">Session Confirmed</div>',
         '  <h2 style="margin: 0 0 8px; color: #059669;">Your Session is Confirmed</h2>',
-        '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Hi ' + data.clientName + ', Leona Lahkar has confirmed your session slot at MindKatha. A Google Calendar invitation has also been sent to your email.</p>',
-        '  <p style="margin: 0 0 16px; font-size: 14px; background: #f8fafc; padding: 14px; border-radius: 12px;"><strong>Date &amp; Time:</strong> ' + data.dayLabel + ' at ' + data.slot + ' IST<br/>',
-        '  <strong>Format:</strong> ' + data.mode + '<br/>',
-        '  <strong>Care Pathway:</strong> ' + data.service + '</p>',
+        '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Hi ' + safeName + ', Leona Lahkar has confirmed your session slot at MindKatha. A Google Calendar invitation has also been sent to your email.</p>',
+        '  <p style="margin: 0 0 16px; font-size: 14px; background: #f8fafc; padding: 14px; border-radius: 12px;"><strong>Date &amp; Time:</strong> ' + safeDayLabel + ' at ' + safeSlot + ' IST<br/>',
+        '  <strong>Format:</strong> ' + safeMode + '<br/>',
+        '  <strong>Care Pathway:</strong> ' + safeService + '</p>',
         '  <p style="margin: 0; font-size: 13px; color: #64748b;">If you have any questions prior to your session, feel free to reply to this email.</p>',
         '</div>'
       ].join('\n');
@@ -341,8 +367,8 @@ function handleApproveBooking(data) {
     badgeBg: '#d1fae5',
     badgeColor: '#047857',
     title: 'Session Confirmed on Google Calendar',
-    subtitle: 'The slot for <strong>' + data.clientName + '</strong> on <strong>' + data.dayLabel + ' at ' + data.slot + ' IST</strong> is now locked on your Google Calendar' + (data.clientEmail ? ' and a calendar invite has been sent to ' + data.clientEmail : '') + '. Tap below to send the pre-filled WhatsApp confirmation to ' + data.clientName + ':',
-    ctaLabel: '1-Tap WhatsApp Confirmation to ' + data.clientName,
+    subtitle: 'The slot for <strong>' + safeName + '</strong> on <strong>' + safeDayLabel + ' at ' + safeSlot + ' IST</strong> is now locked on your Google Calendar' + (data.clientEmail ? ' and a calendar invite has been sent to ' + safeEmail : '') + '. Tap below to send the pre-filled WhatsApp confirmation to ' + safeName + ':',
+    ctaLabel: '1-Tap WhatsApp Confirmation to ' + safeName,
     ctaUrl: waConfirmLink,
     ctaBg: '#059669'
   });
@@ -353,13 +379,18 @@ function handleApproveBooking(data) {
  * Keeps calendar open and notifies patient that Leona will propose an alternative slot.
  */
 function handleDeclineBooking(data) {
+  const safeName = escapeHtml(data.clientName);
+  const safeDayLabel = escapeHtml(data.dayLabel);
+  const safeSlot = escapeHtml(data.slot);
+  const safePhone = escapeHtml(data.phoneNumber);
+
   if (data.clientEmail && data.clientEmail.indexOf('@') !== -1) {
     const clientSubject = 'Update on Your MindKatha Session Request — ' + data.dayLabel + ' at ' + data.slot + ' IST';
     const clientHtml = [
       '<div style="font-family: Arial, sans-serif; max-width: 560px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; color: #0f172a;">',
       '  <h2 style="margin: 0 0 8px; color: #0f172a;">Scheduling Update for Your Session Request</h2>',
-      '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Hi ' + data.clientName + ', thank you for requesting a session with MindKatha for <strong>' + data.dayLabel + ' at ' + data.slot + ' IST</strong>.</p>',
-      '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Unfortunately, that specific time slot is unavailable. Leona will reach out to you on WhatsApp (' + data.phoneNumber + ') shortly to coordinate an alternative time that works comfortably for you.</p>',
+      '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Hi ' + safeName + ', thank you for requesting a session with MindKatha for <strong>' + safeDayLabel + ' at ' + safeSlot + ' IST</strong>.</p>',
+      '  <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.5;">Unfortunately, that specific time slot is unavailable. Leona will reach out to you on WhatsApp (' + safePhone + ') shortly to coordinate an alternative time that works comfortably for you.</p>',
       '</div>'
     ].join('\n');
 
@@ -377,8 +408,8 @@ function handleDeclineBooking(data) {
     badgeBg: '#ffe4e6',
     badgeColor: '#be123c',
     title: 'Request Declined — Calendar Kept Open',
-    subtitle: 'Your calendar was not blocked for <strong>' + data.dayLabel + ' at ' + data.slot + ' IST</strong>. Tap below to open WhatsApp with a pre-filled reschedule message for <strong>' + data.clientName + '</strong>:',
-    ctaLabel: '1-Tap WhatsApp Reschedule to ' + data.clientName,
+    subtitle: 'Your calendar was not blocked for <strong>' + safeDayLabel + ' at ' + safeSlot + ' IST</strong>. Tap below to open WhatsApp with a pre-filled reschedule message for <strong>' + safeName + '</strong>:',
+    ctaLabel: '1-Tap WhatsApp Reschedule to ' + safeName,
     ctaUrl: waRescheduleLink,
     ctaBg: '#0284c7'
   });

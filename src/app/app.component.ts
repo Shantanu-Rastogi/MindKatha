@@ -3,6 +3,7 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SeoService } from './core/services/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +19,15 @@ import { FooterComponent } from './components/footer/footer.component';
 export class AppComponent implements OnInit {
   title = 'mindkatha-app-ng';
   private router = inject(Router);
+  private seoService = inject(SeoService);
 
   ngOnInit(): void {
+    this.seoService.updateForUrl(this.router.url);
+
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event) => {
+      this.seoService.updateForUrl(event.urlAfterRedirects || event.url);
       if (typeof window !== 'undefined') {
         const hasDeepLink =
           window.location.hash.length > 1 ||

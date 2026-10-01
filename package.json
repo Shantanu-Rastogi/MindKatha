@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "otp-server": "node server/otp-server.mjs",
-    "build": "ng build",
+    "build": "ng build && node scripts/prerender-routes.mjs",
+    "build:gh-pages": "ng build --base-href /MindKatha/ && node scripts/prerender-routes.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

@@ -61,7 +61,7 @@ export class OtpService {
   private firebaseConfirmationResult: ConfirmationResult | null = null;
 
   readonly timer$ = this.resendTimer$.asObservable();
-  readonly practiceWhatsAppNumber = '919876543210'; // MindKatha official WhatsApp
+  readonly practiceWhatsAppNumber = ''; // Populated via environment if direct practice WhatsApp is enabled
 
   /**
    * Dispatches a 6-digit OTP:

@@ -1,21 +1,28 @@
 <div class="about-page-wrapper">
+  <app-breadcrumb currentLabel="About Leona Lahkar"></app-breadcrumb>
   
   <!-- MAIN EDITORIAL BIO CARD -->
-  <section class="leona-bio-card" appScrollReveal revealAnimation="fade-up" [revealDelay]="50">
+  <section class="leona-bio-card" appScrollReveal revealAnimation="fade-up" [revealDelay]="50" itemscope itemtype="https://schema.org/Person">
     <div class="leona-bio-grid">
       
       <!-- Left Column: Portrait -->
       <div class="leona-portrait-col">
         <div class="portrait-frame">
           <img
+            itemprop="image"
             [src]="leonaPortraitUrl"
-            alt="Leona Lahkar — RCI Licensed Clinical Psychologist"
+            alt="Leona Lahkar, RCI Licensed Clinical Psychologist (#A84920) at MindKatha Viman Nagar Pune"
+            width="800"
+            height="1000"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
             class="portrait-img" />
           <div class="portrait-gradient"></div>
           <div class="portrait-caption-card">
             <div>
-              <div class="portrait-name">Leona Lahkar</div>
-              <div class="portrait-role">RCI Licensed Clinical Psychologist</div>
+              <div class="portrait-name" itemprop="name">Leona Lahkar</div>
+              <div class="portrait-role" itemprop="jobTitle">RCI Licensed Clinical Psychologist (#A84920)</div>
             </div>
           </div>
         </div>
@@ -33,12 +40,12 @@
           </h1>
         </div>
 
-        <p class="leona-lead-text">
-          In my clinical practice across Pune and Mumbai, I work with adults, couples, and neurodivergent minds navigating burnout, anxiety, relational patterns, and life transitions.
+        <p class="leona-lead-text" itemprop="description">
+          In my clinical practice across Pune and online telehealth, I work with adults, couples, and neurodivergent clients navigating occupational burnout, anxiety, adult ADHD, relational patterns, and life transitions.
         </p>
 
         <blockquote class="leona-quote">
-          “Therapy isn’t about fixing a broken version of you—it’s a calm, structured space to understand your patterns and author your own story.”
+          “Therapy is not about fixing a broken version of you. It is a calm, structured clinical space to understand your patterns and write your next chapter with clarity.”
         </blockquote>
 
         <!-- Clean 3-Row Snapshot (Replaces the cluttered pill wall) -->

@@ -2,17 +2,25 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { ScrollRevealDirective } from '../../core/directives/scroll-reveal.directive';
+import { BreadcrumbComponent } from '../../components/breadcrumb/breadcrumb.component';
+import { AuthorBioComponent } from '../../components/author-bio/author-bio.component';
 
 @Component({
   selector: 'app-legal-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, ScrollRevealDirective],
+  imports: [CommonModule, RouterLink, ScrollRevealDirective, BreadcrumbComponent, AuthorBioComponent],
   templateUrl: './legal-page.component.html',
   styleUrl: './legal-page.component.scss'
 })
 export class LegalPageComponent implements OnInit {
   private router = inject(Router);
   activeTab: 'privacy' | 'terms' | 'consent' = 'privacy';
+
+  get breadcrumbLabel(): string {
+    if (this.activeTab === 'terms') return 'Terms & Practice Policies';
+    if (this.activeTab === 'consent') return 'Clinical Informed Consent';
+    return 'Privacy Policy & Ethics';
+  }
 
   ngOnInit(): void {
     const url = this.router.url.toLowerCase();

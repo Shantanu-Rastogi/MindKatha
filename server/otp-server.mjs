@@ -52,7 +52,7 @@ const HMAC_SECRET = resolveHmacSecret();
 const PORT = Number(process.env.OTP_SERVER_PORT || 3001);
 const HOST = '127.0.0.1'; // Strict localhost binding per security guidelines
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'http://localhost:4200';
-const PRACTICE_WHATSAPP = process.env.PRACTICE_WHATSAPP_NUMBER || '919876543210';
+const PRACTICE_WHATSAPP = process.env.PRACTICE_WHATSAPP_NUMBER || '';
 
 // Detect active provider based on configured credentials
 function getActiveProvider() {

@@ -1,27 +1,63 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { AboutPageComponent } from './pages/about-page/about-page.component';
-import { ServicesPageComponent } from './pages/services-page/services-page.component';
-import { BookingPageComponent } from './pages/booking-page/booking-page.component';
-import { ContactPageComponent } from './pages/contact-page/contact-page.component';
-import { LegalPageComponent } from './pages/legal-page/legal-page.component';
 import { HomeDemoPageComponent } from './pages/home-demo-page/home-demo-page.component';
-import { LogoLabPageComponent } from './pages/logo-lab-page/logo-lab-page.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeDemoPageComponent },
-  { path: 'home-demo', component: HomeDemoPageComponent },
-  { path: 'logo-lab', component: LogoLabPageComponent },
-  { path: 'about', component: AboutPageComponent },
-  { path: 'services', component: ServicesPageComponent },
+  {
+    path: '',
+    component: HomeDemoPageComponent,
+    title: 'MindKatha (mindkatha.in) | Clinical Psychotherapy & Adult ADHD Diagnostics in Pune'
+  },
+  { path: 'home-demo', redirectTo: '', pathMatch: 'full' },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./pages/about-page/about-page.component').then((m) => m.AboutPageComponent),
+    title: 'Leona Lahkar — RCI Licensed Clinical Psychologist (#A84920) | MindKatha'
+  },
+  {
+    path: 'services',
+    loadComponent: () =>
+      import('./pages/services-page/services-page.component').then((m) => m.ServicesPageComponent),
+    title: 'Therapy Services, Adult ADHD & Psychometric Testing | MindKatha Pune'
+  },
   { path: 'services-page', redirectTo: 'services', pathMatch: 'full' },
   { path: 'specializations', redirectTo: 'services', pathMatch: 'full' },
   { path: 'insights', redirectTo: 'services', pathMatch: 'full' },
-  { path: 'contact', component: ContactPageComponent },
-  { path: 'book', component: BookingPageComponent },
-  { path: 'legal', component: LegalPageComponent },
-  { path: 'privacy', component: LegalPageComponent },
-  { path: 'terms', component: LegalPageComponent },
-  { path: 'consent', component: LegalPageComponent },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./pages/contact-page/contact-page.component').then((m) => m.ContactPageComponent),
+    title: 'Contact Viman Nagar Studio & Clinical FAQs | MindKatha Pune'
+  },
+  {
+    path: 'book',
+    loadComponent: () =>
+      import('./pages/booking-page/booking-page.component').then((m) => m.BookingPageComponent),
+    title: 'Book a Therapy Session or Free Discovery Call | MindKatha Pune'
+  },
+  {
+    path: 'legal',
+    loadComponent: () =>
+      import('./pages/legal-page/legal-page.component').then((m) => m.LegalPageComponent),
+    title: 'Legal, Privacy Policy & Clinical Informed Consent | MindKatha'
+  },
+  {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./pages/legal-page/legal-page.component').then((m) => m.LegalPageComponent),
+    title: 'Privacy Policy & DPDP Act 2023 Compliance | MindKatha'
+  },
+  {
+    path: 'terms',
+    loadComponent: () =>
+      import('./pages/legal-page/legal-page.component').then((m) => m.LegalPageComponent),
+    title: 'Terms of Service & Cancellation Policy | MindKatha'
+  },
+  {
+    path: 'consent',
+    loadComponent: () =>
+      import('./pages/legal-page/legal-page.component').then((m) => m.LegalPageComponent),
+    title: 'Clinical Informed Consent & Ethical Scope | MindKatha'
+  },
   { path: '**', redirectTo: '' }
 ];

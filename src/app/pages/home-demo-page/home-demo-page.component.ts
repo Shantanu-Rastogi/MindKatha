@@ -10,8 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { BookingService } from '../../services/booking.service';
-import { BookingDrawerComponent } from '../../components/booking-drawer/booking-drawer.component';
+import { AuthorBioComponent } from '../../components/author-bio/author-bio.component';
 interface ValuePropSlide {
   id: string;
   category: string;
@@ -34,6 +33,7 @@ interface ThreeUpFeature {
   durationBadge: string;
   cadenceBadge: string;
   image: string;
+  imageAlt: string;
   description: string;
   bullets: string[];
   ctaLabel: string;
@@ -58,7 +58,7 @@ interface ClinicalFaqItem {
 @Component({
   selector: 'app-home-demo-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, BookingDrawerComponent],
+  imports: [CommonModule, RouterLink, AuthorBioComponent],
   templateUrl: './home-demo-page.component.html',
   styleUrl: './home-demo-page.component.scss'
 })
@@ -66,7 +66,6 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private el = inject(ElementRef);
   private ngZone = inject(NgZone);
   private platformId = inject(PLATFORM_ID);
-  private bookingService = inject(BookingService);
 
   isBrowser = false;
   activeSlideIndex = 0;
@@ -112,7 +111,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       duration: 'Complimentary • Zero Pressure',
       title: 'Free Discovery Call',
       description:
-        'A zero-pressure phone or audio conversation to share what brings you to therapy, ask questions about our approach, and ensure mutual comfort before booking.',
+        'A brief phone or audio conversation to share what brings you to therapy, ask questions about our clinical approach, and confirm mutual fit before booking.',
       outcomeTag: 'Clarity & Fit Match',
       icon: 'ph-phone-call'
     },
@@ -121,7 +120,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       duration: '60 Mins • First Session',
       title: 'Collaborative Clinical Intake',
       description:
-        'We gently map your lived history, current nervous system stressors, and personal goals—establishing a tailored therapeutic or diagnostic plan at a pace that feels safe.',
+        'We map your personal history, current stressors, and goals together, building a tailored therapeutic or diagnostic plan at a pace that feels comfortable.',
       outcomeTag: 'Personalized Care Plan',
       icon: 'ph-compass'
     },
@@ -130,7 +129,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       duration: '50 Mins • Weekly / Bi-Weekly',
       title: 'Ongoing Dialogue & Integration',
       description:
-        'Consistent 1-on-1 sessions in our Viman Nagar studio or encrypted telehealth, combining evidence-based psychotherapy with practical between-session somatic grounding.',
+        'Consistent 1-on-1 sessions in our Viman Nagar studio or encrypted telehealth, combining evidence-based psychotherapy with practical nervous system grounding.',
       outcomeTag: 'Sustainable Regulation',
       icon: 'ph-plant'
     }
@@ -145,8 +144,8 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       headline: 'Untangle executive dysfunction with',
       headlineAccent: 'clinical diagnostic clarity.',
       description:
-        'Many intelligent adults spend decades mistaking neurobiological executive dysfunction for personal failure or laziness. We conduct structured, gold-standard evaluations and build low-friction, dopamine-friendly scaffolding without forcing neurotypical masking.',
-      image: 'assets/images/sky_adhd_focus.jpg',
+        'Many adults spend years mistaking neurobiological executive dysfunction for personal failure. We conduct structured, gold-standard evaluations and build practical, dopamine-aligned routines without forcing neurotypical masking.',
+      image: 'assets/images/sky_adhd_focus.webp',
       badge: 'DIVA-5 & WAIS-IV Protocol',
       protocolBadge: 'RCI Certified Evaluation • Accommodations Ready',
       ctaLabel: 'Request ADHD Diagnostic Battery',
@@ -181,8 +180,8 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       headline: 'Regulate your nervous system.',
       headlineAccent: 'Heal beyond just the words.',
       description:
-        'When the body remains trapped in chronic fight, flight, or freeze, purely logical advice falls short. We pair bottom-up polyvagal regulation with narrative and attachment therapy to gently release developmental wounds and chronic hyper-vigilance.',
-      image: 'assets/images/sky_trauma_healing.jpg',
+        'When the body stays stuck in chronic fight, flight, or freeze, purely cognitive advice falls short. We pair somatic nervous system regulation with narrative and attachment therapy to process developmental wounds safely.',
+      image: 'assets/images/sky_trauma_healing.webp',
       badge: 'Polyvagal & Somatic Modalities',
       protocolBadge: 'Autonomic Regulation • Safe Pacing Protocol',
       ctaLabel: 'Begin Somatic Trauma Therapy',
@@ -191,7 +190,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           icon: 'ph-heartbeat',
           title: 'Autonomic Nervous System Stabilization',
-          desc: 'Physiological grounding protocols to widen your window of tolerance and disarm acute panic spikes.'
+          desc: 'Physiological grounding protocols to widen your window of tolerance and calm acute panic spikes.'
         },
         {
           icon: 'ph-shield-check',
@@ -201,7 +200,7 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           icon: 'ph-book-open-text',
           title: 'Narrative Re-Authoring',
-          desc: 'Externalizing internalized shame scripts so you can reclaim agency over your identity and relationships.'
+          desc: 'Working through internalized shame scripts so you can rebuild agency in your identity and relationships.'
         }
       ],
       metrics: [
@@ -217,8 +216,8 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       headline: 'Rebuild cognitive vitality',
       headlineAccent: 'without sacrificing ambition.',
       description:
-        'Designed for software engineers, founders, clinicians, and leaders navigating allostatic overload and imposter fatigue. We help you decouple your human worth from sprint velocity and build sustainable psychological boundaries.',
-      image: 'assets/images/sky_burnout_recovery.jpg',
+        'Designed for software engineers, founders, clinicians, and leaders managing chronic work stress and imposter fatigue. We help you separate your self-worth from work output and build sustainable boundaries.',
+      image: 'assets/images/sky_burnout_recovery.webp',
       badge: 'Occupational Restoration',
       protocolBadge: 'High-Velocity Professional Care • Confidential',
       ctaLabel: 'Book Burnout Recovery Intake',
@@ -255,9 +254,10 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       category: 'Ongoing Clinical Care',
       durationBadge: '50 Mins / Session',
       cadenceBadge: 'Weekly or Bi-Weekly',
-      image: 'assets/images/therapy_dialogue.jpg',
+      image: 'assets/images/therapy_dialogue.webp',
+      imageAlt: 'One-on-one individual psychotherapy consultation room at MindKatha Viman Nagar Pune',
       description:
-        'Dedicated one-on-one therapeutic space integrating CBT, ACT, Narrative Therapy, and somatic mindfulness for anxiety, mood shifts, grief, and life transitions.',
+        'Dedicated one-on-one therapeutic space integrating CBT, ACT, Narrative Therapy, and somatic grounding for anxiety, mood shifts, grief, and life transitions.',
       bullets: [
         'Conducted in English, Hindi, Assamese, or Bengali',
         'Available at our Viman Nagar studio or encrypted video',
@@ -271,7 +271,8 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       category: 'Diagnostic Batteries',
       durationBadge: '2-Phase Battery',
       cadenceBadge: 'Includes Written Dossier',
-      image: 'assets/images/sky_psychometrics.jpg',
+      image: 'assets/images/sky_psychometrics.webp',
+      imageAlt: 'Standardized Adult ADHD and MCMI-IV psychometric testing materials at MindKatha',
       description:
         'Standardized clinical assessments (DIVA-5, WAIS-IV, MCMI-IV, Rorschach & TAT) for adult ADHD, personality profiling, and differential diagnosis.',
       bullets: [
@@ -287,12 +288,13 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
       category: 'Partner & Pre-Marital Care',
       durationBadge: '60–75 Mins / Session',
       cadenceBadge: 'Joint & Individual Slots',
-      image: 'assets/images/sky_couples_dialogue.jpg',
+      image: 'assets/images/sky_couples_dialogue.webp',
+      imageAlt: 'Couples psychotherapy and relational communication mediation suite in Pune',
       description:
-        'Emotionally Focused Therapy (EFT) and Gottman-informed mediation to de-escalate reactive conflict cycles, heal attachment ruptures, and build secure intimacy.',
+        'Emotionally Focused Therapy (EFT) and Gottman-informed mediation to de-escalate reactive conflict cycles, repair attachment injuries, and build secure intimacy.',
       bullets: [
         'Neutral, non-blaming clinical facilitation',
-        'Deconstructs anxious-avoidant communication loops',
+        'Addresses anxious-avoidant communication loops',
         'Structured 4-session Pre-Marital Alignment track available'
       ],
       ctaLabel: 'Book Couples Consultation',
@@ -305,31 +307,31 @@ export class HomeDemoPageComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       question: 'What happens during the first 60-minute intake session?',
       answer:
-        'Your first session is a collaborative, unhurried conversation—never an interrogation. Together with Leona Lahkar (RCI-licensed Clinical Psychologist), you will explore what brings you in, discuss relevant personal and medical history, identify immediate stressors, and co-create a comfortable clinical roadmap.',
+        'Your first session is a collaborative, unhurried conversation. Together with Leona Lahkar (RCI-licensed Clinical Psychologist, Reg. #A84920), you will explore what brings you in, review relevant personal and medical context, identify immediate stressors, and co-create a clear clinical roadmap.',
       category: 'First Steps'
     },
     {
       question: 'How does the Adult ADHD diagnostic evaluation work?',
       answer:
-        'Our Adult ADHD assessment is conducted across two structured phases using gold-standard clinical tools (including DIVA-5 and cognitive/executive batteries). We evaluate childhood and adult symptom presentation, screen for overlapping conditions like anxiety or burnout, and provide a signed clinical dossier along with a personalized debriefing session.',
+        'Our Adult ADHD assessment is conducted across two structured phases using gold-standard clinical tools (including DIVA-5 and cognitive/executive batteries). We evaluate childhood and adult symptom presentation, screen for overlapping conditions like anxiety or burnout, and provide a signed clinical report along with a 1-on-1 debriefing session.',
       category: 'Diagnostics'
     },
     {
       question: 'Can I switch between in-person studio sessions in Pune and online telehealth?',
       answer:
-        'Yes, seamlessly. Many clients in Pune attend key sessions in person at our Disha Eternia studio in Viman Nagar and switch to encrypted video telehealth during busy workweeks or travel. We also serve clients across Mumbai, Bengaluru, and international time zones.',
+        'Yes, seamlessly. Many clients in Pune attend key sessions in person at our Disha Eternia studio in Viman Nagar and switch to encrypted video telehealth during busy workweeks or travel. We also serve clients across Mumbai, Bengaluru, Delhi NCR, and international time zones.',
       category: 'Flexibility'
     },
     {
       question: 'Is everything I share strictly confidential?',
       answer:
-        'Absolutely. MindKatha adheres strictly to Rehabilitation Council of India (RCI) clinical ethics. Your attendance, clinical notes, and diagnostic findings are never shared with employers, family members, or third parties without your explicit written consent, except in legally mandated situations of imminent physical harm.',
+        'Yes. MindKatha adheres strictly to Rehabilitation Council of India (RCI) clinical ethics and the DPDP Act 2023. Your attendance, clinical notes, and diagnostic findings are never shared with employers, family members, or third parties without your explicit written consent, except in legally mandated situations of imminent physical harm.',
       category: 'Privacy & Ethics'
     },
     {
       question: 'Do you prescribe psychiatric medication?',
       answer:
-        'As a clinical psychology practice, our focus is evidence-based psychotherapy, somatic regulation, and standardized diagnostic testing. When medication evaluation is clinically beneficial, we collaborate closely with trusted, neuro-affirming psychiatrists in Pune and Mumbai.',
+        'As a clinical psychology practice, our focus is evidence-based psychotherapy, somatic regulation, and standardized diagnostic testing. When medication evaluation is clinically beneficial, we coordinate with trusted, neuro-affirming psychiatrists in Pune and across India.',
       category: 'Scope of Care'
     }
   ];
